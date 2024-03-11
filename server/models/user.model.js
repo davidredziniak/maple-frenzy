@@ -9,7 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  });
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    lastLoggedIn: {
+      type: DataTypes.DATE,
+      field: 'last_logged_in'
+    }
+  }, { timestamps: false });
 
   return User;
 };

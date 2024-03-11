@@ -1,4 +1,6 @@
-const User = require("../models").users;
+const db = require("../models");
+const User = db.users;
+const { DataTypes } = require("sequelize");
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -16,6 +18,8 @@ exports.signUp = (req, res) => {
   return User.create({
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 8),
+    createdAt: new Date().toISOString(),
+    lastLoggedIn: new Date().toISOString()
   })
     .then((newUser) =>
       res.status(200).send({

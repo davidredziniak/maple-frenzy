@@ -1,10 +1,10 @@
 const db = require("../models");
 const User = db.users;
-const { DataTypes } = require("sequelize");
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// Generate a JWT using a user's id and bcrypt secret
 const createJwt = (user) => {
   return jwt.sign({ id: user.id }, config.salt, {
     expiresIn: 86400,

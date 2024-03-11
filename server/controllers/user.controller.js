@@ -1,12 +1,9 @@
 const db = require("../models");
 const User = db.users;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new User
 exports.create = async (req, res) => {
-  console.log(req.body);
-
-  // Validate request
+  // Validate if any crediential fields are empty
   if (!req.body.username || !req.body.password) {
     res.status(400).send({
       message: "Username or password cannot be empty!",
@@ -14,27 +11,12 @@ exports.create = async (req, res) => {
     return;
   }
 
-  // Check if user exists in the database
-  const username = await User.findOne({
-    where: {
-      username: req.body.username,
-    },
-  });
-
-  // User exists
-  if (username) {
-    return res.status(500).send({
-      message: "Username already exists.",
-    });
-  }
-
-  // Create a new User
+  // Create a user in the database
   const user = {
     username: req.body.username,
     password: req.body.password,
   };
-
-  // Save User in the database
+  
   User.create(user)
     .then((data) => {
       res.send(data);
@@ -44,4 +26,16 @@ exports.create = async (req, res) => {
         message: err.message || "Some error occurred while creating the User.",
       });
     });
+};
+
+exports.show = (request, response) => {
+  return User.findByPk(request.params.userId, userSerializationOptions)
+    .then((user) => {
+      if (!user) {
+        response.status(404).send({ error: "User not found" });
+      } else {
+        response.status(200).send(user);
+      }
+    })
+    .catch((error) => response.status(400).send(error));
 };

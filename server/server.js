@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to the database
 db.sequelize
-  .sync()
+  .sync({ force: true })
   .then(() => {
     console.log("Synced db.");
   })
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-require("./routes/user.routes")(app);
+require("./routes/index.js")(app);
 
 // Start listening for requests at a designated port
 app.listen(PORT, () => {

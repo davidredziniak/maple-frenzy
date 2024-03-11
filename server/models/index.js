@@ -19,6 +19,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+// Import models
 db.users = require("./user.model.js")(sequelize, DataTypes);
 
 module.exports = db;

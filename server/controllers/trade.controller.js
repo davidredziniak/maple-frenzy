@@ -1,22 +1,10 @@
 const db = require("../models");
 const Trade = db.trades;
+const TradeSlot = db.tradeSlots;
+
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
-function verifyToken(request, response, next) {
-  let token = request.headers["x-access-token"];
-  if (!token)
-    return response
-      .status(403)
-      .send({ error: "No token was found in the headers." });
-  jwt.verify(token, config.salt, (error, decoded) => {
-    if (error)
-      return response.status(401).send({ error: "Access was denied." });
-    request.userId = decoded.id;
-    next();
-  });
-}
 
 // Create trade
 exports.create = (req, res) => {
@@ -38,20 +26,66 @@ exports.create = (req, res) => {
     buyerAvailable: req.body.buyerLimit,
   })
     .then((newTrade) => {
-      res.status(200).send(newTrade);
+      res.status(200).send({ message: "Successfully created trade." });
     })
-    .catch((error) => res.status(500).send(error));
+    .catch((error) => res.status(400).send(error));
 };
 
+// Delete Trade
+
+// Join Trade
+exports.join = (req, res, next) => {
+  // Retrieve user id from JWT
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.salt, (error, decoded) => {
+    if (error) return res.status(401).send({ error: "Access was denied." });
+    req.userId = decoded.id;
+  });
+
+  // Get trade by Id
+  Trade.findOne({ where: { id: req.body.tradeId } })
+    .then((trade) => {
+      if (!trade) return res.status(404).send({ error: "Trade not found." });
+
+      // Check if user joining is the seller
+      if (req.userId == trade.sellerId)
+        return res
+          .status(400)
+          .send({ error: "You can't join a trade that you created." });
+
+      // Check if user is already in the trade
+      TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
+        .then((count) => {
+          if (count == 1)
+            return res
+              .status(400)
+              .send({ error: "You already joined this trade." });
+
+          // Check if the trade is full
+          if (trade.buyerAvailable == 0)
+            return res
+              .status(400)
+              .send({ error: "The trade queue is already full." });
+
+          // Add user to the queue
+          req.trade = trade;
+          next(req, res);
+        })
+        .catch((error) => res.status(400).send(error));
+    })
+    .catch((error) => res.status(400).send(error));
+};
+// Leave Trade
+
 // Find trade by ID
-exports.findById = (request, response) => {
-  return Trade.findOne({ where: { id: request.params.tradeId } })
+exports.findById = (req, res) => {
+  return Trade.findOne({ where: { id: req.params.tradeId } })
     .then((trade) => {
       if (!trade) {
-        response.status(404).send({ error: "Trade not found." });
+        res.status(404).send({ error: "Trade not found." });
       } else {
-        response.status(200).send(trade);
+        res.status(200).send(trade);
       }
     })
-    .catch((error) => response.status(400).send(error));
+    .catch((error) => res.status(400).send(error));
 };

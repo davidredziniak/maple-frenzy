@@ -25,7 +25,7 @@ exports.signUp = (req, res) => {
     .then((newUser) => {
       // Create a profile for the new user
       UserProfile.create({
-        userId: newUser.id
+        userId: newUser.id,
       })
         .then(() => {
           res.status(200).send({

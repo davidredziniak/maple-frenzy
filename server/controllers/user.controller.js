@@ -6,7 +6,7 @@ exports.findById = (request, response) => {
   return User.findOne({ where: { id: request.params.userId } })
     .then((user) => {
       if (!user) {
-        response.status(404).send({ error: "User not found" });
+        response.status(404).send({ error: "User not found." });
       } else {
         response.status(200).send(user);
       }

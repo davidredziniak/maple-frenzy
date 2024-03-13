@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to the database
+// Auto recreate database for now (development)
 db.sequelize
   .sync({ force: true })
   .then(() => {
@@ -28,10 +29,6 @@ db.sequelize
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
   });
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 // Routes
 require("./routes/index.js")(app);

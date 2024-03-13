@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       sellerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "user_id",
+        field: "seller_id",
       },
       timeStart: {
         type: DataTypes.DATE,
@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "buyer_lim"
+      },
+      buyerAvailable: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "buyer_avail"
       }
     },
     { tableName: "trade", timestamps: false }

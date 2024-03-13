@@ -12,10 +12,10 @@ module.exports = (app) => {
   });
 
   // Routes
+  app.post("/api/signin", authController.signIn);
   app.post(
     "/api/signup",
     [verifySignUp.checkUsernameTaken],
     authController.signUp
   );
-  app.post("/api/signin", authController.signIn);
 };

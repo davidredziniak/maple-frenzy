@@ -6,12 +6,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
-        field: "username"
+        field: "username",
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-        field: "password"
+        field: "password",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "last_logged_in",
       },
     },
-    { tableName: 'users', timestamps: false }
+    { tableName: "users", timestamps: false }
   );
 
   return User;

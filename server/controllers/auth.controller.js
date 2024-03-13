@@ -26,7 +26,8 @@ exports.signUp = (req, res) => {
       // Create a profile for the new user
       UserProfile.create({
         userId: newUser.id
-      }).then(() => {
+      })
+        .then(() => {
           res.status(200).send({
             accessToken: createJwt(newUser),
             message: "Successfully signed up.",

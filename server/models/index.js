@@ -22,13 +22,22 @@ db.sequelize = sequelize;
 // Import models
 db.users = require("./user.model.js")(sequelize, DataTypes);
 db.userProfiles = require("./userProfile.model.js")(sequelize, DataTypes);
+db.trades = require("./trade.model.js")(sequelize, DataTypes);
 
 // Link user_profiles "user_id" to "id" in `user` table
 db.userProfiles.belongsTo(db.users, {
   foreignKey: {
-      name: 'userId',
-      allowNull: false
-  }
+    name: "userId",
+    allowNull: false,
+  },
+});
+
+// Link trades made by a "seller_id" to "id" in `user` table
+db.trades.belongsTo(db.users, {
+  foreignKey: {
+    name: "sellerId",
+    allowNull: false,
+  },
 });
 
 module.exports = db;

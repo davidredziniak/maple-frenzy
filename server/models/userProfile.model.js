@@ -5,24 +5,23 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "user_id"
+        field: "user_id",
       },
       tradeCount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         allowNull: false,
-        field: "trade_count"
+        field: "trade_count",
       },
       reputation: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         allowNull: false,
         field: "reputation",
-      }
+      },
     },
-    { tableName: 'user_profiles', timestamps: false }
+    { tableName: "user_profiles", timestamps: false }
   );
-
 
   return UserProfile;
 };

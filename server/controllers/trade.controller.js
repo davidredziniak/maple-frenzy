@@ -69,13 +69,49 @@ exports.join = (req, res, next) => {
 
           // Add user to the queue
           req.trade = trade;
-          next(req, res);
+          next();
         })
         .catch((error) => res.status(400).send(error));
     })
     .catch((error) => res.status(400).send(error));
 };
+
 // Leave Trade
+exports.leave = (req, res, next) => {
+  // Retrieve user id from JWT
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.salt, (error, decoded) => {
+    if (error) return res.status(401).send({ error: "Access was denied." });
+    req.userId = decoded.id;
+  });
+
+  // Get trade by Id
+  Trade.findOne({ where: { id: req.body.tradeId } })
+    .then((trade) => {
+      if (!trade) return res.status(404).send({ error: "Trade not found." });
+
+      // Check if user leaving is the seller
+      if (req.userId == trade.sellerId)
+        return res
+          .status(400)
+          .send({ error: "You can't leave a trade that you created." });
+
+      // Check if user is already in the trade
+      TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
+        .then((count) => {
+          if (count == 1) {
+            // Remove user from the queue
+            req.trade = trade;
+            next();
+          } else
+            return res
+              .status(400)
+              .send({ error: "You are not in this trade." });
+        })
+        .catch((error) => res.status(400).send(error));
+    })
+    .catch((error) => res.status(400).send(error));
+};
 
 // Find trade by ID
 exports.findById = (req, res) => {

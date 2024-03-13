@@ -17,6 +17,14 @@ exports.decrementAvail = (trade) => {
   );
 };
 
+// Increment the amount of available slots
+exports.incrementAvail = (trade) => {
+  return Trade.update(
+    { buyerAvailable: trade.buyerAvailable + 1 },
+    { where: { id: trade.id } }
+  );
+};
+
 // Add a user to the queue
 exports.addUserToQueue = (req, res) => {
   // Retrieve an available position in the trade
@@ -33,9 +41,9 @@ exports.addUserToQueue = (req, res) => {
     queuePos: pos,
   })
     .then(() => {
-      // Decrement the amount of available slots on the trade
+      // Update the amount of available positions in the trade
       this.decrementAvail(req.trade)
-        .then((update) => {
+        .then(() => {
           return res
             .status(200)
             .send({ message: "Successfully joined the trade." });
@@ -43,4 +51,52 @@ exports.addUserToQueue = (req, res) => {
         .catch((error) => res.status(400).send(error));
     })
     .catch((error) => res.status(400).send(error));
+};
+
+// Remove a user from the queue
+exports.removeUserFromQueue = (req, res) => {
+  return TradeSlot.findOne({
+    where: { tradeId: req.trade.id, userId: req.userId },
+  })
+    .then((tradeSlot) => {
+      if (!tradeSlot)
+        return res.status(404).send({ error: "User not found in the trade." });
+
+      // Get user position
+      let userPos = tradeSlot.queuePos;
+
+      // Remove user from queue
+      tradeSlot.destroy();
+
+      // Shift all user positions after removed user
+      TradeSlot.findAll({
+        where: {
+          tradeId: req.trade.id,
+          queuePos: {
+            [db.Sequelize.Op.gte]: userPos,
+          },
+        },
+      })
+        .then((result) => {
+          // Shift each record to a higher queue position
+          result.forEach((record) => {
+            TradeSlot.update(
+              { queuePos: record.queuePos - 1 },
+              { where: { id: record.id } }
+            );
+          });
+
+          // Update the amount of available positions in the trade
+          this.incrementAvail(req.trade)
+            .then(() => {
+              return res
+                .status(200)
+                .send({ message: "Successfully left the trade." });
+            })
+            .catch((error) => res.status(400).send(error));
+        })
+        .catch((error) => res.status(400).send(error));
+    })
+    .catch((error) => res.status(400).send(error));
+  // Update buyer available
 };

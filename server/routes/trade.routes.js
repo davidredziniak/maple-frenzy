@@ -15,6 +15,12 @@ module.exports = (app) => {
     tradesController.join,
     tradeSlotController.addUserToQueue
   );
+  app.post(
+    "/api/trades/leave",
+    [authorizeJwt.verifyToken],
+    tradesController.leave,
+    tradeSlotController.removeUserFromQueue
+  );
   app.get(
     "/api/trades/data/:tradeId",
     [authorizeJwt.verifyToken],

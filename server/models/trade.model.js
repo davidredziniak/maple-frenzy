@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       timeEnd: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: "timeEnd",
+        field: "time_end",
       },
       price: {
         type: DataTypes.INTEGER,

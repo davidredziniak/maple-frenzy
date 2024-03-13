@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.users;
+const UserProfile = db.userProfiles;
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -19,14 +20,20 @@ exports.signUp = (req, res) => {
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 8),
     createdAt: new Date().toISOString(),
-    lastLoggedIn: new Date().toISOString()
+    lastLoggedIn: new Date().toISOString(),
   })
-    .then((newUser) =>
-      res.status(200).send({
-        accessToken: createJwt(newUser),
-        message: "Successfully signed up.",
-      })
-    )
+    .then((newUser) => {
+      // Create a profile for the new user
+      UserProfile.create({
+        userId: newUser.id
+      }).then(() => {
+          res.status(200).send({
+            accessToken: createJwt(newUser),
+            message: "Successfully signed up.",
+          });
+        })
+        .catch((error) => res.status(500).send(error));
+    })
     .catch((error) => res.status(500).send(error));
 };
 
@@ -57,6 +64,12 @@ exports.signIn = (req, res) => {
         signInError.message = "Password incorrect.";
         return res.status(401).send(signInError);
       }
+
+      // Update lastLoggedIn field
+      User.update(
+        { lastLoggedIn: new Date().toISOString() },
+        { where: { id: user.id } }
+      );
 
       // Authorize user and create JWT
       const token = createJwt(user);

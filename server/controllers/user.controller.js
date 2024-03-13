@@ -2,8 +2,8 @@ const db = require("../models");
 const User = db.users;
 
 // Find user by ID
-exports.show = (request, response) => {
-  return User.findByPk(request.params.userId, userSerializationOptions)
+exports.findById = (request, response) => {
+  return User.findOne({ where: { id: request.params.userId } })
     .then((user) => {
       if (!user) {
         response.status(404).send({ error: "User not found" });

@@ -68,7 +68,7 @@ exports.removeUserFromQueue = (req, res) => {
       // Remove user from queue
       tradeSlot.destroy();
 
-      // Shift all user positions after removed user
+      // Find all user records that have a lower priority than the removed user
       TradeSlot.findAll({
         where: {
           tradeId: req.trade.id,
@@ -78,7 +78,7 @@ exports.removeUserFromQueue = (req, res) => {
         },
       })
         .then((result) => {
-          // Shift each record to a higher queue position
+          // Shift each record to a higher queue priority
           result.forEach((record) => {
             TradeSlot.update(
               { queuePos: record.queuePos - 1 },
@@ -98,5 +98,25 @@ exports.removeUserFromQueue = (req, res) => {
         .catch((error) => res.status(400).send(error));
     })
     .catch((error) => res.status(400).send(error));
-  // Update buyer available
+};
+
+exports.deleteQueue = (req, res) => {
+  TradeSlot.findAll({
+    where: {
+      tradeId: req.trade.id,
+    },
+  })
+    .then((result) => {
+      // Delete the queue if it is populated
+      result.forEach((record) => {
+        record.destroy();
+      });
+
+      // Delete the trade
+      req.trade.destroy();
+      return res
+        .status(200)
+        .send({ message: "Successfully deleted the trade." });
+    })
+    .catch((error) => res.status(400).send(error));
 };

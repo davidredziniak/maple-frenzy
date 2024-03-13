@@ -10,6 +10,11 @@ module.exports = (app) => {
     tradesController.create
   );
   app.post(
+    "/api/trades/delete",
+    [authorizeJwt.verifyToken],
+    tradesController.delete, tradeSlotController.deleteQueue
+  );
+  app.post(
     "/api/trades/join",
     [authorizeJwt.verifyToken],
     tradesController.join,

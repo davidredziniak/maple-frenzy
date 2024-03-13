@@ -32,6 +32,33 @@ exports.create = (req, res) => {
 };
 
 // Delete Trade
+exports.delete = (req, res, next) => {
+  // Retrieve user id from JWT
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.salt, (error, decoded) => {
+    if (error)
+      return response.status(401).send({ error: "Access was denied." });
+    req.userId = decoded.id;
+  });
+
+  // Get trade by Id
+  Trade.findOne({ where: { id: req.body.tradeId } })
+    .then((trade) => {
+      if (!trade) return res.status(404).send({ error: "Trade not found." });
+
+      // Verify if the user deleting is the seller
+      if (req.userId == trade.sellerId) {
+        // Delete the queue
+        req.trade = trade;
+        next();
+      } else {
+        return res
+          .status(400)
+          .send({ error: "You are unauthorized to delete this trade." });
+      }
+    })
+    .catch((error) => res.status(400).send(error));
+};
 
 // Join Trade
 exports.join = (req, res, next) => {

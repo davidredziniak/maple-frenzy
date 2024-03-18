@@ -4,6 +4,10 @@ The trade scheduler is an "Order Management System" for this electronic market.
 This periodically polls the existing trades (order book) for buyers that can be 
 matched with sellers according to a FIFO rule. Priority/premium customers may 
 pay to be first.
+
+Two things result in a completed trade that should be scheduled:
+1. Trade is filled (max # of paying buyers is hit)
+2. Trade reaches time limit (schedule whoever is there or nobody)
 */
 
 function resolveTrades() {};

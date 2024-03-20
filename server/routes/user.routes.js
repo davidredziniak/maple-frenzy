@@ -3,7 +3,7 @@ const { authorizeJwt } = require("../middleware");
 
 module.exports = (app) => {
   app.get(
-    "/api/users/:userId",
+    "/api/user/:userId",
     [authorizeJwt.verifyToken],
     usersController.findById
   );

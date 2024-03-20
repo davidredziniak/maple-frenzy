@@ -53,7 +53,7 @@ exports.delete = (req, res, next) => {
         next();
       } else {
         return res
-          .status(400)
+          .status(401)
           .send({ error: "You are unauthorized to delete this trade." });
       }
     })

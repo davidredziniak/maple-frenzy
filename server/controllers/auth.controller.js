@@ -76,7 +76,7 @@ exports.signIn = (req, res) => {
       const token = createJwt(user);
       res
         .status(200)
-        .send({ accessToken: token, message: "Successfully logged in." });
+        .send({ accessToken: token, message: "Successfully signed in." });
     })
     .catch((error) => res.status(500).send(error));
 };

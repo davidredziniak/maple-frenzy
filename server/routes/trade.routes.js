@@ -5,29 +5,29 @@ const { authorizeJwt } = require("../middleware");
 
 module.exports = (app) => {
   app.post(
-    "/api/trades/create",
+    "/api/trade/create",
     [authorizeJwt.verifyToken],
     tradesController.create
   );
   app.post(
-    "/api/trades/delete",
+    "/api/trade/delete",
     [authorizeJwt.verifyToken],
     tradesController.delete, tradeSlotController.deleteQueue
   );
   app.post(
-    "/api/trades/join",
+    "/api/trade/join",
     [authorizeJwt.verifyToken],
     tradesController.join,
     tradeSlotController.addUserToQueue
   );
   app.post(
-    "/api/trades/leave",
+    "/api/trade/leave",
     [authorizeJwt.verifyToken],
     tradesController.leave,
     tradeSlotController.removeUserFromQueue
   );
   app.get(
-    "/api/trades/data/:tradeId",
+    "/api/trade/data/:tradeId",
     [authorizeJwt.verifyToken],
     tradesController.findById
   );

@@ -7,4 +7,10 @@ module.exports = (app) => {
     [authorizeJwt.verifyToken],
     usersController.findById
   );
+
+  app.post(
+    "/api/user/changepass",
+    [authorizeJwt.verifyToken],
+    usersController.changePass
+  );
 };

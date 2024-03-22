@@ -12,6 +12,12 @@ import {
   Center,
   Box,
 } from '@chakra-ui/react'
+import {
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+  } from '@chakra-ui/react'
 import maplefrenzylogo from '/home/sdk6/cs491/maple-frenzy/ui/src/maplefrenzylogo.svg'
 const Backdrop = () =>{
     return(
@@ -29,7 +35,15 @@ const Backdrop = () =>{
 const LoginForm = () => {
     return(
       <Stack {...loginBox}>
-        <Text {...loginText}>Log in</Text>
+        <Text {...loginText}>Register</Text>
+        <FormControl>
+            <FormLabel pt="20px">Email address</FormLabel>
+            <Input pr="20px" type='email' />
+            <FormLabel pt="30px">Password</FormLabel>
+            <Input type='password' />
+            <FormLabel pt="30px">Confirm Password</FormLabel>
+            <Input type='password' />
+        </FormControl>
       </Stack>
     )
   }

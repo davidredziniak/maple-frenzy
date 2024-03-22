@@ -1,10 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import Register from '/home/sdk6/cs491/maple-frenzy/ui/src/Register.js';
 
 function App() {
   return (
     <ChakraProvider>
+      <Register/>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />

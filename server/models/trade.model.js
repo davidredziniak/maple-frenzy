@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "price"
+        field: "price",
       },
       region: {
         type: DataTypes.STRING,
         allowNull: false,
-        field: "region"
+        field: "region",
       },
       timeStart: {
         type: DataTypes.DATE,
@@ -30,13 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       buyerLimit: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "buyer_lim"
+        field: "buyer_lim",
       },
       buyerAvailable: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "buyer_avail"
-      }
+        field: "buyer_avail",
+      },
     },
     { tableName: "trade", timestamps: false }
   );

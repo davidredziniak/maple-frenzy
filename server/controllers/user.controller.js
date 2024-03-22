@@ -51,12 +51,13 @@ exports.changePass = (req, res) => {
 
         // Update the password with the new one
         const updatedPass = bcrypt.hashSync(req.body.newPassword, 8);
-        User.update(
-          { password: updatedPass },
-          { where: { id: user.id } }
-        ).then(() => {
-          return res.status(200).send({ message: "Successfully updated password!" });
-        });
+        User.update({ password: updatedPass }, { where: { id: user.id } }).then(
+          () => {
+            return res
+              .status(200)
+              .send({ message: "Successfully updated password!" });
+          }
+        );
       })
       .catch((error) => res.status(400).send(error));
   } else {

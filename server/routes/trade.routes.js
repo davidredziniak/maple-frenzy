@@ -4,6 +4,7 @@ const tradeSlotController = require("../controllers").tradeSlots;
 const { authorizeJwt } = require("../middleware");
 
 module.exports = (app) => {
+  // Routes that allow manipulation
   app.post(
     "/api/trade/create",
     [authorizeJwt.verifyToken],
@@ -12,7 +13,8 @@ module.exports = (app) => {
   app.post(
     "/api/trade/delete",
     [authorizeJwt.verifyToken],
-    tradesController.delete, tradeSlotController.deleteQueue
+    tradesController.delete,
+    tradeSlotController.deleteQueue
   );
   app.post(
     "/api/trade/join",
@@ -26,6 +28,8 @@ module.exports = (app) => {
     tradesController.leave,
     tradeSlotController.removeUserFromQueue
   );
+
+  // Routes that provide data
   app.get(
     "/api/trade/list",
     [authorizeJwt.verifyToken],

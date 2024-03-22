@@ -193,7 +193,7 @@ exports.findById = (req, res) => {
 // Get full list of trades
 exports.getListOfTrades = (req, res) => {
   return Trade.findAll({
-    where: { id: 30 }, order: [["id", "ASC"]],
+    order: [["id", "ASC"]],
   })
     .then((result) => {
       var trades = [];

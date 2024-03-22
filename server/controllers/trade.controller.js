@@ -26,7 +26,9 @@ exports.create = (req, res) => {
     buyerAvailable: req.body.buyerLimit,
   })
     .then((newTrade) => {
-      res.status(200).send({ message: "Successfully created trade." });
+      res
+        .status(200)
+        .send({ tradeId: newTrade.id, message: "Successfully created trade." });
     })
     .catch((error) => res.status(400).send(error));
 };
@@ -147,7 +149,45 @@ exports.findById = (req, res) => {
       if (!trade) {
         res.status(404).send({ error: "Trade not found." });
       } else {
-        res.status(200).send(trade);
+        // Check if the slots query exists
+        if (req.query.slots != "") return res.status(200).send(trade);
+        else {
+          // Check if user requesting slot data is not the owner of the trade
+          if (req.userId != trade.sellerId)
+            return res
+              .status(401)
+              .send({
+                error:
+                  "You are not authorized to view the slots of this trade.",
+              });
+
+          // Return trading data including the slots in ascending position order
+          TradeSlot.findAll({
+            where: { tradeId: trade.id },
+            order: [["pos", "ASC"]],
+          })
+            .then((result) => {
+              var slots = [];
+              result.forEach((record) => {
+                slots.push({
+                  userId: record.userId,
+                  position: record.queuePos,
+                });
+              });
+              return res.status(200).send({
+                id: trade.id,
+                sellerId: trade.sellerId,
+                timeStart: trade.timeStart,
+                timeEnd: trade.timeEnd,
+                price: trade.price,
+                region: trade.region,
+                buyerLimit: trade.buyerLimit,
+                buyerAvailable: trade.buyerAvailable,
+                slots: slots
+              });
+            })
+            .catch((error) => res.status(400).send(error));
+        }
       }
     })
     .catch((error) => res.status(400).send(error));

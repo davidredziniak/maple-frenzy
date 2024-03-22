@@ -12,13 +12,13 @@ import {
   Center,
   Box,
 } from '@chakra-ui/react'
-
+import maplefrenzylogo from '/home/sdk6/cs491/maple-frenzy/ui/src/maplefrenzylogo.svg'
 const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">
         <Stack {...stackLeft}>
-          <Heading pt="25vh">Crush It</Heading>
-          <Image src="img/pending.png" />
+          <Heading pt="25vh">Maple Frenzy</Heading>
+          <Image src={maplefrenzylogo} />
         </Stack>
         <Stack {...stackRight} />
         <LoginForm/>

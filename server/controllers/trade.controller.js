@@ -28,7 +28,7 @@ exports.create = (req, res) => {
     .then((newTrade) => {
       res
         .status(200)
-        .send({ tradeId: newTrade.id, message: "Successfully created trade." });
+        .send({ id: newTrade.id, message: "Successfully created trade." });
     })
     .catch((error) => res.status(400).send(error));
 };
@@ -154,12 +154,9 @@ exports.findById = (req, res) => {
         else {
           // Check if user requesting slot data is not the owner of the trade
           if (req.userId != trade.sellerId)
-            return res
-              .status(401)
-              .send({
-                error:
-                  "You are not authorized to view the slots of this trade.",
-              });
+            return res.status(401).send({
+              error: "You are not authorized to view the slots of this trade.",
+            });
 
           // Return trading data including the slots in ascending position order
           TradeSlot.findAll({
@@ -171,7 +168,7 @@ exports.findById = (req, res) => {
               result.forEach((record) => {
                 slots.push({
                   userId: record.userId,
-                  position: record.queuePos,
+                  pos: record.queuePos,
                 });
               });
               return res.status(200).send({
@@ -183,12 +180,27 @@ exports.findById = (req, res) => {
                 region: trade.region,
                 buyerLimit: trade.buyerLimit,
                 buyerAvailable: trade.buyerAvailable,
-                slots: slots
+                slots: slots,
               });
             })
             .catch((error) => res.status(400).send(error));
         }
       }
+    })
+    .catch((error) => res.status(400).send(error));
+};
+
+// Get full list of trades
+exports.getListOfTrades = (req, res) => {
+  return Trade.findAll({
+    where: { id: 30 }, order: [["id", "ASC"]],
+  })
+    .then((result) => {
+      var trades = [];
+      result.forEach((record) => {
+        trades.push(record);
+      });
+      res.status(200).send({ trades: trades });
     })
     .catch((error) => res.status(400).send(error));
 };

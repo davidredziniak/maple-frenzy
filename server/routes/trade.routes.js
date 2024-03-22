@@ -27,6 +27,11 @@ module.exports = (app) => {
     tradeSlotController.removeUserFromQueue
   );
   app.get(
+    "/api/trade/list",
+    [authorizeJwt.verifyToken],
+    tradesController.getListOfTrades
+  );
+  app.get(
     "/api/trade/data/:tradeId",
     [authorizeJwt.verifyToken],
     tradesController.findById

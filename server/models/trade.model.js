@@ -7,16 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "seller_id",
       },
-      timeStart: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        field: "time_start",
-      },
-      timeEnd: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        field: "time_end",
-      },
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -26,6 +16,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         field: "region"
+      },
+      timeStart: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        field: "time_start",
+      },
+      timeEnd: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        field: "time_end",
       },
       buyerLimit: {
         type: DataTypes.INTEGER,

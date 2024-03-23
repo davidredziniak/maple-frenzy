@@ -177,7 +177,7 @@ exports.findById = (req, res) => {
                 timeStart: trade.timeStart,
                 timeEnd: trade.timeEnd,
                 price: trade.price,
-                region: trade.region,
+                channels: trade.channels,
                 buyerLimit: trade.buyerLimit,
                 buyerAvailable: trade.buyerAvailable,
                 slots: slots,

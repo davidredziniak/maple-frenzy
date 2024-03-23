@@ -38,6 +38,7 @@ exports.addUserToQueue = (req, res) => {
   TradeSlot.create({
     tradeId: req.trade.id,
     userId: req.userId,
+    channel: req.channel,
     queuePos: pos,
   })
     .then(() => {

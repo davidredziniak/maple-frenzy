@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "user_id",
       },
+      channel: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "channel",
+      },
       queuePos: {
         type: DataTypes.INTEGER,
         allowNull: false,

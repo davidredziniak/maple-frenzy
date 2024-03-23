@@ -2,15 +2,52 @@
 The trade scheduler is an "Order Management System" for this electronic market.
 
 This periodically polls the existing trades (order book) for buyers that can be 
-matched with sellers according to a FIFO rule. Priority/premium customers may 
-pay to be first.
+matched with sellers according to their order in a priority queue.
+This is already handled by the database runtime, and is indexed on insertion 
+order and premium status.
 
-Two things result in a completed trade that should be scheduled:
-1. Trade is filled (max # of paying buyers is hit)
-2. Trade reaches time limit (schedule whoever is there or nobody)
+Only two things should "resolve" a trade:
+1. Time settlement: Our system closes out the trade 5 minutes before tradeEnd.
+Sellers/Buyers in effect agree on this transaction ("settlement"), the 
+"delivery" happens in-game between the agreeing parties.
+
+2. Cancellation by Seller for some reason (handled by Trade controller).
+
+TODO [MF-14/MF-34]: Testing trade resolution and schedule exceptions. ACID 
+guarantees theoretically should keep things well-behaved but really ought to 
+make sure since this is running 24/7.
+TODO [MF-22/MF-35]: Priority/premium customers may pay to dislodge non-payors 
+from queue.
 */
+const Trade = require("../models").trades;
 
-function resolveTrades() {};
+// If trade end time is within 5 minutes of settlement time, then transact.
+async function resolveTrades(minuteOffset) {
+    (req, res) => {
+        const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
+        Trade.findAll({ where: {timeEnd: {[Op.le]: settleTime}} })
+            .then((trades) => {
+                if (trades) {
+                    SettledTrade.bulkCreate(trades)
+                    .then((transferredTrade) => {
+                        res.status(200).send({ message: "Settlement successful." });
+                    })
+                    .catch((error) => res.status(400).send(error));
+                    trades.destroy();
+                }
+
+                res.status(200).send({ message: "No available trade to settle." });
+            });
+    }
+};
+
+// Continually posting async promises that force await within start() context.
+function wait(pollingTime) {
+    return new Promise(resolve => {
+        setTimeout(resolve, pollingTime);
+    });
+}
+
 function schedulerException() {
     try {
         // check any flags, try to recover gracefully if needed
@@ -20,18 +57,12 @@ function schedulerException() {
     }
 };
 
-// Check trades and assign queues to sellers until an exception occurs.
 async function start(pollingTime) {
+    const settleOffset = 5; // minutes
     while (!schedulerException()) {
+        await resolveTrades(settleOffset);
         await wait(pollingTime);
-        await resolveTrades();
     }
-}
-
-function wait(pollingTime) {
-    return new Promise(resolve => {
-        setTimeout(resolve, pollingTime);
-    });
 }
 
 module.exports = {

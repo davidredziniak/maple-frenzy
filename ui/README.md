@@ -41,6 +41,8 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ### `npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion`
 
+### `npm install react-router-dom`
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

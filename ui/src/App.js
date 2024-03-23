@@ -2,11 +2,18 @@ import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import Register from './Register.js';
-
+import Login from './Login.js';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 function App() {
   return (
     <ChakraProvider>
-      <Register/>
+      <Router>
+          <Routes>
+            <Route path='/login' component={Login} />
+            <Route path='/registration' component={Register} />
+          </Routes>
+      </Router>
+      <Login/>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />

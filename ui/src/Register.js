@@ -18,7 +18,7 @@ import {
     FormErrorMessage,
     FormHelperText,
   } from '@chakra-ui/react'
-import maplefrenzylogo from '/home/sdk6/cs491/maple-frenzy/ui/src/maplefrenzylogo.svg'
+import maplefrenzylogo from 'src/maplefrenzylogo.svg'
 const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">

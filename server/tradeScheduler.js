@@ -23,10 +23,10 @@ const Trade = require("../models").trades;
 
 // If trade end time is within 5 minutes of settlement time, then transact.
 async function resolveTrades(minuteOffset) {
-    (req, res) => {
+    return (req, res) => {
         const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
         Trade.findAll({ where: {timeEnd: {[Op.le]: settleTime}} })
-            .then((trades) => {
+            .then(async (trades) => {
                 if (trades) {
                     SettledTrade.bulkCreate(trades)
                     .then((transferredTrade) => {
@@ -35,9 +35,11 @@ async function resolveTrades(minuteOffset) {
                     .catch((error) => res.status(400).send(error));
                     trades.destroy();
                 }
-
-                res.status(200).send({ message: "No available trade to settle." });
-            });
+                else {
+                    res.status(200).send({ message: "No available trade to settle." });
+                }
+            })
+            .catch((error) => res.status(400).send(error));
     }
 };
 

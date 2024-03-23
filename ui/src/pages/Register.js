@@ -23,7 +23,7 @@ const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">
         <Stack {...stackLeft}>
-          <Heading pt="25vh">Maple Frenzy</Heading>
+          <Heading pt="25vh"><Link to='/'>Maple Frenzy</Link></Heading>
           <Image src={maplefrenzylogo} />
         </Stack>
         <Stack {...stackRight} />

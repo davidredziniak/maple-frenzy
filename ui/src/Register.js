@@ -114,7 +114,7 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Registration</Text>
         <RegistrationForm/>
-        <Box justifyContent="bottom" ><Text>Already registered? Login Here!</Text></Box>
+        <Box><Text>Already registered? Login Here!</Text></Box>
       </Stack>
     )
   }

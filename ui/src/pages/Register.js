@@ -14,8 +14,9 @@ import {
     FormControl,
     FormLabel,
   } from '@chakra-ui/react'
-import maplefrenzylogo from './maplefrenzylogo.svg'
+import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
+import {Link} from 'react-router-dom'
 
 const Backdrop = () =>{
     return(
@@ -116,7 +117,7 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Registration</Text>
         <RegistrationForm/>
-        <Box><Text>Already registered? Login Here!</Text></Box>
+        <Box><Text>Already registered? Login <Link to='/'>Here!</Link></Text></Box>
       </Stack>
     )
   }

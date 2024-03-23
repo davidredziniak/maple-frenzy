@@ -14,7 +14,7 @@ import {
     FormControl,
     FormLabel,
   } from '@chakra-ui/react'
-import maplefrenzylogo from './maplefrenzylogo.svg'
+import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
@@ -107,7 +107,7 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Box><Text pt='50px' >Don't Have an account? Register <Link to='/Register.js'><a>Here!</a></Link></Text></Box>
+        <Box><Text pt='50px' >Don't Have an account? Register <Link to='/Register'>Here!</Link></Text></Box>
       </Stack>
     )
   }

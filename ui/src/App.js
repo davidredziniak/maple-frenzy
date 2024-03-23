@@ -9,11 +9,11 @@ function App() {
     <ChakraProvider>
       <Router>
           <Routes>
-            <Route path='./Login.js' component={Login} />
-            <Route path='./Register.js' component={Register} />
+            <Route path='/' element={<Login/>} />
+            <Route path='/Register' element={<Register/>} />
           </Routes>
       </Router>
-      <Login/>
+
     </ChakraProvider>
   );
 }

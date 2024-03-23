@@ -121,7 +121,7 @@ const RegisterForm = () => {
         <Flex mt='20px' >
           <Box color ='gray'><Text >Already Registered? Login </Text></Box>
           <Spacer></Spacer>
-          <Box pr='370px'color='blue'><Link to='/'><Text> Here!</Text></Link></Box>
+          <Box pr='370px'color='blue'><Link to='/login'><Text> Here!</Text></Link></Box>
         </Flex>
       </Stack>
     )

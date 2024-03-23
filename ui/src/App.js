@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
-import Register from '/home/sdk6/cs491/maple-frenzy/ui/src/Register.js';
+import Register from './Register.js';
 
 function App() {
   return (

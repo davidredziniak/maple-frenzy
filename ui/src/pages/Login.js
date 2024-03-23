@@ -8,7 +8,8 @@ import {
   Heading,
   Input,
   Button,
-  Box
+  Box,
+  Spacer
 } from '@chakra-ui/react'
 import {
     FormControl,
@@ -100,7 +101,11 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Box><Text pt='50px' >Don't Have an account? Register <Link to='/Register'>Here!</Link></Text></Box>
+        <Flex mt='20px' >
+          <Box color ='gray'><Text >Dont have an Account? Register </Text></Box>
+          <Spacer></Spacer>
+          <Box pr='329px'color='blue'><Link to='/Register'><Text> Here!</Text></Link></Box>
+        </Flex>
       </Stack>
     )
   }

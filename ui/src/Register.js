@@ -56,7 +56,7 @@ const RegistrationForm = () => {
     }
   
     try {
-      const response = await fetch('/api/signup/', {
+      const response = await fetch('https://maple-frenzy.onrender.com/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

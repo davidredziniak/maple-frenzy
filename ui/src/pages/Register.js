@@ -106,7 +106,7 @@ const RegistrationForm = () => {
           required
         />
       </div>
-      <Button mt='20px' {...signInButton} type="submit" onClick={handleSubmit}>Sign Up</Button>
+      <Button mt='30px' {...signInButton} type="submit" onClick={handleSubmit}>Sign Up</Button>
     </FormControl>
   );
 };
@@ -117,7 +117,7 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Registration</Text>
         <RegistrationForm/>
-        <Box><Text>Already registered? Login <Link to='/'>Here!</Link></Text></Box>
+        <Box><Text pt='50px'>Already registered? Login <Link to='/'>Here!</Link></Text></Box>
       </Stack>
     )
   }

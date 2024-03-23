@@ -34,31 +34,24 @@ const Backdrop = () =>{
 const RegistrationForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-  
     try {
-      const response = await fetch('/api/signup/', {
+      const response = await fetch('https://maple-frenzy.onrender.com/api/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: { username: username, password: password },
+        body: JSON.stringify({ username, password}),
       });
   
       if (response.ok) {
-        alert('Signup successful!');
+        alert('Signin successful!');
         // Reset form fields
         setUsername('');
         setPassword('');
-        setConfirmPassword('');
       } 
       else {
         let error;

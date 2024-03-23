@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to the database
 // Auto recreate database for now (development)
 db.sequelize
-  .sync()
+  .sync({ force: true })
   .then(() => {
     console.log("Synced db.");
   })

@@ -12,10 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "price",
       },
-      region: {
-        type: DataTypes.STRING,
+      channels: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: false,
-        field: "region",
+        defaultValue: [],
+        field: "channels",
       },
       timeStart: {
         type: DataTypes.DATE,

@@ -21,7 +21,7 @@ exports.create = (req, res) => {
     timeStart: new Date().toISOString(),
     timeEnd: new Date().toISOString(),
     price: req.body.price,
-    region: req.body.region,
+    channels: req.body.channels,
     buyerLimit: req.body.buyerLimit,
     buyerAvailable: req.body.buyerLimit,
   })

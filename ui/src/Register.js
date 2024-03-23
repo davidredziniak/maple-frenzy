@@ -18,12 +18,12 @@ import maplefrenzylogo from './maplefrenzylogo.svg'
 import {useState} from 'react'
 
 async function registerUser(username, password) {
-  return fetch('https://maple-frenzy.onrender.com/api/signup/', {
+  return fetch('POST/api/signup/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: { username: (username), password: (password) }
+    body:{ username, password },
   })
     .then(response => response.json())
 }
@@ -43,70 +43,84 @@ const Backdrop = () =>{
   }
 
 const RegistrationForm = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [errors, setErrors] = useState({});
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const errors = {};
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-      if (Object.keys(errors).length === 0) {
-        // Submit form data
-        console.log('Form submitted!', { username, password });
-        registerUser(username, password)
-/*
-          .then(data => {
-            console.log('Registration successful:', data);
-            // Handle successful registration response
-          })
-          .catch(error => {
-            console.error('Registration failed:', error);
-            // Handle registration error
-          });
-*/
-      } else {
-        console.log('errors');
-        setErrors(errors);
-      }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   
-    return (
-      <FormControl>
-        <div>
-          <FormLabel htmlFor="username">Username:</FormLabel>
-          <Input
-            type="username"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <FormLabel htmlFor="password">Password:</FormLabel>
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errors.password && <p>{errors.password}</p>}
-        </div>
-        <div>
-          <FormLabel htmlFor="confirmPassword">Confirm Password:</FormLabel>
-          <Input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-           {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        </div>
-        <Button mt='20px' {...signInButton} type="submit" onClick={handleSubmit}>Register</Button>
-      </FormControl>
-    );
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+  
+    try {
+      const response = await fetch('/api/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (response.ok) {
+        alert('Signup successful!');
+        // Reset form fields
+        setUsername('');
+        setPassword('');
+        setConfirmPassword('');
+      } 
+      else {
+        let error;
+        try {
+          error = await response.json();
+        } catch (jsonError) {
+          error = { message: 'An unexpected error occurred' };
+        }
+        alert(`Signup failed: ${error.message}`);
+      }
+    } catch (error) {
+      alert(`An error occurred: ${error.message}`);
+    }
   };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+};
   
 
 const RegisterForm = () => {

@@ -55,7 +55,7 @@ const RegistrationForm = () => {
       if (Object.keys(errors).length === 0) {
         // Submit form data
         console.log('Form submitted!', { username, password });
-        registerUser('myusername', 'mypassword')
+        registerUser(username, password)
 /*
           .then(data => {
             console.log('Registration successful:', data);

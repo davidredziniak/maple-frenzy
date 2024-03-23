@@ -61,7 +61,7 @@ const RegistrationForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: { username: username, password: password },
       });
   
       if (response.ok) {
@@ -76,7 +76,7 @@ const RegistrationForm = () => {
         try {
           error = await response.json();
         } catch (jsonError) {
-          error = { message: 'An unexpected error occurred' };
+          error = { message: jsonError };
         }
         alert(`Signup failed: ${error.message}`);
       }
@@ -86,10 +86,10 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <FormControl>
       <div>
-        <label htmlFor="username">Username:</label>
-        <input
+        <FormLabel htmlFor="username">Username:</FormLabel>
+        <Input
           type="text"
           id="username"
           value={username}
@@ -98,8 +98,8 @@ const RegistrationForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="password">Password:</label>
-        <input
+        <FormLabel htmlFor="password">Password:</FormLabel>
+        <Input
           type="password"
           id="password"
           value={password}
@@ -108,8 +108,8 @@ const RegistrationForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="confirm-password">Confirm Password:</label>
-        <input
+        <FormLabel htmlFor="confirm-password">Confirm Password:</FormLabel>
+        <Input
           type="password"
           id="confirm-password"
           value={confirmPassword}
@@ -117,8 +117,8 @@ const RegistrationForm = () => {
           required
         />
       </div>
-      <button type="submit">Sign Up</button>
-    </form>
+      <Button mt='20px' {...signInButton} type="submit" onClick={handleSubmit}>Sign Up</Button>
+    </FormControl>
   );
 };
   

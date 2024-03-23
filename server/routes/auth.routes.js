@@ -19,15 +19,3 @@ module.exports = (app) => {
     authController.signUp
   );
 };
-
-async function registerUser(credentials) {
-  return fetch('https://maple-frenzy.onrender.com/api/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: { username: (username), password: (password)}
-  })
-    .then(response => response.json())
- }
-

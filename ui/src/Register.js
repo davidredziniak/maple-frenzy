@@ -61,7 +61,7 @@ const RegistrationForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: { username: username, password: password },
+        body: JSON.stringify({ username, password}),
       });
   
       if (response.ok) {

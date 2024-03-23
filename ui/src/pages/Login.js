@@ -1,4 +1,4 @@
-import {stackLeft, stackRight, loginBox, loginText, signInButton } from './config'
+import {stackLeft, stackRight, loginBox, loginText, signInButton } from '../config'
 import {
   ChakraProvider,
   Stack,
@@ -17,17 +17,6 @@ import {
 import maplefrenzylogo from './maplefrenzylogo.svg'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
-async function registerUser(username, password) {
-  return fetch('POST/api/signup/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body:{ username, password },
-  })
-    .then(response => response.json())
-}
-
 
 const Backdrop = () =>{
     return(
@@ -118,7 +107,7 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Box><Text pt='50px' >Don't Have an account? Register <Link to='/registration'>Here!</Link></Text></Box>
+        <Box><Text pt='50px' >Don't Have an account? Register <Link to='/Register.js'><a>Here!</a></Link></Text></Box>
       </Stack>
     )
   }

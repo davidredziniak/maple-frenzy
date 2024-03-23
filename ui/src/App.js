@@ -1,35 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
-import Register from './Register.js';
-import Login from './Login.js';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Register from './pages/Register.js';
+import Login from './pages/Login.js';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 function App() {
   return (
     <ChakraProvider>
       <Router>
           <Routes>
-            <Route path='/login' component={Login} />
-            <Route path='/registration' component={Register} />
+            <Route path='./Login.js' component={Login} />
+            <Route path='./Register.js' component={Register} />
           </Routes>
       </Router>
       <Login/>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
     </ChakraProvider>
   );
 }

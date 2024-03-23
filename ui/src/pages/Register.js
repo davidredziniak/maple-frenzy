@@ -1,4 +1,4 @@
-import {stackLeft, stackRight, loginBox, loginText, signInButton } from './config'
+import {stackLeft, stackRight, loginBox, loginText, signInButton } from '../config'
 import {
   ChakraProvider,
   Stack,
@@ -16,18 +16,6 @@ import {
   } from '@chakra-ui/react'
 import maplefrenzylogo from './maplefrenzylogo.svg'
 import {useState} from 'react'
-
-async function registerUser(username, password) {
-  return fetch('POST/api/signup/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body:{ username, password },
-  })
-    .then(response => response.json())
-}
-
 
 const Backdrop = () =>{
     return(

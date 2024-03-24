@@ -23,7 +23,7 @@ const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">
         <Stack {...stackLeft}>
-          <Heading pt="25vh">Maple Frenzy</Heading>
+          <Heading pt="25vh"><Link to='/'>Maple Frenzy</Link></Heading>
           <Image src={maplefrenzylogo} />
         </Stack>
         <Stack {...stackRight} />
@@ -121,7 +121,7 @@ const RegisterForm = () => {
         <Flex mt='20px' >
           <Box color ='gray'><Text >Already Registered? Login </Text></Box>
           <Spacer></Spacer>
-          <Box pr='370px'color='blue'><Link to='/'><Text> Here!</Text></Link></Box>
+          <Box pr='370px'color='blue'><Link to='/login'><Text> Here!</Text></Link></Box>
         </Flex>
       </Stack>
     )

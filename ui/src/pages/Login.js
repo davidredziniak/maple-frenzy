@@ -53,6 +53,7 @@ const RegistrationForm = () => {
   
       if (response.ok) {
         alert('Signin successful!');
+        sucNotification();
         // Reset form fields
         setUsername('');
         setPassword('');

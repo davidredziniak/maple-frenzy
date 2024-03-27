@@ -49,8 +49,8 @@ const RegistrationForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password}),
-      });
-  
+      })
+      .then( response => {
       if (response.ok) {
         alert('Signin successful!');
         sucNotification();
@@ -61,12 +61,13 @@ const RegistrationForm = () => {
       else {
         let error;
         try {
-          error = await response.json();
+          error = response.json();
         } catch (jsonError) {
           error = { message: jsonError };
         }
         alert(`Signup failed: ${error.message}`);
       }
+    })
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
     }

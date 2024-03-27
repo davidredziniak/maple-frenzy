@@ -19,7 +19,6 @@ import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios'
 
 const Backdrop = () =>{
     return(
@@ -50,41 +49,37 @@ const RegistrationForm = () => {
     }
   
     try {
-      const api = axios.create({headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'https://maple-frenzy-site.onrender.com/', 'access-control-allow-headers' : 'x-access-token, Origin, Content-Type, Accept' }});
-      const data = {'username': username, 'password': password};
-      // const response = await axios.create('https://maple-frenzy.onrender.com/api/signup', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: {
-      //     "username": username,
-      //     "password": password
-      //   },
-      // });
-      await api.post('https://maple-frenzy.onrender.com/api/signup', data)
-      .then(response => console.log(response));
-    //   if (response.ok) {
-    //     alert('Signup successful!');
-    //     // Reset form fields
-    //     setUsername('');
-    //     setPassword('');
-    //     setConfirmPassword('');
-    //   } 
-    //   else {
-    //     let error;
-    //     try {
-    //       error = await response.json();
-    //     } catch (jsonError) {
-    //       error = { message: jsonError };
-    //     }
-    //     alert(`Signup failed: ${error.message}`);
-    //   }
+      const response = await fetch('https://maple-frenzy.onrender.com/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password}),
+      })
+      .then(response => {
+      if (response.ok) {
+        alert('Signup successful!');
+        sucNotification();
+        // Reset form fields
+        setUsername('');
+        setPassword('');
+        setConfirmPassword('');
+      } 
+      else {
+        let error;
+        try {
+          error =  response.json();
+        } catch (jsonError) {
+          error = { message: jsonError };
+        }
+        alert(`Signup failed: ${error.message}`);
+      }
+    })
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
       errNotification();
     }
-  }
+  };
 
   return (
     <FormControl>
@@ -152,3 +147,39 @@ const Register = () => {
   }
   
 export default Register
+  //   try {
+  //     const api = axios.create({headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'https://maple-frenzy-site.onrender.com/', 'access-control-allow-headers' : 'x-access-token, Origin, Content-Type, Accept' }});
+  //     const data = {'username': username, 'password': password};
+  //     // const response = await axios.create('https://maple-frenzy.onrender.com/api/signup', {
+  //     //   method: 'POST',
+  //     //   headers: {
+  //     //     'Content-Type': 'application/json',
+  //     //   },
+  //     //   body: {
+  //     //     "username": username,
+  //     //     "password": password
+  //     //   },
+  //     // });
+  //     await api.post('https://maple-frenzy.onrender.com/api/signup', data)
+  //     .then(response => console.log(response));
+  //   //   if (response.ok) {
+  //   //     alert('Signup successful!');
+  //   //     // Reset form fields
+  //   //     setUsername('');
+  //   //     setPassword('');
+  //   //     setConfirmPassword('');
+  //   //   } 
+  //   //   else {
+  //   //     let error;
+  //   //     try {
+  //   //       error = await response.json();
+  //   //     } catch (jsonError) {
+  //   //       error = { message: jsonError };
+  //   //     }
+  //   //     alert(`Signup failed: ${error.message}`);
+  //   //   }
+  //   } catch (error) {
+  //     alert(`An error occurred: ${error.message}`);
+  //     errNotification();
+  //   }
+  // }

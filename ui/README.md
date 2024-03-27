@@ -43,6 +43,8 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ### `npm install react-router-dom`
 
+### `npm install react-hot-toast`
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

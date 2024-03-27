@@ -18,6 +18,7 @@ import {
 import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Backdrop = () =>{
     return(
@@ -36,6 +37,8 @@ const RegistrationForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const errNotification = () => toast.error("There was an error signing in.");
+  const sucNotification = () => toast("Succesfully signed in!");
   const handleSubmit = async (e) => {
     e.preventDefault();
   

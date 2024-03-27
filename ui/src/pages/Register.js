@@ -18,6 +18,7 @@ import {
 import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Backdrop = () =>{
     return(
@@ -37,6 +38,8 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const errNotification = () => toast.error("There was an error signing up.");
+  const sucNotification = () => toast("Succesfully signed up!");
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -72,6 +75,7 @@ const RegistrationForm = () => {
       }
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
+      errNotification();
     }
   };
 
@@ -128,6 +132,10 @@ const Register = () => {
     return (
       <>
         <ChakraProvider>
+          <Toaster 
+            position="top-center"
+            reverseOrder={false}
+          />
           <Backdrop>
             <RegisterForm/>
           </Backdrop>

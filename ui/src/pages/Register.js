@@ -117,12 +117,9 @@ const RegisterForm = () => {
     return(
       <Stack {...loginBox}>
         <Text {...loginText}>User Registration</Text>
-        <RegistrationForm/>
-        <Flex mt='20px' >
-          <Box color ='gray'><Text >Already Registered? Login </Text></Box>
-          <Spacer></Spacer>
-          <Box pr='370px'color='blue'><Link to='/login'><Text> Here!</Text></Link></Box>
-        </Flex>
+        <RegistrationForm/>    
+        <Box color ='gray'><Text >Already have an Account?  </Text></Box>
+        <Box pr='329px'color='blue'><Link to='/Login'><Text>Login Here!</Text></Link></Box>
       </Stack>
     )
   }

@@ -3,13 +3,13 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const ProfileBox = () => {
     return(
-        <Box flex='1' bg='gray.100' rounded='md'>
+        <Box flex='1' bg='black.100' rounded='md'>
             <Stack>
-                <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'>
-                    <Text>Profile</Text>
-                    <Box pl='.5vw'><Text>User Info</Text></Box>
-                </Box>
-                <Box h='20vh' pl='.5vw'boxShadow='base' rounded='md'><Text>Change Password</Text></Box>
+                <Text pl='.5vw' fontFamily='verdana' fontSize='40px'>Profile</Text>
+                <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'> 
+                    <Text fontFamily='verdana'>User Info</Text></Box>
+                
+                <Box h='20vh' pl='.5vw'boxShadow='base' rounded='md'><Text fontFamily='verdana'>Change Password</Text></Box>
             </Stack>
         </Box>
     )
@@ -18,7 +18,7 @@ const ProfileBox = () => {
 const StuffBox = () => {
     return(
     <Box w='15vw' bg='teal.50' rounded='md'>
-        <Text textAlign='center'>Stuff</Text>
+        <Text textAlign='center' fontFamily='verdana'>Stuff</Text>
     </Box>
     )
 }

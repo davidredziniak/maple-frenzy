@@ -16,7 +16,7 @@ import {
   } from '@chakra-ui/react'
 import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 
 const Backdrop = () =>{
@@ -51,6 +51,7 @@ const RegistrationForm = () => {
       })
       .then( response => {
       if (response.ok) {
+        //const navigate = useNavigate();
         alert('Signin successful!');
         sucNotification();
         // Reset form fields

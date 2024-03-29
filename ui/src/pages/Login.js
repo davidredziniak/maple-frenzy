@@ -8,8 +8,7 @@ import {
   Heading,
   Input,
   Button,
-  Box,
-  Spacer
+  Box
 } from '@chakra-ui/react'
 import {
     FormControl,
@@ -70,6 +69,7 @@ const RegistrationForm = () => {
     })
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
+      errNotification();
     }
   };
 
@@ -117,6 +117,10 @@ const Login = () => {
     return (
       <>
         <ChakraProvider>
+          <Toaster 
+            position="top-center"
+            reverseOrder={false}
+          />
           <Backdrop>
             <RegisterForm/>
           </Backdrop>

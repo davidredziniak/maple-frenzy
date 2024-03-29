@@ -8,8 +8,7 @@ import {
   Heading,
   Input,
   Button,
-  Box,
-  Spacer
+  Box
 } from '@chakra-ui/react'
 import {
     FormControl,

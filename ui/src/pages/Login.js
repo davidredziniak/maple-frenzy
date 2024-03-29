@@ -19,6 +19,17 @@ import {useState} from 'react'
 import {Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 
+//dummy json
+const dummyResponse = {
+  ok: true,
+  status: 200,
+  json: {
+    accessToken: "93144b288eb1fdccbe46d6fc0f241a51766ecd3d",
+    message: "Successfully signed in."
+  }
+};
+
+
 const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">
@@ -38,6 +49,12 @@ const RegistrationForm = () => {
 
   const errNotification = () => toast.error("There was an error signing in.");
   const sucNotification = () => toast("Succesfully signed in!");
+
+  const navigate = useNavigate();
+  const navigateHome = () => {
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -49,14 +66,15 @@ const RegistrationForm = () => {
         },
         body: JSON.stringify({ username, password}),
       })
+      //const response = Promise.resolve(dummyResponse)
       .then( response => {
       if (response.ok) {
-        //const navigate = useNavigate();
-        alert('Signin successful!');
+        alert('Signin successful!\nRedirecting to Home page');
         sucNotification();
         // Reset form fields
         setUsername('');
         setPassword('');
+        navigateHome();
       } 
       else {
         let error;

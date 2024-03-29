@@ -16,9 +16,17 @@ import {
   } from '@chakra-ui/react'
 import maplefrenzylogo from '../maplefrenzylogo.svg'
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 
+const dummyResponse = {
+  ok: true,
+  status: 200,
+  json: {
+    accessToken: '93144b288eb1fdccbe46d6fc0f241a51766ecd3d',
+    message: 'Successfully signed up.',
+  }
+};
 const Backdrop = () =>{
     return(
       <Flex color="white" h="100vh">
@@ -39,6 +47,11 @@ const RegistrationForm = () => {
 
   const errNotification = () => toast.error("There was an error signing up.");
   const sucNotification = () => toast("Succesfully signed up!");
+
+  const navigate = useNavigate();
+  const navigateLogin = () => {
+    navigate('/Login');
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -55,14 +68,16 @@ const RegistrationForm = () => {
         },
         body: JSON.stringify({ username, password}),
       })
+      //const response = Promise.resolve(dummyResponse)
       .then(response => {
       if (response.ok) {
-        alert('Signup successful!');
+        alert('Signup successful!\nRedirecting you to Login page');
         sucNotification();
         // Reset form fields
         setUsername('');
         setPassword('');
         setConfirmPassword('');
+        navigateLogin();
       } 
       else {
         let error;

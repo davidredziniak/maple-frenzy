@@ -125,8 +125,8 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text color="white" {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Box color ='gray'><Text >Dont have an Account?  </Text></Box>
-        <Box pr='329px'color='blue'><Link to='/Register'><Text>Register Here!</Text></Link></Box>
+        <Box mt='20px' color='white'><Text >Dont have an Account?  </Text></Box>
+        <Box pr='329px'color='blue'><Link to='/Register'><Text color="#93d7bf">Register Here!</Text></Link></Box>
         
       </Stack>
     )

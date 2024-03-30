@@ -1,6 +1,6 @@
 export const stackLeft = {
     w: '60vw',
-    bg: 'rgba(37,38,40,255)',
+    bg: 'white',
     borderRadius: 'md',
     alignItems: 'center',
     spacing: '5vh',
@@ -8,10 +8,10 @@ export const stackLeft = {
   };
   
   export const stackRight = {
-    boxShadow:"md",
     w:"40vw",
-    bg:"white",
-    rounded:"md",
+    h:"100vw",
+    bg:"#F8EEDE",
+    rounded:"sm",
     zIndex:"1",
   };
   
@@ -19,8 +19,8 @@ export const stackLeft = {
     position:"absolute",
     shadow:"dark-lg",
     zIndex:"2",
-    bg:"white",
-    color:"black",
+    bg:"#353935",
+    color:"#353935",
     mt:"10vh",
     ml:"55vw",
     w:"35vw",
@@ -54,7 +54,6 @@ export const stackLeft = {
   }
   
   export const signInButton = {
-    colorScheme:"blue",
-    size:"lg",
+    size:"lg"
   }
   

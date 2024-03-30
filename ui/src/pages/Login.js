@@ -15,16 +15,16 @@ import {
     FormControl,
     FormLabel,
   } from '@chakra-ui/react'
-import maplefrenzylogo from '../maplefrenzylogo.svg'
+import login from '../img/login.png'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
 const Backdrop = () =>{
     return(
-      <Flex color="white" h="100vh">
+      <Flex color="#353935" h="20vh">
         <Stack {...stackLeft}>
-        <Heading pt="25vh"><Link to='/'>Maple Frenzy</Link></Heading>
-          <Image src={maplefrenzylogo} />
+        <Heading pt="5vh"><Link to='/'>Welcome Back!</Link></Heading>
+        <Link to='/'><Image src={login} /></Link>
         </Stack>
         <Stack {...stackRight} />
         <RegisterForm/>
@@ -71,8 +71,8 @@ const RegistrationForm = () => {
   return (
     <FormControl>
       <div>
-        <FormLabel htmlFor="username">Username:</FormLabel>
-        <Input
+        <FormLabel color="white" htmlFor="username">Username:</FormLabel>
+        <Input bg='white'
           type="text"
           id="username"
           value={username}
@@ -81,8 +81,8 @@ const RegistrationForm = () => {
         />
       </div>
       <div>
-        <FormLabel htmlFor="password">Password:</FormLabel>
-        <Input
+        <FormLabel mt="20px" color="white" htmlFor="password">Password:</FormLabel>
+        <Input bg='white'
           type="password"
           id="password"
           value={password}
@@ -90,7 +90,7 @@ const RegistrationForm = () => {
           required
         />
       </div>
-      <Button mt='30px' {...signInButton} type="submit" onClick={handleSubmit}>Sign In</Button>
+      <Button mt='30px' bg="#93d7bf" color="#353935" {...signInButton} type="submit" onClick={handleSubmit}>Sign In</Button>
     </FormControl>
   );
 };
@@ -99,12 +99,11 @@ const RegistrationForm = () => {
 const RegisterForm = () => {
     return(
       <Stack {...loginBox}>
-        <Text {...loginText}>User Login</Text>
+        <Text color="white" {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Flex mt='20px' >
-          <Box color ='gray'><Text >Dont have an Account? Register </Text></Box>
-          <Spacer></Spacer>
-          <Box pr='329px'color='blue'><Link to='/Register'><Text> Here!</Text></Link></Box>
+        <Flex mt='20px'>
+          <Box color ='gray' mr='5px'><Text color="white" >Dont have an Account?</Text></Box>
+          <Box pr='329px'><Link to='/Register'><Text color="#93d7bf"> Register Here!</Text></Link></Box>
         </Flex>
       </Stack>
     )

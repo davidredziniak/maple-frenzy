@@ -15,16 +15,16 @@ import {
     FormControl,
     FormLabel,
   } from '@chakra-ui/react'
-import maplefrenzylogo from '../maplefrenzylogo.svg'
+import login from '../img/login.png'
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
 const Backdrop = () =>{
     return(
-      <Flex color="white" h="100vh">
+      <Flex color="#353935" h="100vh">
         <Stack {...stackLeft}>
-          <Heading pt="25vh"><Link to='/'>Maple Frenzy</Link></Heading>
-          <Image src={maplefrenzylogo} />
+        <Heading pt="5vh"><Link to='/'>Register Now!</Link></Heading>
+        <Link to='/'><Image src={login} /></Link>
         </Stack>
         <Stack {...stackRight} />
         <RegisterForm/>
@@ -78,8 +78,8 @@ const RegistrationForm = () => {
   return (
     <FormControl>
       <div>
-        <FormLabel htmlFor="username">Username:</FormLabel>
-        <Input
+        <FormLabel color="white" htmlFor="username">Username:</FormLabel>
+        <Input bg='white'
           type="text"
           id="username"
           value={username}
@@ -88,8 +88,8 @@ const RegistrationForm = () => {
         />
       </div>
       <div>
-        <FormLabel htmlFor="password">Password:</FormLabel>
-        <Input
+        <FormLabel mt="20px" color="white" htmlFor="password">Password:</FormLabel>
+        <Input bg='white'
           type="password"
           id="password"
           value={password}
@@ -98,8 +98,8 @@ const RegistrationForm = () => {
         />
       </div>
       <div>
-        <FormLabel htmlFor="confirm-password">Confirm Password:</FormLabel>
-        <Input
+        <FormLabel mt="20px" color="white" htmlFor="confirm-password">Confirm Password:</FormLabel>
+        <Input bg='white'
           type="password"
           id="confirm-password"
           value={confirmPassword}
@@ -107,7 +107,7 @@ const RegistrationForm = () => {
           required
         />
       </div>
-      <Button mt='30px' {...signInButton} type="submit" onClick={handleSubmit}>Sign Up</Button>
+      <Button mt='30px' bg="#93d7bf" color="#353935" {...signInButton} type="submit" onClick={handleSubmit}>Sign Up</Button>
     </FormControl>
   );
 };
@@ -116,12 +116,11 @@ const RegistrationForm = () => {
 const RegisterForm = () => {
     return(
       <Stack {...loginBox}>
-        <Text {...loginText}>User Registration</Text>
+        <Text color="white" {...loginText}>User Registration</Text>
         <RegistrationForm/>
         <Flex mt='20px' >
-          <Box color ='gray'><Text >Already Registered? Login </Text></Box>
-          <Spacer></Spacer>
-          <Box pr='370px'color='blue'><Link to='/login'><Text> Here!</Text></Link></Box>
+          <Box color ='gray' mr='5px'><Text color="white">Already Registered?</Text></Box>
+          <Box pr='370px'color='blue'><Link to='/login'><Text color="#93d7bf"> Login Here!</Text></Link></Box>
         </Flex>
       </Stack>
     )

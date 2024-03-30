@@ -8,8 +8,7 @@ import {
   Heading,
   Input,
   Button,
-  Box,
-  Spacer
+  Box
 } from '@chakra-ui/react'
 import {
     FormControl,
@@ -17,8 +16,17 @@ import {
   } from '@chakra-ui/react'
 import login from '../img/login.png'
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
+const dummyResponse = {
+  ok: true,
+  status: 200,
+  json: {
+    accessToken: '93144b288eb1fdccbe46d6fc0f241a51766ecd3d',
+    message: 'Successfully signed up.',
+  }
+};
 const Backdrop = () =>{
     return(
       <Flex color="#353935" h="100vh">
@@ -37,6 +45,13 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const errNotification = () => toast.error("There was an error signing up.");
+  const sucNotification = () => toast("Succesfully signed up!");
+
+  const navigate = useNavigate();
+  const navigateLogin = () => {
+    navigate('/Login');
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -52,26 +67,31 @@ const RegistrationForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password}),
-      });
-  
+      })
+      //const response = Promise.resolve(dummyResponse)
+      .then(response => {
       if (response.ok) {
-        alert('Signup successful!');
+        alert('Signup successful!\nRedirecting you to Login page');
+        sucNotification();
         // Reset form fields
         setUsername('');
         setPassword('');
         setConfirmPassword('');
+        navigateLogin();
       } 
       else {
         let error;
         try {
-          error = await response.json();
+          error =  response.json();
         } catch (jsonError) {
           error = { message: jsonError };
         }
         alert(`Signup failed: ${error.message}`);
       }
+    })
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
+      errNotification();
     }
   };
 
@@ -116,12 +136,10 @@ const RegistrationForm = () => {
 const RegisterForm = () => {
     return(
       <Stack {...loginBox}>
-        <Text color="white" {...loginText}>User Registration</Text>
-        <RegistrationForm/>
-        <Flex mt='20px' >
-          <Box color ='gray' mr='5px'><Text color="white">Already Registered?</Text></Box>
-          <Box pr='370px'color='blue'><Link to='/login'><Text color="#93d7bf"> Login Here!</Text></Link></Box>
-        </Flex>
+        <Text {...loginText}>User Registration</Text>
+        <RegistrationForm/>    
+        <Box color ='gray'><Text >Already have an Account?  </Text></Box>
+        <Box pr='329px'color='blue'><Link to='/Login'><Text>Login Here!</Text></Link></Box>
       </Stack>
     )
   }
@@ -130,6 +148,10 @@ const Register = () => {
     return (
       <>
         <ChakraProvider>
+          <Toaster 
+            position="top-center"
+            reverseOrder={false}
+          />
           <Backdrop>
             <RegisterForm/>
           </Backdrop>
@@ -139,3 +161,39 @@ const Register = () => {
   }
   
 export default Register
+  //   try {
+  //     const api = axios.create({headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'https://maple-frenzy-site.onrender.com/', 'access-control-allow-headers' : 'x-access-token, Origin, Content-Type, Accept' }});
+  //     const data = {'username': username, 'password': password};
+  //     // const response = await axios.create('https://maple-frenzy.onrender.com/api/signup', {
+  //     //   method: 'POST',
+  //     //   headers: {
+  //     //     'Content-Type': 'application/json',
+  //     //   },
+  //     //   body: {
+  //     //     "username": username,
+  //     //     "password": password
+  //     //   },
+  //     // });
+  //     await api.post('https://maple-frenzy.onrender.com/api/signup', data)
+  //     .then(response => console.log(response));
+  //   //   if (response.ok) {
+  //   //     alert('Signup successful!');
+  //   //     // Reset form fields
+  //   //     setUsername('');
+  //   //     setPassword('');
+  //   //     setConfirmPassword('');
+  //   //   } 
+  //   //   else {
+  //   //     let error;
+  //   //     try {
+  //   //       error = await response.json();
+  //   //     } catch (jsonError) {
+  //   //       error = { message: jsonError };
+  //   //     }
+  //   //     alert(`Signup failed: ${error.message}`);
+  //   //   }
+  //   } catch (error) {
+  //     alert(`An error occurred: ${error.message}`);
+  //     errNotification();
+  //   }
+  // }

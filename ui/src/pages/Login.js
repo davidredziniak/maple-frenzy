@@ -8,8 +8,7 @@ import {
   Heading,
   Input,
   Button,
-  Box,
-  Spacer
+  Box
 } from '@chakra-ui/react'
 import {
     FormControl,
@@ -17,7 +16,19 @@ import {
   } from '@chakra-ui/react'
 import login from '../img/login.png'
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
+
+//dummy json
+const dummyResponse = {
+  ok: true,
+  status: 200,
+  json: {
+    accessToken: "93144b288eb1fdccbe46d6fc0f241a51766ecd3d",
+    message: "Successfully signed in."
+  }
+};
+
 
 const Backdrop = () =>{
     return(
@@ -36,6 +47,14 @@ const RegistrationForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const errNotification = () => toast.error("There was an error signing in.");
+  const sucNotification = () => toast("Succesfully signed in!");
+
+  const navigate = useNavigate();
+  const navigateHome = () => {
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -46,25 +65,30 @@ const RegistrationForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password}),
-      });
-  
+      })
+      //const response = Promise.resolve(dummyResponse)
+      .then( response => {
       if (response.ok) {
-        alert('Signin successful!');
+        alert('Signin successful!\nRedirecting to Home page');
+        sucNotification();
         // Reset form fields
         setUsername('');
         setPassword('');
+        navigateHome();
       } 
       else {
         let error;
         try {
-          error = await response.json();
+          error = response.json();
         } catch (jsonError) {
           error = { message: jsonError };
         }
         alert(`Signup failed: ${error.message}`);
       }
+    })
     } catch (error) {
       alert(`An error occurred: ${error.message}`);
+      errNotification();
     }
   };
 
@@ -101,10 +125,9 @@ const RegisterForm = () => {
       <Stack {...loginBox}>
         <Text color="white" {...loginText}>User Login</Text>
         <RegistrationForm/>
-        <Flex mt='20px'>
-          <Box color ='gray' mr='5px'><Text color="white" >Dont have an Account?</Text></Box>
-          <Box pr='329px'><Link to='/Register'><Text color="#93d7bf"> Register Here!</Text></Link></Box>
-        </Flex>
+        <Box color ='gray'><Text >Dont have an Account?  </Text></Box>
+        <Box pr='329px'color='blue'><Link to='/Register'><Text>Register Here!</Text></Link></Box>
+        
       </Stack>
     )
   }
@@ -113,6 +136,10 @@ const Login = () => {
     return (
       <>
         <ChakraProvider>
+          <Toaster 
+            position="top-center"
+            reverseOrder={false}
+          />
           <Backdrop>
             <RegisterForm/>
           </Backdrop>

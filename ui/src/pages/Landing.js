@@ -1,10 +1,56 @@
 import { Text, Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../img/hero.png';
+import {useState} from 'react'
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
+} from '@chakra-ui/react'
 
+import { useNavigate } from 'react-router-dom';
+
+const dummyResponse = {
+  ok: true,
+  status: 200,
+  json: {
+    id: 3,
+    username: "maplefrenzy_admin",
+    tradeCount: 0,
+    reputation: 0,
+    createdAt: "2024-03-21T16:17:21.768Z",
+    lastLoggedIn: "2024-03-21T16:17:21.768Z"
+}
+};
+
+const ButtOrDrop = ({result}) => {
+  const navigate = useNavigate();
+  const navigateLogin = () => {
+    navigate('/Login');
+  };
+  if (result){
+    return (
+      <Menu color='black'>
+        <MenuButton as={Button} >
+          User
+        </MenuButton>
+        <MenuList color='black'>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>Settings</MenuItem>
+          <MenuItem>Profile</MenuItem>
+        </MenuList>
+      </Menu>
+    )
+  
+  }
+  else {
+    return (<Button bg="#93d7bf" color="#353935" size="md" onClick={() => navigateLogin()}>Login</Button>);
+  }
+}
 const Landing = ({isLoggedIn}) => {
-  console.log("In landing page");
-  console.log(isLoggedIn);
+  // console.log("In landing page");
+  //console.log(isLoggedIn);
   return (
     <Box>
       {/* Navigation bar */}
@@ -12,9 +58,8 @@ const Landing = ({isLoggedIn}) => {
           <Link as={RouterLink} to="/" mr={6}>Home</Link>
           <Link as={RouterLink} to="/about" mr={6}>About Us</Link>
           <Link as={RouterLink} to="/contact" mr={6}>Contact</Link>
-          <Link as={RouterLink} to="/login" mr={4}>
-            <Button bg="#93d7bf" color="#353935" size="md" onClick={() => console.log("Login clicked")}>Login</Button>
-          </Link>
+          <ButtOrDrop result={isLoggedIn}/>
+          
       </Flex>
 
         {/* Hero Section */}

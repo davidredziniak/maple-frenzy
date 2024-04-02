@@ -2,7 +2,9 @@ import { Text, Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../img/hero.png';
 
-const Landing = () => {
+const Landing = ({isLoggedIn}) => {
+  console.log("In landing page");
+  console.log(isLoggedIn);
   return (
     <Box>
       {/* Navigation bar */}

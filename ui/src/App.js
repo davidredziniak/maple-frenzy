@@ -21,11 +21,11 @@ function App() {
     <ChakraProvider>
       <Router>
           <Routes>
-            <Route path='/' element={<Landing/>} />
+            <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
             <Route path='/Register' element={<Register/>} />
             <Route path='/Login' element={<Login/>} />
             <Route path='/Profile' element={<Profile/>} />
-            <Route path='/Redirect' element={<Redirect testF={testF} getF={getF}/>}/>
+            <Route path='/Redirect' element={<Redirect  isLoggedIn={isLoggedIn} testF={testF} getF={getF}/>}/>
           </Routes>
       </Router>
 

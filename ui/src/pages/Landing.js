@@ -31,8 +31,8 @@ const ButtOrDrop = ({result}) => {
   };
   if (result){
     return (
-      <Menu color='black'>
-        <MenuButton as={Button} >
+      <Menu>
+        <MenuButton as={Button} bg="#93d7bf">
           User
         </MenuButton>
         <MenuList color='black'>

@@ -51,8 +51,8 @@ const RegistrationForm = () => {
   const sucNotification = () => toast("Succesfully signed in!");
 
   const navigate = useNavigate();
-  const navigateHome = () => {
-    navigate('/');
+  const navigateRedirect = () => {
+    navigate('/Redirect');
   };
 
   const handleSubmit = async (e) => {
@@ -74,7 +74,7 @@ const RegistrationForm = () => {
         // Reset form fields
         setUsername('');
         setPassword('');
-        navigateHome();
+        navigateRedirect();
       } 
       else {
         let error;

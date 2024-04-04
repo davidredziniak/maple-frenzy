@@ -21,13 +21,16 @@ from queue.
 */
 const Trade = require("../models").trades;
 
-// If settlement time is within 5 minutes of transaction, then update trades.
+// If settlement time is within 5 min. of transaction, then mark as inProgress.
 async function resolveTrades(minuteOffset) {
     return (req, res) => {
         const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
         Trade.update({ inProgress: true }, {
                 where: {
-                    timeStart: {[Op.le]: settleTime}
+                    [Op.and]: [
+                        { timeStart: {[Op.le]: settleTime} },
+                        { inProgress: {[Op.is]: false} }
+                    ]
                 },
             })
             .catch((error) => res.status(400).send(error));

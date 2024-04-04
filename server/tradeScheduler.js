@@ -21,23 +21,14 @@ from queue.
 */
 const Trade = require("../models").trades;
 
-// If trade end time is within 5 minutes of settlement time, then transact.
+// If settlement time is within 5 minutes of transaction, then update trades.
 async function resolveTrades(minuteOffset) {
     return (req, res) => {
         const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
-        Trade.findAll({ where: {timeEnd: {[Op.le]: settleTime}} })
-            .then(async (trades) => {
-                if (trades) {
-                    SettledTrade.bulkCreate(trades)
-                    .then((transferredTrade) => {
-                        res.status(200).send({ message: "Settlement successful." });
-                    })
-                    .catch((error) => res.status(400).send(error));
-                    trades.destroy();
-                }
-                else {
-                    res.status(200).send({ message: "No available trade to settle." });
-                }
+        Trade.update({ inProgress: true }, {
+                where: {
+                    timeStart: {[Op.le]: settleTime}
+                },
             })
             .catch((error) => res.status(400).send(error));
     }

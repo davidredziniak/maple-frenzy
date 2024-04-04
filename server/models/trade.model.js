@@ -36,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "buyer_avail"
+      },
+      inProgress: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        field: "in_progress"
       }
     },
     { tableName: "trade", timestamps: false }

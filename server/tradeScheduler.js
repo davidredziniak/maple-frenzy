@@ -7,9 +7,9 @@ This is already handled by the database runtime, and is indexed on insertion
 order and premium status.
 
 Only two things should "resolve" a trade:
-1. Time settlement: Our system closes out the trade 5 minutes before tradeEnd.
+1. Time settlement: Our system closes out the trade 5 minutes before tradeStart.
 Sellers/Buyers in effect agree on this transaction ("settlement"), the 
-"delivery" happens in-game between the agreeing parties.
+"delivery" happens in-game between the agreeing parties until tradeEnd.
 
 2. Cancellation by Seller for some reason (handled by Trade controller).
 
@@ -21,7 +21,7 @@ from queue.
 */
 const Trade = require("../models").trades;
 
-// If settlement time is within 5 min. of transaction, then mark as inProgress.
+// Settlement time is within 5 min. of transaction, mark as inProgress then.
 async function resolveTrades(minuteOffset) {
     return (req, res) => {
         const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();

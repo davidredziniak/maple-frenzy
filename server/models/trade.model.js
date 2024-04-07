@@ -7,6 +7,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "seller_id",
       },
+      price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "price",
+      },
+      channels: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: false,
+        defaultValue: [],
+        field: "channels",
+      },
       timeStart: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -17,20 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "time_end",
       },
-      price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        field: "price"
-      },
-      region: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "region"
-      },
       buyerLimit: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "buyer_lim"
+        field: "buyer_lim",
       },
       buyerAvailable: {
         type: DataTypes.INTEGER,
@@ -41,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         field: "in_progress"
-      }
+      },
     },
     { tableName: "trade", timestamps: false }
   );

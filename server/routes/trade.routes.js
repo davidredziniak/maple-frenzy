@@ -4,30 +4,39 @@ const tradeSlotController = require("../controllers").tradeSlots;
 const { authorizeJwt } = require("../middleware");
 
 module.exports = (app) => {
+  // Routes that allow manipulation
   app.post(
-    "/api/trades/create",
+    "/api/trade/create",
     [authorizeJwt.verifyToken],
     tradesController.create
   );
   app.post(
-    "/api/trades/delete",
+    "/api/trade/delete",
     [authorizeJwt.verifyToken],
-    tradesController.delete, tradeSlotController.deleteQueue
+    tradesController.delete,
+    tradeSlotController.deleteQueue
   );
   app.post(
-    "/api/trades/join",
+    "/api/trade/join",
     [authorizeJwt.verifyToken],
     tradesController.join,
     tradeSlotController.addUserToQueue
   );
   app.post(
-    "/api/trades/leave",
+    "/api/trade/leave",
     [authorizeJwt.verifyToken],
     tradesController.leave,
     tradeSlotController.removeUserFromQueue
   );
+
+  // Routes that provide data
   app.get(
-    "/api/trades/data/:tradeId",
+    "/api/trade/list",
+    [authorizeJwt.verifyToken],
+    tradesController.getListOfTrades
+  );
+  app.get(
+    "/api/trade/data/:tradeId",
     [authorizeJwt.verifyToken],
     tradesController.findById
   );

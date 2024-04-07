@@ -1,10 +1,12 @@
 require("dotenv").config();
 
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const PORT = process.env.PORT;
 const db = require("./models");
+const scheduler = require("./tradeScheduler.js");
+
+const PORT = process.env.PORT;
+const app = express();
 
 // Limit requests to official maple-frenzy website
 var corsOptions = {
@@ -37,3 +39,7 @@ require("./routes/index.js")(app);
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+
+// Start checking for trades that need to be scheduled and displayed to sellers.
+const pollingTime = 2000; // 2s
+scheduler.start(pollingTime);

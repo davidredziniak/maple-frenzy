@@ -24,6 +24,7 @@ exports.create = (req, res) => {
     channels: req.body.channels,
     buyerLimit: req.body.buyerLimit,
     buyerAvailable: req.body.buyerLimit,
+    inProgress: false,
   })
     .then((newTrade) => {
       res
@@ -75,6 +76,12 @@ exports.join = (req, res, next) => {
   Trade.findOne({ where: { id: req.body.tradeId } })
     .then((trade) => {
       if (!trade) return res.status(404).send({ error: "Trade not found." });
+
+      // Check if trade is past end time (already settled)
+      if (req.inProgress == true)
+        return res
+          .status(400)
+          .send({ error: "You can't join a trade that is settled/completed." });
 
       // Check if user joining is the seller
       if (req.userId == trade.sellerId)

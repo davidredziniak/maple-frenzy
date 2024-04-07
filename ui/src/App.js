@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import Landing from './pages/Landing.js';
+import Register from './pages/Register.js';
+import Login from './pages/Login.js';
+import Profile from './pages/Profile.js';
+import Redirect from './pages/Redirect.js';
+import {useState} from 'react'
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 
 function App() {
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
+  const testF = () => {
+    setIsLoggedIn(true);
+  }
+  const getF = () => {
+    console.log(isLoggedIn)
+    //return isLoggedIn;
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <Router>
+          <Routes>
+            <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
+            <Route path='/Register' element={<Register/>} />
+            <Route path='/Login' element={<Login/>} />
+            <Route path='/Profile' element={<Profile/>} />
+            <Route path='/Redirect' element={<Redirect  isLoggedIn={isLoggedIn} testF={testF} getF={getF}/>}/>
+          </Routes>
+      </Router>
+
+    </ChakraProvider>
   );
 }
 

@@ -19,7 +19,7 @@ make sure since this is running 24/7.
 TODO [MF-22/MF-35]: Priority/premium customers may pay to dislodge non-payors 
 from queue.
 */
-const Trade = require("../models").trades;
+const Trade = require("./models").trades;
 
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
 async function resolveTrades(minuteOffset) {

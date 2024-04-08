@@ -13,6 +13,9 @@ var corsOptions = {
   origin: "https://maple-frenzy-site.onrender.com",
 };
 
+// Reinitialize Database (Development purposes, set to TRUE)
+var development = false;
+
 app.use(cors(corsOptions));
 
 // Parse requests of application/json
@@ -24,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to the database
 // Auto recreate database for now (development)
 db.sequelize
-  .sync()
+  .sync({ force: development })
   .then(() => {
     console.log("Synced db.");
   })

@@ -18,8 +18,8 @@ exports.create = (req, res) => {
 
   return Trade.create({
     sellerId: req.userId,
-    timeStart: new Date().toISOString(),
-    timeEnd: new Date().toISOString(),
+    timeStart: req.timeStart,
+    timeEnd: req.timeEnd,
     price: req.body.price,
     channels: req.body.channels,
     buyerLimit: req.body.buyerLimit,

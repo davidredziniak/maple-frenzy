@@ -34,11 +34,16 @@ exports.addUserToQueue = (req, res) => {
       .status(400)
       .send({ error: "Error retrieving new queue position. " });
 
+  // Check if the duration is a valid integer
+  if (!Number.isInteger(req.body.duration))
+    return res.status(400).send({ error: "The requested duration is not an integer." });
+
   // Create a new trade slot for the joining user
   TradeSlot.create({
     tradeId: req.trade.id,
     userId: req.userId,
     channel: req.body.channel,
+    duration: req.body.duration,
     queuePos: pos,
   })
     .then(() => {

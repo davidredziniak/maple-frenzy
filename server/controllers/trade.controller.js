@@ -18,8 +18,8 @@ exports.create = (req, res) => {
 
   return Trade.create({
     sellerId: req.userId,
-    timeStart: req.timeStart,
-    timeEnd: req.timeEnd,
+    timeStart: req.body.timeStart,
+    timeEnd: req.body.timeEnd,
     price: req.body.price,
     channels: req.body.channels,
     buyerLimit: req.body.buyerLimit,
@@ -49,9 +49,15 @@ exports.delete = (req, res, next) => {
     .then((trade) => {
       if (!trade) return res.status(404).send({ error: "Trade not found." });
 
+      // Check if trade is ongoing or ended
+      if (trade.inProgress)
+        return res.status(400).send({
+          error: "You can't delete a trade that is ongoing/completed.",
+        });
+
       // Verify if the user deleting is the seller
       if (req.userId == trade.sellerId) {
-        // Delete the queue
+        // Delete the trade queue
         req.trade = trade;
         next();
       } else {
@@ -77,11 +83,11 @@ exports.join = (req, res, next) => {
     .then((trade) => {
       if (!trade) return res.status(404).send({ error: "Trade not found." });
 
-      // Check if trade is past end time (already settled)
-      if (req.inProgress == true)
+      // Check if trade is already ongoing or completed
+      if (trade.inProgress)
         return res
           .status(400)
-          .send({ error: "You can't join a trade that is settled/completed." });
+          .send({ error: "You can't join a trade that is ongoing/completed." });
 
       // Check if user joining is the seller
       if (req.userId == trade.sellerId)
@@ -132,6 +138,12 @@ exports.leave = (req, res, next) => {
           .status(400)
           .send({ error: "You can't leave a trade that you created." });
 
+      // Check if trade is ongoing or ended
+      if (trade.inProgress)
+        return res.status(400).send({
+          error: "You can't leave a trade that is ongoing/completed.",
+        });
+
       // Check if user is already in the trade
       TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
         .then((count) => {
@@ -174,8 +186,9 @@ exports.findById = (req, res) => {
               var slots = [];
               result.forEach((record) => {
                 slots.push({
-                  userId: record.userId,
                   pos: record.queuePos,
+                  userId: record.userId,
+                  duration: record.duration,
                 });
               });
               return res.status(200).send({

@@ -19,22 +19,22 @@ make sure since this is running 24/7.
 TODO [MF-22/MF-35]: Priority/premium customers may pay to dislodge non-payors 
 from queue.
 */
-const Trade = require("./models").trades;
+
+const db = require("./models");
+const Trade = db.trades;
 
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
 async function resolveTrades(minuteOffset) {
-    return (req, res) => {
-        const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
-        Trade.update({ inProgress: true }, {
-                where: {
-                    [Op.and]: [
-                        { timeStart: {[Op.le]: settleTime} },
-                        { inProgress: {[Op.is]: false} }
-                    ]
-                },
-            })
-            .catch((error) => res.status(400).send(error));
-    }
+    const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
+    Trade.update({ inProgress: true }, {
+            where: {
+                [db.Sequelize.Op.and]: [
+                    { timeStart: {[db.Sequelize.Op.lte]: settleTime} },
+                    { inProgress: {[db.Sequelize.Op.is]: false} }
+                ]
+            },
+        })
+        .catch();
 };
 
 // Continually posting async promises that force await within start() context.

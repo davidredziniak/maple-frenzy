@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "channel",
       },
+      duration: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "duration",
+      },
       queuePos: {
         type: DataTypes.INTEGER,
         allowNull: false,

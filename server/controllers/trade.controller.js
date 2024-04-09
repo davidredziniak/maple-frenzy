@@ -6,15 +6,46 @@ const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// Get time difference between timeStart and timeEnd in hours
+exports.getTimeDifference = (timeStart, timeEnd) => {
+  const start = new Date(timeStart);
+  const end = new Date(timeEnd);
+  let hours = (end - start) / (1000 * 60 * 60);
+  return hours;
+};
+
 // Create trade
 exports.create = (req, res) => {
   // Retrieve user id from JWT
   let token = req.headers["x-access-token"];
   jwt.verify(token, config.salt, (error, decoded) => {
-    if (error)
-      return response.status(401).send({ error: "Access was denied." });
+    if (error) return res.status(401).send({ error: "Access was denied." });
     req.userId = decoded.id;
   });
+
+  // Check if trade start and end time are valid
+  let tradeTimeDifference = this.getTimeDifference(
+    req.body.timeStart,
+    req.body.timeEnd
+  );
+
+  // startTime and endTime are the same, or endTime comes before startTime
+  if (Math.sign(tradeTimeDifference) <= 0)
+    return res
+      .status(400)
+      .send({ error: "Trade startTime and endTime are invalid." });
+
+  // Check if the time difference are intervals of an hour
+  if (tradeTimeDifference % 1 != 0)
+    return res.status(400).send({
+      error: "The requested trade times have to be in intervals of an hour.",
+    });
+
+  // Check if channels list is valid
+  if (req.body.channels.some((i) => !Number.isInteger(i)))
+    return res
+      .status(400)
+      .send({ error: "The list of channels requested are invalid." });
 
   return Trade.create({
     sellerId: req.userId,
@@ -95,6 +126,23 @@ exports.join = (req, res, next) => {
           .status(400)
           .send({ error: "You can't join a trade that you created." });
 
+      // Check if the trade is full
+      if (trade.buyerAvailable == 0)
+        return res
+          .status(400)
+          .send({ error: "The trade queue is already full." });
+
+      // Check if users requested duration is valid
+      let duration = req.body.duration;
+      let tradeHours = this.getTimeDifference(trade.timeStart, trade.timeEnd);
+      if (duration > tradeHours || duration <= 0)
+        return res.status(400).send({ error: "Invalid requested duration." });
+
+      // Check if users requested channel is available in the trade
+      let channel = req.body.channel;
+      if (!trade.channels.includes(channel))
+        return res.status(400).send({ error: "Invalid requested channel." });
+
       // Check if user is already in the trade
       TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
         .then((count) => {
@@ -102,12 +150,6 @@ exports.join = (req, res, next) => {
             return res
               .status(400)
               .send({ error: "You already joined this trade." });
-
-          // Check if the trade is full
-          if (trade.buyerAvailable == 0)
-            return res
-              .status(400)
-              .send({ error: "The trade queue is already full." });
 
           // Add user to the queue
           req.trade = trade;

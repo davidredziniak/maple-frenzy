@@ -5,8 +5,8 @@ const Trade = db.trades;
 // Get the next queue position
 exports.getNextPos = (trade) => {
   let nextPos = trade.buyerLimit - trade.buyerAvailable + 1;
-  if (nextPos > 0 && nextPos <= trade.buyerLimit) return nextPos;
-  return null;
+  if (nextPos <= trade.buyerLimit) return nextPos;
+  return 0;
 };
 
 // Decrement the amount of available slots
@@ -29,14 +29,10 @@ exports.incrementAvail = (trade) => {
 exports.addUserToQueue = (req, res) => {
   // Retrieve an available position in the trade
   let pos = this.getNextPos(req.trade);
-  if (pos == null)
+  if (pos == 0)
     return res
       .status(400)
       .send({ error: "Error retrieving new queue position. " });
-
-  // Check if the duration is a valid integer
-  if (!Number.isInteger(req.body.duration))
-    return res.status(400).send({ error: "The requested duration is not an integer." });
 
   // Create a new trade slot for the joining user
   TradeSlot.create({
@@ -71,10 +67,10 @@ exports.removeUserFromQueue = (req, res) => {
       // Get user position
       let userPos = tradeSlot.queuePos;
 
-      // Remove user from queue
+      // Remove record of user from queue
       tradeSlot.destroy();
 
-      // Find all user records that have a lower priority than the removed user
+      // Find all user records that have are positioned after the removed user
       TradeSlot.findAll({
         where: {
           tradeId: req.trade.id,

@@ -14,6 +14,16 @@ function verifyToken(req, res, next) {
   });
 }
 
+function verifyRefresh(userId, token) {
+  try {
+    const decoded = jwt.verify(token, config.salt);
+    return userId === decoded.id;
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   verifyToken: verifyToken,
+  verifyRefresh: verifyRefresh,
 };

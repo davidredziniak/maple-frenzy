@@ -1,4 +1,4 @@
-const { verifySignUp } = require("../middleware");
+const { verifySignUp, verifyRefresh } = require("../middleware");
 const authController = require("../controllers").auth;
 
 module.exports = (app) => {
@@ -18,4 +18,5 @@ module.exports = (app) => {
     [verifySignUp.checkUsernameTaken],
     authController.signUp
   );
+  app.post("/api/refresh", authController.refreshToken);
 };

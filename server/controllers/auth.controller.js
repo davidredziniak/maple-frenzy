@@ -2,15 +2,40 @@ const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
 const validatePass = db.validatePass;
+const { verifyRefresh } = require("../middleware").authorizeJwt;
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// Generate a JWT using a user's id and bcrypt secret
-const createJwt = (user) => {
-  return jwt.sign({ id: user.id }, config.salt, {
-    expiresIn: 86400,
+// Generate an access JWT that is short lived using a user's id and bcrypt secret
+const createAccessJwt = (userId) => {
+  return jwt.sign({ id: userId }, config.salt, {
+    expiresIn: 300, // 5 minutes access
   });
+};
+
+// Generate a refresh JWT that will be able to refresh an access token using a user's id and bcrypt secret
+const createRefreshJwt = (userId) => {
+  return jwt.sign({ id: userId }, config.salt, {
+    expiresIn: 3600, // 60 minutes access
+  });
+};
+
+// Create a new access and refresh JWT given a userId and valid refreshToken, in order to persist user login
+exports.refreshToken = (req, res) => {
+  const { userId, refreshToken } = req.body;
+  const isValid = verifyRefresh(userId, refreshToken);
+  if (!isValid)
+    return res
+      .status(401)
+      .send({ message: "Invalid token provided. Please sign in again." });
+  else {
+    res.status(200).send({
+      accessToken: createAccessJwt(userId),
+      refreshToken: createRefreshJwt(userId),
+      message: "Successfully refreshed tokens.",
+    });
+  }
 };
 
 // Signup workflow
@@ -31,7 +56,8 @@ exports.signUp = (req, res) => {
         })
           .then(() => {
             res.status(200).send({
-              accessToken: createJwt(newUser),
+              accessToken: createAccessJwt(newUser.id),
+              refreshToken: createRefreshJwt(newUser.id),
               message: "Successfully signed up.",
             });
           })
@@ -69,10 +95,13 @@ exports.signIn = (req, res) => {
         );
 
         // Authorize user and create JWT
-        const token = createJwt(user);
-        res
-          .status(200)
-          .send({ accessToken: token, message: "Successfully signed in." });
+        const accessToken = createAccessJwt(user.id);
+        const refreshToken = createRefreshJwt(user.id);
+        res.status(200).send({
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          message: "Successfully signed in.",
+        });
       })
       .catch((error) => res.status(500).send(error));
   } else {

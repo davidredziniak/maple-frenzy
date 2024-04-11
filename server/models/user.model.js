@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: "last_logged_in",
       },
+      isSubscribed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        field: "in_progress"
+      },
     },
     { tableName: "users", timestamps: false }
   );

@@ -22,19 +22,26 @@ from queue.
 
 const db = require("./models");
 const Trade = db.trades;
+const User = db.users;
 
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
 async function resolveTrades(minuteOffset) {
     const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
     Trade.update({ inProgress: true }, {
-            where: {
-                [db.Sequelize.Op.and]: [
-                    { timeStart: {[db.Sequelize.Op.lte]: settleTime} },
-                    { inProgress: {[db.Sequelize.Op.is]: false} }
-                ]
-            },
-        })
-        .catch();
+        where: {
+            [db.Sequelize.Op.and]: [
+                { timeStart: {[db.Sequelize.Op.lte]: settleTime} },
+                { inProgress: {[db.Sequelize.Op.is]: false} }
+            ]
+        },
+    })
+    .catch();
+
+    queueSizeList = Trade.select
+    queuelist
+    User.select({isSubscribed: true}, {
+
+    })
 };
 
 // Continually posting async promises that force await within start() context.

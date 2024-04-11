@@ -8,7 +8,8 @@ import {
   MenuList,
   MenuItem
 } from '@chakra-ui/react'
-
+import { AuthContext } from './AuthContext';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const dummyResponse = {
@@ -25,6 +26,8 @@ const dummyResponse = {
 };
 
 const ButtOrDrop = ({result}) => {
+  
+  const { toggleLogout } = useContext(AuthContext);
   const navigate = useNavigate();
   const navigateLogin = () => {
     navigate('/Login');
@@ -38,7 +41,7 @@ const ButtOrDrop = ({result}) => {
         <MenuList color='black'>
           <MenuItem>Profile</MenuItem>
           <MenuItem>Settings</MenuItem>
-          <MenuItem>Profile</MenuItem>
+          <MenuItem onClick={toggleLogout}>Logout</MenuItem>
         </MenuList>
       </Menu>
     )
@@ -48,9 +51,11 @@ const ButtOrDrop = ({result}) => {
     return (<Button bg="#93d7bf" color="#353935" size="md" onClick={() => navigateLogin()}>Login</Button>);
   }
 }
-const Landing = ({isLoggedIn}) => {
+const Landing = () => {
   // console.log("In landing page");
-  //console.log(isLoggedIn);
+  
+  const { isLoggedIn } = useContext(AuthContext);
+  console.log(isLoggedIn);
   return (
     <Box>
       {/* Navigation bar */}

@@ -59,14 +59,14 @@ const RegistrationForm = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('https://maple-frenzy.onrender.com/api/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password}),
-      })
-      //const response = Promise.resolve(dummyResponse)
+      // const response = await fetch('https://maple-frenzy.onrender.com/api/signin', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ username, password}),
+      // })
+      const response = Promise.resolve(dummyResponse)
       .then( response => {
       if (response.ok) {
         alert('Signin successful!\nRedirecting to Home page');

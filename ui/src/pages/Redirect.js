@@ -1,20 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useContext,useEffect } from 'react';
+import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 
-const Redirect = ({ isLoggedIn,testF, getF }) => {
+const Redirect = () => {
+    const { isLoggedIn, toggleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
     const navigateHome = () => {
-      navigate('/');
+        navigate('/');
     };
+    //console.log("before togglelogin",isLoggedIn)
+      // Call toggleLogin on component mount
     useEffect(() => {
-        getF();
-        testF();
-    }, []);
+        toggleLogin();
+    }, [toggleLogin]);
+
     
     useEffect(() => {
         console.log("After state update");
-        getF();
+        console.log(isLoggedIn);
         navigateHome();
     }, [isLoggedIn]); 
     // useEffect(() => {

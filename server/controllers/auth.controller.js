@@ -105,12 +105,10 @@ exports.signIn = (req, res) => {
         // Check if user's email is verified
         if (!user.isVerified) {
           await generateAndSendEmailToken(user);
-          return res
-            .status(401)
-            .send({
-              message:
-                "Please complete verification by clicking the link sent to the email.",
-            });
+          return res.status(401).send({
+            message:
+              "Please complete verification by clicking the link sent to the email.",
+          });
         }
 
         // Update lastLoggedIn field

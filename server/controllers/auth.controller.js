@@ -48,10 +48,21 @@ const validatePass = (pass) => {
   return true;
 };
 
+// Validate email constraints
+const validateEmail = (email) => {
+  // Require more thorough validation through frontend
+  var regex = /\S+@\S+\.\S+/;
+  if (typeof email !== "string") return false;
+  return regex.test(email);
+};
+
 // Signup workflow
 // Saves a user to the database with a hashed password + salt
 // If successful, returns a response with a JWT used to authorize webpages
 exports.signUp = (req, res) => {
+  if (!validateEmail(req.body.email))
+    return res.status(401).send({ message: "Email provided was invalid." });
+
   if (validatePass(req.body.password)) {
     return User.create({
       username: req.body.username,

@@ -45,11 +45,10 @@ async function sendEmailToken(user) {
     if (token){
       emailTransponder.sendMail({
         to: `${user.email}`,
-        subject: "Account Verification Link",
-        text:
-          `Hello, ${user.username},
-          Please verify your email by clicking this link:
-          http://` + emailConfig.EMAIL_LINK + `/api/email/verify/${user.id}/${token.token} `,
+        subject: "Maple Frenzy - Account Verification",
+        text: `Welcome to Maple Frenzy, ${user.username}.
+    Please verify your email by clicking this link:
+    http://` + emailConfig.EMAIL_LINK + `/api/email/verify/${user.id}/${token.token}`,
       });
     }
 

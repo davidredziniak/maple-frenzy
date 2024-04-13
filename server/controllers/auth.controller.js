@@ -1,8 +1,11 @@
 const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
+const EmailToken = db.emailTokens;
 const { verifyRefresh } = require("../middleware").authorizeJwt;
+const { generateAndSendEmailToken } = require("../middleware").verifySignUp;
 const config = require("../config/auth.config.js");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -52,6 +55,7 @@ exports.signUp = (req, res) => {
   if (validatePass(req.body.password)) {
     return User.create({
       username: req.body.username,
+      email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
       createdAt: new Date().toISOString(),
       lastLoggedIn: new Date().toISOString(),
@@ -61,11 +65,14 @@ exports.signUp = (req, res) => {
         UserProfile.create({
           userId: newUser.id,
         })
-          .then(() => {
+          .then(async () => {
+            // Successful signup
+            // Send out an email to verify link
+            await generateAndSendEmailToken(newUser);
+
             res.status(200).send({
-              accessToken: createAccessJwt(newUser.id),
-              refreshToken: createRefreshJwt(newUser.id),
-              message: "Successfully signed up.",
+              message:
+                "Successfully signed up. Please verify account by clicking the link in the email.",
             });
           })
           .catch((error) => res.status(500).send(error));
@@ -82,7 +89,7 @@ exports.signUp = (req, res) => {
 exports.signIn = (req, res) => {
   if (validatePass(req.body.password)) {
     return User.findOne({ where: { username: req.body.username } })
-      .then((user) => {
+      .then(async (user) => {
         // Validate if username exists
         if (!user)
           return res.status(401).send({ message: "Username not found." });
@@ -94,6 +101,17 @@ exports.signIn = (req, res) => {
         );
         if (!validPassword)
           return res.status(401).send({ message: "Password incorrect." });
+
+        // Check if user's email is verified
+        if (!user.isVerified) {
+          await generateAndSendEmailToken(user);
+          return res
+            .status(401)
+            .send({
+              message:
+                "Please complete verification by clicking the link sent to the email.",
+            });
+        }
 
         // Update lastLoggedIn field
         User.update(

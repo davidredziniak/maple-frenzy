@@ -14,7 +14,7 @@ var corsOptions = {
 };
 
 // Reinitialize Database (Development purposes, set to TRUE)
-var development = false;
+var development = true;
 
 app.use(cors(corsOptions));
 

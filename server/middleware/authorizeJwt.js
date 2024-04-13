@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 
+// Verify access token in header
 function verifyToken(req, res, next) {
   let token = req.headers["x-access-token"];
   if (!token)
@@ -14,6 +15,7 @@ function verifyToken(req, res, next) {
   });
 }
 
+// Verify if the provided refresh token matches a userId
 function verifyRefresh(userId, token) {
   try {
     const decoded = jwt.verify(token, config.salt);

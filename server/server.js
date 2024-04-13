@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const db = require("./models");
-const scheduler = require("./tradeScheduler.js");
+//const scheduler = require("./tradeScheduler.js");
 
 const PORT = process.env.PORT;
 const app = express();

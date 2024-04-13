@@ -1,7 +1,6 @@
 const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
-const validatePass = db.validatePass;
 const { verifyRefresh } = require("../middleware").authorizeJwt;
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
@@ -36,6 +35,14 @@ exports.refreshToken = (req, res) => {
       message: "Successfully refreshed tokens.",
     });
   }
+};
+
+// Validate password constraints
+const validatePass = (pass) => {
+  // For now, just require 8 chars as minimum length
+  // Require more thorough validation through frontend
+  if (typeof pass !== "string" || pass.length < 8) return false;
+  return true;
 };
 
 // Signup workflow
@@ -95,11 +102,9 @@ exports.signIn = (req, res) => {
         );
 
         // Authorize user and create JWT
-        const accessToken = createAccessJwt(user.id);
-        const refreshToken = createRefreshJwt(user.id);
         res.status(200).send({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
+          accessToken: createAccessJwt(user.id),
+          refreshToken: createRefreshJwt(user.id),
           message: "Successfully signed in.",
         });
       })

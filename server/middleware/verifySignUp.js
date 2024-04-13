@@ -47,7 +47,7 @@ async function sendEmailToken(user) {
         to: `${user.email}`,
         subject: "Account Verification Link",
         text:
-          `Hello, ${user.username}.
+          `Hello, ${user.username},
           Please verify your email by clicking this link:
           http://` + emailConfig.EMAIL_LINK + `/api/email/verify/${user.id}/${token.token} `,
       });
@@ -96,10 +96,7 @@ function verifyEmailToken(req, res) {
         } else {
           // Update isVerified to true, successful email verification
           User.update({ isVerified: true }, { where: { id: user.id } });
-          return res.status(200).send({
-            message:
-              "Your account has been successfully verified. You can now sign in.",
-          });
+          return res.status(200).send("Your account has been successfully verified. You can now sign in.");
         }
       });
     }

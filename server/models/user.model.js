@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       isSubscribed: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        field: "in_progress"
+        field: "is_subscribed"
       },
     },
     { tableName: "users", timestamps: false }

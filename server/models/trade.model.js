@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "in_progress"
       },
     },
-    { tableName: "trade", timestamps: false }
+    { tableName: "trades", timestamps: false }
   );
 
   return Trade;

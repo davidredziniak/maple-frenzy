@@ -22,9 +22,11 @@ from queue.
 
 const db = require("./models");
 const Trade = db.trades;
-const User = db.users;
+const TradeSlot = db.tradeSlots;
+const FinishedTrade = db.finishedTrades;
 
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
+// Also evict trades to finishedTrades table when they are past their timeEnd.
 async function resolveTrades(minuteOffset) {
     const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
     Trade.update({ inProgress: true }, {
@@ -37,11 +39,25 @@ async function resolveTrades(minuteOffset) {
     })
     .catch();
 
-    queueSizeList = Trade.select
-    queuelist
-    User.select({isSubscribed: true}, {
+    const currentTime = new Date().toISOString();
+    const doneTrades = Trade.findAll({
+        where: { timeEnd: {[db.sequelize.Op.lte]: currentTime} },
+    }).catch();
 
-    })
+    // Pending implementation of user ID in Trade model/controller.
+    // Can compress into a single query, but not a limiting factor for now.
+    for (tradeRecord in doneTrades) {
+        slotRecords = TradeSlot.findAll({
+            where: {tradeId: tradeRecord.tradeId},
+        }).catch();
+
+        FinishedTrade.create({
+            tradeId: 99,
+            tradeData: tradeRecord.toJSON(),
+            tradeSlotData: slotRecords.toJSON(),
+        });
+    }
+    await doneTrades.destroy();
 };
 
 // Continually posting async promises that force await within start() context.

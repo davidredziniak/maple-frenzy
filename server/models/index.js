@@ -36,6 +36,7 @@ db.users = require("./user.model.js")(sequelize, DataTypes);
 db.userProfiles = require("./userProfile.model.js")(sequelize, DataTypes);
 db.trades = require("./trade.model.js")(sequelize, DataTypes);
 db.tradeSlots = require("./tradeSlot.model.js")(sequelize, DataTypes);
+db.finishedTrades = require("./finishedTrade.model.js")(sequelize, DataTypes);
 
 // Link user_profiles "user_id" to "id" in `user` table
 db.userProfiles.belongsTo(db.users, {

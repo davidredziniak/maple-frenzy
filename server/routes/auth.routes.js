@@ -16,6 +16,9 @@ module.exports = (app) => {
   app.post(
     "/api/signup",
     [verifySignUp.checkUsernameTaken],
+    [verifySignUp.checkEmailTaken],
     authController.signUp
   );
+  app.post("/api/refresh", authController.refreshToken);
+  app.get("/api/email/verify/:id/:token", [verifySignUp.verifyEmailToken]);
 };

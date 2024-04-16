@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "user_id",
+        references: { model: "users", key: "id" },
       },
       tradeCount: {
         type: DataTypes.INTEGER,

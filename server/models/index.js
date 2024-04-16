@@ -19,27 +19,24 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Validate password constraints
-const validatePass = (pass) => {
-  // For now, just require 8 chars as minimum length
-  // Require more thorough validation through frontend
-  if (typeof pass === "string") {
-    if (pass.length >= 8) return true;
-  }
-  return false;
-};
-
-db.validatePass = validatePass;
-
 // Import models
 db.users = require("./user.model.js")(sequelize, DataTypes);
 db.userProfiles = require("./userProfile.model.js")(sequelize, DataTypes);
 db.trades = require("./trade.model.js")(sequelize, DataTypes);
 db.tradeSlots = require("./tradeSlot.model.js")(sequelize, DataTypes);
+db.emailTokens = require("./emailToken.model.js")(sequelize, DataTypes);
 db.finishedTrades = require("./finishedTrade.model.js")(sequelize, DataTypes);
 
 // Link user_profiles "user_id" to "id" in `user` table
 db.userProfiles.belongsTo(db.users, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+});
+
+// Link emailTokens "user_id" to "id" in `user` table
+db.emailTokens.belongsTo(db.users, {
   foreignKey: {
     name: "userId",
     allowNull: false,

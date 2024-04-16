@@ -38,6 +38,7 @@ async function resolveTrades(minuteOffset) {
         },
     })
     .catch();
+    // reminder for matt, make a representation of the actual queue and cache it
 
     const currentTime = new Date().toISOString();
     const doneTrades = Trade.findAll({

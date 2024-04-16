@@ -44,7 +44,7 @@ async function resolveTrades(minuteOffset) {
         where: { timeEnd: {[db.sequelize.Op.lte]: currentTime} },
     }).catch();
 
-    // Pending implementation of user ID in Trade model/controller.
+    // Pending implementation of trade ID in Trade model/controller.
     // Can compress into a single query, but not a limiting factor for now.
     for (tradeRecord in doneTrades) {
         slotRecords = TradeSlot.findAll({

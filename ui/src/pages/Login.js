@@ -66,7 +66,7 @@ const RegistrationForm = () => {
         },
         body: JSON.stringify({ username, password}),
       })
-      // const response = Promise.resolve(dummyResponse)
+      //const response = Promise.resolve(dummyResponse)
       .then( response => {
       if (response.ok) {
         alert('Signin successful!\nRedirecting to Home page');

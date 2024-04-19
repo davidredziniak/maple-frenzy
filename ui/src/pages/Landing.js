@@ -25,22 +25,25 @@ const dummyResponse = {
 }
 };
 
-const ButtOrDrop = ({result}) => {
+const ButtOrDrop = ({uname,result}) => {
   
   const { toggleLogout } = useContext(AuthContext);
   const navigate = useNavigate();
   const navigateLogin = () => {
     navigate('/Login');
   };
+  const navigateProfile = () => {
+      navigate('/Profile');
+  };
   if (result){
     return (
       <Menu>
         <MenuButton as={Button} bg="#93d7bf">
-          User
+          {uname}
         </MenuButton>
         <MenuList color='black'>
-          <MenuItem>Profile</MenuItem>
-          <MenuItem>Settings</MenuItem>
+          <MenuItem>Find Frenzy</MenuItem>
+          <MenuItem onClick={navigateProfile}>Profile</MenuItem>
           <MenuItem onClick={toggleLogout}>Logout</MenuItem>
         </MenuList>
       </Menu>
@@ -54,8 +57,7 @@ const ButtOrDrop = ({result}) => {
 const Landing = () => {
   // console.log("In landing page");
   
-  const { isLoggedIn } = useContext(AuthContext);
-  console.log(isLoggedIn);
+  const { isLoggedIn, username } = useContext(AuthContext);
   return (
     <Box>
       {/* Navigation bar */}
@@ -63,7 +65,7 @@ const Landing = () => {
           <Link as={RouterLink} to="/" mr={6}>Home</Link>
           <Link as={RouterLink} to="/about" mr={6}>About Us</Link>
           <Link as={RouterLink} to="/contact" mr={6}>Contact</Link>
-          <ButtOrDrop result={isLoggedIn}/>
+          <ButtOrDrop uname={username} result={isLoggedIn}/>
           
       </Flex>
 

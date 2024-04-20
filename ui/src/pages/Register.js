@@ -41,6 +41,7 @@ const Backdrop = () =>{
   }
 
 const RegistrationForm = () => {
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -66,7 +67,7 @@ const RegistrationForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password}),
+        body: JSON.stringify({ email,username, password}),
       })
       //const response = Promise.resolve(dummyResponse)
       .then(response => {
@@ -76,6 +77,7 @@ const RegistrationForm = () => {
         // Reset form fields
         setUsername('');
         setPassword('');
+        setEmail('');
         setConfirmPassword('');
         navigateLogin();
       } 
@@ -98,7 +100,17 @@ const RegistrationForm = () => {
   return (
     <FormControl>
       <div>
-        <FormLabel color="white" htmlFor="username">Username:</FormLabel>
+        <FormLabel color="white" htmlFor="email">Email:</FormLabel>
+        <Input bg='white'
+          type="text"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <FormLabel mt = "20px" color="white" htmlFor="username">Username:</FormLabel>
         <Input bg='white'
           type="text"
           id="username"

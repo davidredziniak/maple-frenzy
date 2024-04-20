@@ -17,16 +17,16 @@ const dummyResponse = {
 
 const Redirect = () => {
     const { isLoggedIn, toggleLogin, changeUser,username } = useContext(AuthContext);
-    useEffect(() => {
-        //todo: create api call for user
-        const response = Promise.resolve(dummyResponse);
-        response.then(data => {
-          const { json } = data;
-          const { username } = json;
-          changeUser(username);
-          //console.log(username);
-        });
-      }, []);
+    // useEffect(() => {
+    //     //todo: create api call for user
+    //     const response = Promise.resolve(dummyResponse);
+    //     response.then(data => {
+    //       const { json } = data;
+    //       const { username } = json;
+    //       changeUser(username);
+    //       //console.log(username);
+    //     });
+    //   }, []);
     const navigate = useNavigate();
     const navigateHome = () => {
         navigate('/');

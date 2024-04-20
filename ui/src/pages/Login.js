@@ -18,6 +18,8 @@ import login from '../img/login.png'
 import {useState} from 'react'
 import {Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
+import React, { useContext,useEffect } from 'react';
+import { AuthContext } from './AuthContext';
 
 //dummy json
 const dummyResponse = {
@@ -55,6 +57,8 @@ const RegistrationForm = () => {
     navigate('/Redirect');
   };
 
+  const {changeUser} = useContext(AuthContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -75,6 +79,7 @@ const RegistrationForm = () => {
         setUsername('');
         setPassword('');
         navigateRedirect();
+        changeUser(username);
       } 
       else {
         let error;

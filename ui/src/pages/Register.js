@@ -72,7 +72,7 @@ const RegistrationForm = () => {
       //const response = Promise.resolve(dummyResponse)
       .then(response => {
       if (response.ok) {
-        alert('Signup successful!\nRedirecting you to Login page');
+        alert('Signup successful! \n Please verify your email address!');
         sucNotification();
         // Reset form fields
         setUsername('');

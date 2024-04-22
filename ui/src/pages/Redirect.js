@@ -1,26 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useContext,useEffect } from 'react';
+import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const dummyResponse = {
+    ok: true,
+    status: 200,
+    json: {
+        id: 3,
+        username: "maplefrenzy_admin",
+        tradeCount: 0,
+        reputation: 0,
+        createdAt: "2024-03-21T16:17:21.768Z",
+        lastLoggedIn: "2024-03-21T16:17:21.768Z"
+    }
+  };
 
-const Redirect = ({ isLoggedIn,testF, getF }) => {
+const Redirect = () => {
+    const { isLoggedIn, toggleLogin, changeUser,username } = useContext(AuthContext);
+    // useEffect(() => {
+    //     //todo: create api call for user
+    //     const response = Promise.resolve(dummyResponse);
+    //     response.then(data => {
+    //       const { json } = data;
+    //       const { username } = json;
+    //       changeUser(username);
+    //       //console.log(username);
+    //     });
+    //   }, []);
     const navigate = useNavigate();
     const navigateHome = () => {
-      navigate('/');
+        navigate('/');
     };
+
+    
+      // Call toggleLogin on component mount
     useEffect(() => {
-        getF();
-        testF();
-    }, []);
+        toggleLogin();
+    }, [toggleLogin]);
+
     
     useEffect(() => {
-        console.log("After state update");
-        getF();
+        
         navigateHome();
-    }, [isLoggedIn]); 
-    // useEffect(() => {
-    //     console.log("3rd");
-    //     getF();
-    // }, []);
+    }, [isLoggedIn,username]); 
+
     return (<div>Redirect page</div>);
 };
 

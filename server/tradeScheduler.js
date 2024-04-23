@@ -42,34 +42,32 @@ async function resolveTrades(minuteOffset) {
   ).catch();
 
   const currentTime = new Date(Date.now()).toISOString();
-    const doneTrades = await Trade.findAll({
+  const doneTrades = await Trade.findAll({
     where: { timeEnd: { [db.Sequelize.Op.lte]: currentTime } },
   });
 
   // Pending implementation of trade ID in Trade model/controller.
   // Can compress into a single query, but not a limiting factor for now.
-  doneTrades.forEach( 
-    async (trade) => { 
-        const slotRecords = await TradeSlot.findAll({
-            where: { tradeId: trade.id },
-          });
+  doneTrades.forEach(async (trade) => {
+    const slotRecords = await TradeSlot.findAll({
+      where: { tradeId: trade.id },
+    });
 
-          let slotRecordsMap = await slotRecords.map((record) => record.toJSON());
+    let slotRecordsMap = await slotRecords.map((record) => record.toJSON());
 
-          await FinishedTrade.create({
-            tradeId: 99,
-            tradeData: JSON.stringify(trade),
-            tradeSlotData: JSON.stringify(slotRecordsMap),
-          });
-      
-          // Destroy trade slot records of trade
-          await slotRecords.forEach((record) => {
-            record.destroy();
-          });
+    await FinishedTrade.create({
+      tradeId: trade.id,
+      tradeData: JSON.stringify(trade),
+      tradeSlotData: JSON.stringify(slotRecordsMap),
+    });
 
-          await trade.destroy();
-    }
-  );
+    // Destroy trade slot records of trade
+    await slotRecords.forEach((record) => {
+      record.destroy();
+    });
+
+    await trade.destroy();
+  });
 }
 
 // Continually posting async promises that force await within start() context.

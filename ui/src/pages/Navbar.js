@@ -24,6 +24,10 @@ const Navbar = () => {
   const navigateFrenzy = () => {
     navigate("/Frenzy");
   };
+  const navigateSell = () => {
+    navigate("/Dashboard");
+  };
+
   const { isLoggedIn, toggleLogout, username, userId, accessToken, refreshToken } = useContext(AuthContext);
   return (
     <Flex
@@ -53,6 +57,7 @@ const Navbar = () => {
           </MenuButton>
           <MenuList color="black">
             <MenuItem onClick={navigateFrenzy}>Find Frenzy</MenuItem>
+            <MenuItem onClick={navigateSell}>Sell Frenzy</MenuItem>
             <MenuItem onClick={navigateProfile}>Profile</MenuItem>
             <MenuItem onClick={toggleLogout}>Logout</MenuItem>
           </MenuList>

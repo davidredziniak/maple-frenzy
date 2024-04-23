@@ -228,9 +228,9 @@ exports.findById = (req, res) => {
               var slots = [];
               result.forEach((record) => {
                 slots.push({
-                  pos: record.queuePos,
                   userId: record.userId,
                   duration: record.duration,
+                  pos: record.queuePos,
                 });
               });
               return res.status(200).send({
@@ -244,6 +244,51 @@ exports.findById = (req, res) => {
                 buyerAvailable: trade.buyerAvailable,
                 slots: slots,
               });
+            })
+            .catch((error) => res.status(400).send(error));
+        }
+      }
+    })
+    .catch((error) => res.status(400).send(error));
+};
+
+// Get list of users prioritized by subscriber status and queue position.
+exports.getBuyerQueue = (req, res) => {
+  Trade.findOne({ where: { id: req.params.tradeId } })
+    .then((trade) => {
+      if (!trade) {
+        res.status(404).send({ error: "Trade not found." });
+      } else {
+        // Check if the slots query exists
+        if (req.query.slots != "") return res.status(200).send(trade);
+        else {
+          // Filter slots and return the list of buyers who "won".
+          TradeSlot.findAll({
+            where: { tradeId: trade.id },
+            include: [{
+              model: User,
+              required: true, // we want an inner join for this
+              where: { userId: db.Sequelize.col("trade_slots.user_id") }
+            }],
+            order: [
+              ["is_subscribed", "DESC"],
+              ["pos", "ASC"]
+            ],
+            limit: trade.buyerLimit,
+          })
+            .then((slots) => {
+              var buyerQueue = [];
+              var pos = 1;
+              slots.forEach((record) => {
+                buyerQueue.push({
+                  userId: record.userId,
+                  gameName: record.gameName,
+                  channel: record.channel,
+                  duration: record.duration,
+                  queuePos: pos++,
+                });
+              });
+              return res.status(200).send(buyerQueue);
             })
             .catch((error) => res.status(400).send(error));
         }

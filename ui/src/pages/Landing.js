@@ -23,12 +23,12 @@ const dummyResponse = {
     lastLoggedIn: "2024-03-21T16:17:21.768Z"
 }
 };
-const Landing = ({isLoggedIn}) => {
+const Landing = () => {
 
   return (
     <Box>
       {/* Navigation Bar */}
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar />
       
         {/* Hero Section */}
         <Box bg="#F8EEDE" pb={100}>

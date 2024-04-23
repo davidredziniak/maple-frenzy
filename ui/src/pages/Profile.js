@@ -1,5 +1,14 @@
-import { Text, Box, Button, Flex, Link, Stack,Center } from '@chakra-ui/react';
+import {Text, Box, Button, Flex, Link, Stack, Center } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import Navbar from './Navbar';
+
+import {useState} from 'react'
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
+} from '@chakra-ui/react'
 
 const ProfileBox = () => {
     return(
@@ -9,7 +18,7 @@ const ProfileBox = () => {
                 <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'> 
                     <Text fontFamily='verdana'>User Info</Text></Box>
                 
-                <Box h='20vh' pl='.5vw'boxShadow='base' rounded='md'><Text fontFamily='verdana'>Change Password</Text></Box>
+                <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'><Text fontFamily='verdana'>Change Password</Text></Box>
             </Stack>
         </Box>
     )
@@ -22,15 +31,20 @@ const StuffBox = () => {
     </Box>
     )
 }
+
 const Profile = () => {
-    return(
-        <>
-            <Flex h="100vh"> 
+  return (
+    <Box>
+      {/* Navigation Bar */}
+      <Navbar />
+
+        {/* Content Section */}
+        <Flex h="100vh"> 
                 <StuffBox />
                 <ProfileBox />
             </Flex>
-        </>
-    )
+    </Box>
+  );
 }
 
-export default Profile
+export default Profile;

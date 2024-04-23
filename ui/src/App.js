@@ -7,30 +7,25 @@ import Profile from './pages/Profile.js';
 import Redirect from './pages/Redirect.js';
 import Dashboard from './pages/Dashboard.js';
 import {useState} from 'react'
+import FindFrenzy from './pages/FindFrenzy.js';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-
+import { AuthProvider } from './pages/AuthContext.js';
 function App() {
-  const [isLoggedIn,setIsLoggedIn] = useState(false);
-  const testF = () => {
-    setIsLoggedIn(true);
-  }
-  const getF = () => {
-    console.log(isLoggedIn)
-    //return isLoggedIn;
-  }
   return (
     <ChakraProvider>
-      <Router>
+      <AuthProvider>
+        <Router>
           <Routes>
             {/*<Route path='/' element={<Dashboard/>} /> */}
             <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
             <Route path='/Register' element={<Register/>} />
             <Route path='/Login' element={<Login/>} />
             <Route path='/Profile' element={<Profile/>} />
-            <Route path='/Redirect' element={<Redirect  isLoggedIn={isLoggedIn} testF={testF} getF={getF}/>}/>
+            <Route path='/Frenzy' element={<FindFrenzy />}/>
+            <Route path='/Redirect' element={<Redirect />}/>
           </Routes>
-      </Router>
-
+        </Router>
+      </AuthProvider>
     </ChakraProvider>
   );
 }

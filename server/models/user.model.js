@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isSubscribed: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        defaultValue: false,
         field: "is_subscribed"
       },
     },

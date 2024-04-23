@@ -16,11 +16,11 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            {/*<Route path='/' element={<Dashboard/>} /> */}
-            <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
+            <Route path='/' element={<Landing />} />
             <Route path='/Register' element={<Register/>} />
             <Route path='/Login' element={<Login/>} />
             <Route path='/Profile' element={<Profile/>} />
+            <Route path='/Dashboard' element={<Dashboard/>} />
             <Route path='/Frenzy' element={<FindFrenzy />}/>
             <Route path='/Redirect' element={<Redirect />}/>
           </Routes>

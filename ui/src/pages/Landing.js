@@ -11,18 +11,6 @@ import {
   MenuItem
 } from '@chakra-ui/react'
 
-const dummyResponse = {
-  ok: true,
-  status: 200,
-  json: {
-    id: 3,
-    username: "maplefrenzy_admin",
-    tradeCount: 0,
-    reputation: 0,
-    createdAt: "2024-03-21T16:17:21.768Z",
-    lastLoggedIn: "2024-03-21T16:17:21.768Z"
-}
-};
 const Landing = () => {
 
   return (

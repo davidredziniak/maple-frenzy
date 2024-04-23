@@ -1,8 +1,8 @@
 // AuthContext.js
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -76,4 +76,5 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+
 };

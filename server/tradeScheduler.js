@@ -28,60 +28,71 @@ const FinishedTrade = db.finishedTrades;
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
 // Also evict trades to finishedTrades table when they are past their timeEnd.
 async function resolveTrades(minuteOffset) {
-    const settleTime = new Date(Date.now() + (minuteOffset * 60000)).toISOString();
-    Trade.update({ inProgress: true }, {
-        where: {
-            [db.Sequelize.Op.and]: [
-                { timeStart: {[db.Sequelize.Op.lte]: settleTime} },
-                { inProgress: {[db.Sequelize.Op.is]: false} }
-            ]
-        },
-    })
-    .catch();
-
-    const currentTime = new Date().toISOString();
-    const doneTrades = Trade.findAll({
-        where: { timeEnd: {[db.sequelize.Op.lte]: currentTime} },
-    }).catch();
-
-    // Pending implementation of trade ID in Trade model/controller.
-    // Can compress into a single query, but not a limiting factor for now.
-    for (tradeRecord in doneTrades) {
-        slotRecords = TradeSlot.findAll({
-            where: {tradeId: tradeRecord.tradeId},
-        }).catch();
-
-        FinishedTrade.create({
-            tradeId: 99,
-            tradeData: tradeRecord.toJSON(),
-            tradeSlotData: slotRecords.toJSON(),
-        });
+  const settleTime = new Date(Date.now() + minuteOffset * 60000).toISOString();
+  Trade.update(
+    { inProgress: true },
+    {
+      where: {
+        [db.Sequelize.Op.and]: [
+          { timeStart: { [db.Sequelize.Op.lte]: settleTime } },
+          { inProgress: { [db.Sequelize.Op.is]: false } },
+        ],
+      },
     }
-    await doneTrades.destroy();
-};
+  ).catch();
+
+  // Find if any trades have currently ended
+  const currentTime = new Date().toISOString();
+  const doneTrades = await Trade.findAll({
+    where: { timeEnd: { [db.Sequelize.Op.lte]: currentTime } },
+  });
+
+  // Loop through finished trades and transfer data to `finished_trades`
+  // Destroy the current table records after it's done
+  doneTrades.forEach(async (trade) => {
+    const slotRecords = await TradeSlot.findAll({
+      where: { tradeId: trade.id },
+    });
+
+    let slotRecordsMap = await slotRecords.map((record) => record.toJSON());
+
+    await FinishedTrade.create({
+      tradeId: trade.id,
+      tradeData: JSON.stringify(trade),
+      tradeSlotData: JSON.stringify(slotRecordsMap),
+    });
+
+    // Destroy trade slot records of trade
+    await slotRecords.forEach((record) => {
+      record.destroy();
+    });
+
+    await trade.destroy();
+  });
+}
 
 // Continually posting async promises that force await within start() context.
 function wait(pollingTime) {
-    return new Promise(resolve => {
-        setTimeout(resolve, pollingTime);
-    });
+  return new Promise((resolve) => {
+    setTimeout(resolve, pollingTime);
+  });
 }
 
 function schedulerException() {
-    try {
-        // check any flags, try to recover gracefully if needed
-    } catch (error) {
-        // log and give up, leave it to external processes
-        return true;
-    }
-};
+  try {
+    // check any flags, try to recover gracefully if needed
+  } catch (error) {
+    // log and give up, leave it to external processes
+    return true;
+  }
+}
 
 async function start(pollingTime) {
-    const settleOffset = 5; // minutes
-    while (!schedulerException()) {
-        await resolveTrades(settleOffset);
-        await wait(pollingTime);
-    }
+  const settleOffset = 5; // minutes
+  while (!schedulerException()) {
+    await resolveTrades(settleOffset);
+    await wait(pollingTime);
+  }
 }
 
 module.exports = {

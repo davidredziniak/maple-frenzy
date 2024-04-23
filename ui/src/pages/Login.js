@@ -21,7 +21,7 @@ import login from "../img/login.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 
 const Backdrop = () => {
@@ -49,11 +49,12 @@ const RegistrationForm = () => {
   const sucNotification = (message) => toast.success(message);
 
   const navigate = useNavigate();
-  const navigateRedirect = () => {
-    navigate("/Redirect");
+  const navigateHome = () => {
+    navigate("/");
   };
 
   const {
+    toggleLogin,
     updateUsername,
     updateUserId,
     updateAccessToken,
@@ -78,12 +79,13 @@ const RegistrationForm = () => {
       // Reset form fields
       setUsername("");
       setPassword("");
+      toggleLogin();
       updateUsername(username);
       updateUserId(data.userId);
       updateAccessToken(data.accessToken);
       updateRefreshToken(data.refreshToken);
       await delay(1000);
-      navigateRedirect();
+      navigateHome();
     } else {
       errNotification(data.message);
     }

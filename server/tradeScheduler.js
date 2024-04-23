@@ -46,7 +46,6 @@ async function resolveTrades(minuteOffset) {
     where: { timeEnd: { [db.Sequelize.Op.lte]: currentTime } },
   });
 
-  console.log(doneTrades);
   // Pending implementation of trade ID in Trade model/controller.
   // Can compress into a single query, but not a limiting factor for now.
   doneTrades.forEach( 
@@ -55,23 +54,22 @@ async function resolveTrades(minuteOffset) {
             where: { tradeId: trade.id },
           });
 
-          FinishedTrade.create({
+          let slotRecordsMap = await slotRecords.map((record) => record.toJSON());
+
+          await FinishedTrade.create({
             tradeId: 99,
-            tradeData: trade.toJSON(),
-            tradeSlotData: slotRecords.toJSON(),
+            tradeData: JSON.stringify(trade),
+            tradeSlotData: JSON.stringify(slotRecordsMap),
           });
       
           // Destroy trade slot records of trade
-          slotRecords.forEach((record) => {
+          await slotRecords.forEach((record) => {
             record.destroy();
           });
+
+          await trade.destroy();
     }
   );
-
-  // Destroy finished trade records
-  doneTrades.forEach((record) => {
-    record.destroy();
-  });
 }
 
 // Continually posting async promises that force await within start() context.

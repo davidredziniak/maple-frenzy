@@ -5,6 +5,7 @@ import Register from './pages/Register.js';
 import Login from './pages/Login.js';
 import Profile from './pages/Profile.js';
 import Redirect from './pages/Redirect.js';
+import Dashboard from './pages/Dashboard.js';
 import {useState} from 'react'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 
@@ -21,6 +22,7 @@ function App() {
     <ChakraProvider>
       <Router>
           <Routes>
+            {/*<Route path='/' element={<Dashboard/>} /> */}
             <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
             <Route path='/Register' element={<Register/>} />
             <Route path='/Login' element={<Login/>} />

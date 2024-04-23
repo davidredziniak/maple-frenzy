@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
       setUsername(storedUsername);
     }
     // If theefresh token, try to get access token
-
   }, []);
 
   const toggleLogin = () => {

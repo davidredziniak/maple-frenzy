@@ -53,8 +53,12 @@ const RegistrationForm = () => {
     navigate("/Redirect");
   };
 
-  const { updateUsername, updateUserId, updateAccessToken, updateRefreshToken } =
-    useContext(AuthContext);
+  const {
+    updateUsername,
+    updateUserId,
+    updateAccessToken,
+    updateRefreshToken,
+  } = useContext(AuthContext);
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 

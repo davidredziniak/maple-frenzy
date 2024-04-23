@@ -22,14 +22,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-const dummyResponse = {
-  ok: true,
-  status: 200,
-  json: {
-    accessToken: "93144b288eb1fdccbe46d6fc0f241a51766ecd3d",
-    message: "Successfully signed up.",
-  },
-};
 const Backdrop = () => {
   return (
     <Flex color="#353935" h="100vh">
@@ -70,13 +62,16 @@ const RegistrationForm = () => {
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    const response = await fetch("https://maple-frenzy.onrender.com/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, username, password }),
-    });
+    const response = await fetch(
+      "https://maple-frenzy.onrender.com/api/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username, password }),
+      }
+    );
     const data = await response.json();
     if (response.status === 200) {
       sucNotification(

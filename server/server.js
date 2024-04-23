@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to the database
 // Auto recreate database for now (development)
 db.sequelize
-  .sync({ force: true })
+  .sync({ force: development })
   .then(() => {
     console.log("Synced db.");
   })
@@ -44,5 +44,5 @@ app.listen(PORT, () => {
 });
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
-//const pollingTime = 2000; // 2s
-//scheduler.start(pollingTime);
+const pollingTime = 2000; // 2s
+scheduler.start(pollingTime);

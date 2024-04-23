@@ -46,8 +46,8 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const errNotification = () => toast.error("There was an error signing up.");
-  const sucNotification = () => toast("Succesfully signed up!");
+  const errNotification = (message) => toast.error(message);
+  const sucNotification = (message) => toast.success(message);
 
   const navigate = useNavigate();
   const navigateLogin = () => {
@@ -57,44 +57,36 @@ const RegistrationForm = () => {
     e.preventDefault();
   
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      errNotification('Passwords do not match!');
       return;
     }
-  
-    try {
-      const response = await fetch('https://maple-frenzy.onrender.com/api/signup', {
-        method: 'POST',
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    const response = await fetch(
+      "http://localhost:3001/api/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email,username, password}),
-      })
-      //const response = Promise.resolve(dummyResponse)
-      .then(response => {
-      if (response.ok) {
-        alert('Signup successful! \n Please verify your email address!');
-        sucNotification();
+        body: JSON.stringify({ email, username, password}),
+      }
+    );
+    const data = await response.json();
+    if(response.status === 200){
+        sucNotification('Signup successful! A verification link was sent to your email.');
         // Reset form fields
         setUsername('');
         setPassword('');
         setEmail('');
         setConfirmPassword('');
+        await delay(1000);
         navigateLogin();
-      } 
-      else {
-        let error;
-        try {
-          error =  response.json();
-        } catch (jsonError) {
-          error = { message: jsonError };
-        }
-        alert(`Signup failed: ${error.message}`);
-      }
-    })
-    } catch (error) {
-      alert(`An error occurred: ${error.message}`);
-      errNotification();
     }
+    else{
+      errNotification(data.message);
+    }
+
   };
 
   return (

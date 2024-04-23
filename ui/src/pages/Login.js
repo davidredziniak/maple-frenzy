@@ -55,8 +55,8 @@ const RegistrationForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const errNotification = () => toast.error("There was an error signing in.");
-  const sucNotification = () => toast("Succesfully signed in!");
+  const errNotification = (message) => toast.error(message);
+  const sucNotification = (message) => toast.success(message);
 
   const navigate = useNavigate();
   const navigateRedirect = () => {
@@ -65,11 +65,13 @@ const RegistrationForm = () => {
 
   const { changeUser } = useContext(AuthContext);
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const response = await fetch(
-      "https://maple-frenzy.com/api/signin", {
+      "http://localhost:3001/api/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,17 +81,16 @@ const RegistrationForm = () => {
     );
     const data = await response.json();
     if(response.status === 200){
-      alert("Signin successful!\nRedirecting to Home page");
-      sucNotification();
+      sucNotification('Sign in successful. Redirecting...');
       // Reset form fields
       setUsername("");
       setPassword("");
-      navigateRedirect();
       changeUser(username);
+      await delay(1000);
+      navigateRedirect();
     }
     else{
-      alert(data.message);
-      errNotification();
+      errNotification(data.message);
     }
   };
 

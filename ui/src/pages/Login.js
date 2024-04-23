@@ -71,7 +71,7 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     const response = await fetch(
-      "http://localhost:3001/api/signin", {
+      "https://maple-frenzy-site.onrender.com/api/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

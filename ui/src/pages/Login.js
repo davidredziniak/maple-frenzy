@@ -24,16 +24,6 @@ import toast, { Toaster } from "react-hot-toast";
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
-//dummy json
-const dummyResponse = {
-  ok: true,
-  status: 200,
-  json: {
-    accessToken: "93144b288eb1fdccbe46d6fc0f241a51766ecd3d",
-    message: "Successfully signed in.",
-  },
-};
-
 const Backdrop = () => {
   return (
     <Flex color="#353935" h="20vh">
@@ -63,33 +53,34 @@ const RegistrationForm = () => {
     navigate("/Redirect");
   };
 
-  const { changeUser } = useContext(AuthContext);
+  const { updateUsername, updateUserId, updateAccessToken, updateRefreshToken } =
+    useContext(AuthContext);
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(
-      "https://maple-frenzy.onrender.com/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      }
-    );
+    const response = await fetch("https://maple-frenzy.onrender.com/api/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
     const data = await response.json();
-    if(response.status === 200){
-      sucNotification('Sign in successful. Redirecting...');
+    if (response.status === 200) {
+      sucNotification("Sign in successful. Redirecting...");
       // Reset form fields
       setUsername("");
       setPassword("");
-      changeUser(username);
+      updateUsername(username);
+      updateUserId(data.userId);
+      updateAccessToken(data.accessToken);
+      updateRefreshToken(data.refreshToken);
       await delay(1000);
       navigateRedirect();
-    }
-    else{
+    } else {
       errNotification(data.message);
     }
   };

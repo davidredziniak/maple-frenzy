@@ -1,6 +1,7 @@
 import {Text, Box, Button, Flex, Link, Stack, Center } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import Navbar from './Navbar';
+import { AuthContext } from "./AuthContext";
 
 import {useState} from 'react'
 import {
@@ -18,7 +19,7 @@ const ProfileBox = () => {
                 <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'> 
                     <Text fontFamily='verdana'>User Info</Text></Box>
                 
-                <Box h='20vh' pl='.5vw' boxShadow='base' rounded='md'><Text fontFamily='verdana'>Change Password</Text></Box>
+                <Box h='20vh' pl='.5vw'boxShadow='base' rounded='md'><Text fontFamily='verdana'>Change Password</Text></Box>
             </Stack>
         </Box>
     )
@@ -27,12 +28,12 @@ const ProfileBox = () => {
 const StuffBox = () => {
     return(
     <Box w='15vw' bg='teal.50' rounded='md'>
-        <Text textAlign='center' fontFamily='verdana'>Stuff</Text>
+        <Text textAlign='center' fontFamily='verdana'>LMAOOO</Text>
     </Box>
     )
 }
 
-const Profile = () => {
+const FindFrenzy = () => {
   return (
     <Box>
       {/* Navigation Bar */}
@@ -47,4 +48,4 @@ const Profile = () => {
   );
 }
 
-export default Profile;
+export default FindFrenzy;

@@ -130,6 +130,7 @@ exports.signIn = (req, res) => {
 
         // Authorize user and create JWT
         res.status(200).send({
+          userId: user.id,
           accessToken: createAccessJwt(user.id),
           refreshToken: createRefreshJwt(user.id),
           message: "Successfully signed in.",

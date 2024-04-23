@@ -17,7 +17,7 @@ function App() {
         <Router>
           <Routes>
             {/*<Route path='/' element={<Dashboard/>} /> */}
-            <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
+            <Route path='/' element={<Landing />} />
             <Route path='/Register' element={<Register/>} />
             <Route path='/Login' element={<Login/>} />
             <Route path='/Profile' element={<Profile/>} />

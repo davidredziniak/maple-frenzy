@@ -37,7 +37,7 @@ const FrenzyBox = () => {
 
   const setDurationValue = (e) => {
     const value = e.target.value.replace(/\D/g, "");
-    setDuration(value);
+    setDuration(e.target.value);
   };
 
   const setChannelValue = (e) => {
@@ -46,21 +46,19 @@ const FrenzyBox = () => {
   };
   
   const handleSubmit = async (e) => {
-    //Check duration is integer
-    alert(duration);
     e.preventDefault();
 
-    const response = await fetch("http://localhost:3001/api/trade/search", {
+    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/searchmarket", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": accessToken,
       },
-      body: JSON.stringify({ inGameUsername, channel, duration }),
+      body: JSON.stringify({ channel, duration }),
     });
     const data = await response.json();
     if (response.status === 200) {
-      sucNotification("Sign in successful. Redirecting...");
+      sucNotification(data.message);
       // Reset form fields
     } else {
       errNotification(data.message);

@@ -28,17 +28,17 @@ module.exports = (app) => {
     tradesController.leave,
     tradeSlotController.removeUserFromQueue
   );
-
+  app.post(
+    "/api/trade/searchmarket",
+    [authorizeJwt.verifyToken],
+    tradesController.searchMarket
+  );
+  
   // Routes that provide data
   app.get(
     "/api/trade/list",
     [authorizeJwt.verifyToken],
     tradesController.getListOfTrades
-  );
-  app.get(
-    "/api/trade/searchMarket",
-    [authorizeJwt.verifyToken],
-    tradesController.searchMarket
   );
   app.get(
     "/api/trade/data/:tradeId",

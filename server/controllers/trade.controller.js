@@ -1,7 +1,8 @@
 const db = require("../models");
 const Trade = db.trades;
 const TradeSlot = db.tradeSlots;
-
+const UserProfile = db.userProfiles;
+const User = db.users;
 const config = require("../config/auth.config.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -265,14 +266,16 @@ exports.getBuyerQueue = (req, res) => {
           // Filter slots and return the list of buyers who "won".
           TradeSlot.findAll({
             where: { tradeId: trade.id },
-            include: [{
-              model: User,
-              required: true, // we want an inner join for this
-              where: { userId: db.Sequelize.col("trade_slots.user_id") }
-            }],
+            include: [
+              {
+                model: User,
+                required: true, // we want an inner join for this
+                where: { userId: db.Sequelize.col("trade_slots.user_id") },
+              },
+            ],
             order: [
               ["is_subscribed", "DESC"],
-              ["pos", "ASC"]
+              ["pos", "ASC"],
             ],
             limit: trade.buyerLimit,
           })
@@ -317,24 +320,53 @@ exports.getListOfTrades = (req, res) => {
 // Using Sequelize 6.x raw query to do arithmetic.
 exports.searchMarket = (req, res) => {
   const userDuration = req.body.duration;
-  const userChannel = re.body.channel;
+  const userChannel = req.body.channel;
 
-  db.Sequelize.query(
-    'SELECT * FROM trades WHERE (timeEnd - timeStart >= :duration) AND (:channel = ANY(channels)) ORDER BY price ASC LIMIT 1', {
-      model: Trade,
-      mapToModel: true,
-      replacements: { duration: userDuration, channel: userChannel },
-      type: QueryTypes.SELECT,
-    }).then(
-      (trade) => {
-        if (!trade) {
-          return res.status(404).send({
-            error: "No available trades fit the criteria."
-          });
-        } else {
-          res.status(200).send("Matching trade(s) found.");
-          return trade.tradeId;  
-        }
-      })
-      .catch((error) => res.status(400).send(error));
+  db.sequelize
+    .query(
+      "SELECT * FROM trades WHERE abs(extract(epoch from time_end - time_start)/3600) >= :duration AND (:channel = ANY(channels)) AND buyer_avail > 0 ORDER BY price ASC LIMIT 1",
+      {
+        model: Trade,
+        mapToModel: true,
+        replacements: { duration: userDuration, channel: userChannel },
+        type: db.Sequelize.QueryTypes.SELECT,
+      }
+    )
+    .then((trade) => {
+      const foundTrade = trade[0];
+      if (!foundTrade) {
+        return res.status(404).send({
+          message: "No available trades fit the criteria.",
+        });
+      } else {
+        // Get seller's information
+        // Username
+        // Reputation
+        // Trade Count
+        User.findOne({ where: { id: foundTrade.sellerId }}).then((user) => {
+            const username = user.username;
+
+            UserProfile.findOne({ where: { id: foundTrade.sellerId } }).then(
+              (profile) => {
+                return res.status(200).send({
+                  message: "Matching trade(s) found.",
+                  seller: {
+                    id: foundTrade.sellerId,
+                    username: username,
+                    reputation: profile.reputation,
+                    tradeCount: profile.tradeCount,
+                  },
+                  trade: {
+                    id: foundTrade.id,
+                    price: foundTrade.price,
+                    timeStart: foundTrade.timeStart,
+                    timeEnd: foundTrade.timeEnd,
+                  },
+                });
+              }
+            );
+        });
+      }
+    })
+    .catch((error) => res.status(400).send(error));
 };

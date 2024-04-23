@@ -35,17 +35,28 @@ const FrenzyBox = () => {
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 
+  const setDurationValue = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setDuration(value);
+  };
+
+  const setChannelValue = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setChannel(value);
+  };
+  
   const handleSubmit = async (e) => {
-    alert(inGameUsername);
+    //Check duration is integer
+    alert(duration);
     e.preventDefault();
 
-    const response = await fetch("http://localhost:3001/api/signin", {
+    const response = await fetch("http://localhost:3001/api/trade/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": accessToken,
       },
-      body: JSON.stringify({ inGameUsername, userId, channel }),
+      body: JSON.stringify({ inGameUsername, channel, duration }),
     });
     const data = await response.json();
     if (response.status === 200) {
@@ -54,7 +65,6 @@ const FrenzyBox = () => {
     } else {
       errNotification(data.message);
     }
-    alert(data);
   };
 
   return (
@@ -94,7 +104,7 @@ const FrenzyBox = () => {
                 type="text"
                 id="channel"
                 value={channel}
-                onChange={(e) => setChannel(e.target.value)}
+                onChange={setChannelValue}
                 required
               />
             </div>
@@ -104,10 +114,10 @@ const FrenzyBox = () => {
               </FormLabel>
               <Input
                 bg="white"
-                type="duration"
+                type="text" 
                 id="duration"
                 value={duration}
-                onChange={(e) => setDuration(e.target.value)}
+                onChange={setDurationValue}
                 required
               />
             </div>
@@ -133,6 +143,7 @@ const FindFrenzy = () => {
   return (
     <Box>
       <Navbar />
+      <Toaster position="top-center" reverseOrder={false} />
       {isLoggedIn && (
         <Flex h="100vh">
           <FrenzyBox />

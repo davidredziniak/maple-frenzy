@@ -63,7 +63,7 @@ const RegistrationForm = () => {
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     const response = await fetch(
-      "https://maple-frenzy.onrender.com/api/signup",
+      "http://localhost:3001/api/signup",
       {
         method: "POST",
         headers: {

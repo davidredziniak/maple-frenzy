@@ -112,6 +112,7 @@ const Dashboard = () => {
                   <Th color="white">Channel</Th>
                   <Th color="white">Duration (hours)</Th>
                   <Th color="white">Recast Timer</Th>
+                  <Th color="white">Recast</Th>
                 </Tr>
               </Thead>
               <Tbody bg="#353935">
@@ -128,6 +129,7 @@ const Dashboard = () => {
                   <Td color="white">Channel 1</Td>
                   <Td color="white">2 hours</Td>
                   <Td color="white">Ready</Td> 
+                  <Td color="white"><Button></Button></Td>
                 </Tr>
                 <Tr>
                   <Td>

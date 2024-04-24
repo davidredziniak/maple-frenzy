@@ -32,8 +32,8 @@ import {
     const [timeEnd, setTimeEnd] = useState('');
     const [endTimeInput, setEndTimeInput] = useState('');
     const [channelsInput, setChannelsInput] = useState('');
-    const [channels, setChannels] = useState([]);
     const [buyerLimit, setBuyerLimit] = useState(0);
+    const [minuteFlag,setMinuteFlag] = useState(false);
   
     const { accessToken, userId } = useContext(AuthContext);
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -51,42 +51,41 @@ import {
     };
 
     const handleStartTimeChange = (event) => {
-        const time = event.target.value;
-        setStartTimeInput(time);
-        
-        const currentDate = new Date();
-        const newDate = new Date(time);
+      const time = event.target.value;
+      console.log(time);
+      setStartTimeInput(time);
+      if(time.length>=16) setMinuteFlag(true);
+      if(minuteFlag){
+          setMinuteFlag(false)
+          const currentDate = new Date();
+          const newDate = new Date(time);
 
-        if(currentDate >= newDate){
-            errNotification('You cannot choose dates earlier than the date it currently is');
-            // const currentDateTimeString = currentDate.toISOString().slice(0, 16);
-            // event.target.value = currentDateTimeString;
-            // setStartTime(currentDateTimeString);
-            //setStartTime(currentDate.toISOString());
-        }
-        else{
-            const isoDateTimeString = new Date(time).toISOString();
-            setTimeStart(isoDateTimeString);
-        }
+          if(currentDate >= newDate){
+              errNotification('You cannot choose dates earlier than the date it currently is');
+          }
+          else{
+              const isoDateTimeString = new Date(time).toISOString();
+              setTimeStart(isoDateTimeString);
+          }
+      }
     };
 
     const handleEndTimeChange = (event) => {
         const time = event.target.value;
         setEndTimeInput(time);
-
-        const selectedStartDate = new Date(timeStart);
+        if(time.length>=16) setMinuteFlag(true);
+        if(minuteFlag) {
+        setMinuteFlag(false);
+        const selectedStartDate = new Date(startTimeInput);
         const selectedEndDate = new Date(time)
 
         if(selectedStartDate >= selectedEndDate){
             errNotification('You cannot choose dates earlier than the start date');
-            // selectedStartDate.setMinutes(selectedStartDate.getMinutes()+10);
-            // const dateString = selectedStartDate.toISOString().slice(0,16);
-            // event.target.value = dateString;
         }
         else{
             const isoDateString = new Date(time).toISOString();
             setTimeEnd(isoDateString);
-        }
+        }}
     };
     
     const handleSubmit = async (e) => {

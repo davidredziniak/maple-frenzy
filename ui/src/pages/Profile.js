@@ -55,7 +55,7 @@ const ProfileBox = () => {
             </Flex>
             <Flex>
               <Text>
-                Created At:  
+                Created At: 
               </Text>
               <Spacer />
               <Text >
@@ -94,8 +94,8 @@ const Profile = () => {
     if (response.status === 200) {
     updateTradeCount(data.tradeCount);
     updateReputation(data.reputation);
-    updateCreatedAt(new Date(data.createdAt).toUTCString());
-    updateLLI(new Date(data.lastLoggedIn).toUTCString());
+    updateCreatedAt(new Date(data.createdAt).toDateString());
+    updateLLI(new Date(data.lastLoggedIn).toDateString());
     }
   }
   useEffect(() => {

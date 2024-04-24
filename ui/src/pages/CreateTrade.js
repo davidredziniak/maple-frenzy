@@ -85,7 +85,7 @@ import {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-access-token": accessToken,
+          "x-access-token": `${accessToken}`,
         },
         body: JSON.stringify({ price, isoStartTime, isoEndTime, channels, buyerLimit }),
       });

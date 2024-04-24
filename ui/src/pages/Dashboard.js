@@ -28,15 +28,9 @@ const Dashboard = () => {
   };
 
   return (
-    <Box bg="#F8EEDE" p={100}>
+    <Box>
       <Navbar />
-<<<<<<< HEAD
-      <Box>
-        <Box textAlign="center" mb={4}>
-          <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
-            Seller Dashboard
-=======
-      <Box bg="#F8EEDE" p={4}>
+      <Box bg="#F8EEDE" p={100}>
         <Box>
           <Box textAlign="center" mb={4}>
             <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
@@ -116,7 +110,6 @@ const Dashboard = () => {
                 </Tr>
               </Tbody>
             </Table>
->>>>>>> parent of 107298a (Tweak seller dashboard Box)
           </Box>
         </Box>
         <Flex justify="center" mb={4}>

@@ -30,7 +30,7 @@ const Dashboard = () => {
   return (
     <Box>
       <Navbar />
-      <Box bg="#F8EEDE" p={100}>
+      <Box bg="#F8EEDE" p={4}>
         <Box>
           <Box textAlign="center" mb={4}>
             <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>

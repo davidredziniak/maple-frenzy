@@ -5,6 +5,7 @@ import Register from './pages/Register.js';
 import Login from './pages/Login.js';
 import Profile from './pages/Profile.js';
 import Dashboard from './pages/Dashboard.js';
+import CreateTrade from './pages/CreateTrade.js';
 import {useState} from 'react'
 import FindFrenzy from './pages/FindFrenzy.js';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
@@ -21,6 +22,7 @@ function App() {
             <Route path='/Profile' element={<Profile/>} />
             <Route path='/Dashboard' element={<Dashboard/>} />
             <Route path='/Frenzy' element={<FindFrenzy />}/>
+            <Route path='/CreateTrade' element={<CreateTrade />}/>
           </Routes>
         </Router>
       </AuthProvider>

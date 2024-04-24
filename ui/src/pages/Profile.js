@@ -81,6 +81,7 @@ const ProfileBox = () => {
 };
 
 const Profile = () => {
+  const { accessToken, userId, updateCreatedAt, updateLLI, updateReputation, updateTradeCount } = useContext(AuthContext);
   const getData = async() => {
     const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
     method: "GET",

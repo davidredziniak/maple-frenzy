@@ -141,12 +141,14 @@ const FindFrenzy = () => {
   return (
     <Box>
       <Navbar />
-      <Toaster position="top-center" reverseOrder={false} />
-      {isLoggedIn && (
-        <Flex h="100vh">
-          <FrenzyBox />
-        </Flex>
-      )}
+      <Box bg="#F8EEDE" pb={100}>
+        <Toaster position="top-center" reverseOrder={false} />
+        {isLoggedIn && (
+          <Flex h="100vh">
+            <FrenzyBox />
+          </Flex>
+        )}
+      </Box>
     </Box>
   );
 };

@@ -72,8 +72,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateCreatedAt = (newCreatedAt) => {
-    setCreatedAt(newCreateAt);
-    localStorage.setItem("createdAt", newTradeCount);
+    setCreatedAt(newCreatedAt);
+    localStorage.setItem("createdAt", newCreatedAt);
   };
 
   const updateLLI = (newLastLoggedIn) => {

@@ -10,6 +10,7 @@ import {useState} from 'react'
 import FindFrenzy from './pages/FindFrenzy.js';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './pages/AuthContext.js';
+
 function App() {
   return (
     <ChakraProvider>

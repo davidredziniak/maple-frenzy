@@ -50,7 +50,7 @@ const RegistrationForm = () => {
 
   const navigate = useNavigate();
   const navigateRedirect = () => {
-    navigate("/Redirect");
+    navigate("/");
   };
 
   const {

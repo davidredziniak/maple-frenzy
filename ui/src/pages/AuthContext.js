@@ -19,14 +19,37 @@ export const AuthProvider = ({ children }) => {
     // Retrieve isLoggedIn value from localStorage on component mount
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
     const storedUsername = localStorage.getItem("username");
+    const storedTradeCount = localStorage.getItem("tradeCount");
+    const storedReputation = localStorage.getItem("reputation");
+    const storedCreatedAt = localStorage.getItem("createdAt");
+    const storedLastLoggedIn = localStorage.getItem("lastLoggedIn");
+
     if (storedIsLoggedIn !== null) {
       setIsLoggedIn(JSON.parse(storedIsLoggedIn));
     }
+
     if (storedUsername !== null) {
       setUsername(storedUsername);
     }
-    // If theefresh token, try to get access token
-  }, []);
+
+    // Set other values if they exist in localStorage
+    if (storedTradeCount !== null) {
+      setTradeCount(storedTradeCount);
+    }
+
+    if (storedReputation !== null) {
+      setReputation(storedReputation);
+    }
+
+    if (storedCreatedAt !== null) {
+      setCreatedAt(storedCreatedAt);
+    }
+
+    if (storedLastLoggedIn !== null) {
+      setLastLoggedIn(storedLastLoggedIn);
+    }
+      // If theefresh token, try to get access token
+    }, []);
 
   const toggleLogin = () => {
     const newIsLoggedIn = !isLoggedIn;

@@ -26,7 +26,6 @@ const Redirect = () => {
         updateLLI(data.lastLoggedIn);
         }
         await delay(1000);
-        navigateHome();
     }
   
 

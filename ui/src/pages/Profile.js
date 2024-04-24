@@ -81,6 +81,25 @@ const ProfileBox = () => {
 };
 
 const Profile = () => {
+  const getData = async() => {
+    const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "x-access-token": `${accessToken}`
+    },
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+    updateTradeCount(data.tradeCount);
+    updateReputation(data.reputation);
+    updateCreatedAt(data.createdAt);
+    updateLLI(data.lastLoggedIn);
+    }
+  }
+  useEffect(() => {
+    getData();
+  }, []); 
   return (
     <Box >
       {/* Navigation Bar */}

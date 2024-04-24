@@ -22,7 +22,6 @@ function App() {
             <Route path='/Profile' element={<Profile/>} />
             <Route path='/Dashboard' element={<Dashboard/>} />
             <Route path='/Frenzy' element={<FindFrenzy />}/>
-            <Route path='/Redirect' element={<Redirect />}/>
           </Routes>
         </Router>
       </AuthProvider>

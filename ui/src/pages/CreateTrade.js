@@ -31,7 +31,8 @@ import {
     const [startTimeInput, setStartTimeInput] = useState('');
     const [endTime, setEndTime] = useState('');
     const [endTimeInput, setEndTimeInput] = useState('');
-    const [channels, setChannels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
+    const [channels, setChannels] = useState([]);
+    const [channelsInput, setChannelsInput] = useState('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30');
     const [buyerLimit, setBuyerLimit] = useState(0);
   
     const { accessToken, userId } = useContext(AuthContext);
@@ -76,8 +77,16 @@ import {
             const isoDateString = new Date(time).toISOString();
             setEndTime(isoDateString);
         }
-      };
+    };
     
+    const handleChannelschange = (event) =>{
+        const string = event.target.value;
+        setChannelsInput(string);
+
+        const channelsArray = string.split(',').map(str => parseInt(str));
+        setChannels(channelsArray);
+    }
+
     const handleSubmit = async (e) => {
       e.preventDefault();
   
@@ -158,16 +167,16 @@ import {
                 <p>endtime: {endTime}</p>
               </div>
               <div>
-                <FormLabel mt="20px" color="white" htmlFor="channels">
+                <FormLabel mt="20px" color="white" htmlFor="channelsInput">
                   Channels:
                 </FormLabel>
                 <Input
                   bg="white"
                   type="text" 
                   size="lg"
-                  id="channels"
-                  value={channels}
-                  onChange={(e) => setChannels(e.target.value)}
+                  id="channelsInput"
+                  value={channelsInput}
+                  onChange={handleChannelschange}
                   required
                 />
                 <p>channels: {channels}</p>

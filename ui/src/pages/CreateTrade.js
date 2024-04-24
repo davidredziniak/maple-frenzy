@@ -55,7 +55,7 @@ import {
         }
         else{
             const isoDateTimeString = new Date(time).toISOString();
-            setIsoStartTime(isoDateTimeString);
+            setStartTime(isoDateTimeString);
         }
     };
 

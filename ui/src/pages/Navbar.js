@@ -27,6 +27,9 @@ const Navbar = () => {
   const navigateSell = () => {
     navigate("/CreateFrenzy");
   };
+  const navigateDashboard = () => {
+    navigate("/Dashboard");
+  };
 
   const { isLoggedIn, toggleLogout, username, userId, accessToken, refreshToken } = useContext(AuthContext);
   return (
@@ -58,6 +61,7 @@ const Navbar = () => {
           <MenuList color="black">
             <MenuItem onClick={navigateFrenzy}>Find Frenzy</MenuItem>
             <MenuItem onClick={navigateSell}>Sell Frenzy</MenuItem>
+            <MenuItem onClick={navigateDashboard}>Dashboard</MenuItem>
             <MenuItem onClick={navigateProfile}>Profile</MenuItem>
             <MenuItem onClick={toggleLogout}>Logout</MenuItem>
           </MenuList>

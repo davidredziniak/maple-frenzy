@@ -41,13 +41,13 @@ const Navbar = () => {
       color="white"
       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.7)"
     >
-      <Link as={RouterLink} to="/" mr={6}>
+      <Link as={RouterLink} to="/" mr={6} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         Home
       </Link>
-      <Link as={RouterLink} to="/about" mr={6}>
+      <Link as={RouterLink} to="/#about" mr={6} onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}>
         About Us
       </Link>
-      <Link as={RouterLink} to="/contact" mr={6}>
+      <Link as={RouterLink} to="/#contact" mr={6} onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
         Contact
       </Link>
       {isLoggedIn ? (

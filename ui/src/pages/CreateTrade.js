@@ -27,9 +27,9 @@ import {
   
   const CreateTradeBox = () => {
     const [price, setPrice] = useState(0);
-    const [startTime, setStartTime] = useState('');
+    const [timeStart, setTimeStart] = useState('');
     const [startTimeInput, setStartTimeInput] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [timeEnd, setTimeEnd] = useState('');
     const [endTimeInput, setEndTimeInput] = useState('');
     const [channels, setChannels] = useState([]);
     const [channelsInput, setChannelsInput] = useState('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30');
@@ -56,7 +56,7 @@ import {
         }
         else{
             const isoDateTimeString = new Date(time).toISOString();
-            setStartTime(isoDateTimeString);
+            setTimeStart(isoDateTimeString);
         }
     };
 
@@ -64,7 +64,7 @@ import {
         const time = event.target.value;
         setEndTimeInput(time);
 
-        const selectedStartDate = new Date(startTime);
+        const selectedStartDate = new Date(timeStart);
         const selectedEndDate = new Date(time)
 
         if(selectedStartDate >= selectedEndDate){
@@ -75,7 +75,7 @@ import {
         }
         else{
             const isoDateString = new Date(time).toISOString();
-            setEndTime(isoDateString);
+            setTimeEnd(isoDateString);
         }
     };
     
@@ -83,13 +83,18 @@ import {
     const handleSubmit = async (e) => {
       e.preventDefault();
       setChannels(channelsInput.split(',').map(str => parseInt(str)));
+      console.log(channels);
+      console.log(price);
+      console.log(timeStart);
+      console.log(timeEnd);
+      console.log(buyerLimit);
       const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-access-token": `${accessToken}`,
         },
-        body: JSON.stringify({ price, startTime, endTime, channels, buyerLimit }),
+        body: JSON.stringify({ price, timeStart, timeEnd, channels, buyerLimit }),
       });
       const data = await response.json();
       if (response.status === 200) {
@@ -142,7 +147,7 @@ import {
                   required
                 />
                 <p>starttimeinput: {startTimeInput}</p>
-                <p>starttime: {startTime}</p>
+                <p>starttime: {timeStart}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
@@ -157,7 +162,7 @@ import {
                   required
                 />
                 <p>entimeinput: {endTimeInput}</p>
-                <p>endtime: {endTime}</p>
+                <p>endtime: {timeEnd}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="channelsInput">

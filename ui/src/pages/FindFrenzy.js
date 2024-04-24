@@ -181,7 +181,7 @@ const FindFrenzy = () => {
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
          {isLoggedIn && (
-          <Flex h="100vh" bgImage={bgImg} bgRepeat="no-repeat" bgPosition="center" backgroundSize="100%">
+          <Flex h="100vh" bg="#353935" bgRepeat="no-repeat" bgPosition="center" backgroundSize="100%">
             <FrenzyBox />{/*move back in between flex*/ }
           </Flex>
         )} 

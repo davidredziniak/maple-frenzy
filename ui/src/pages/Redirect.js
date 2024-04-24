@@ -4,8 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Redirect = () => {
-
+    const navigate = useNavigate();
+    const navigateHome = () => {
+      navigate("/");
+    };
     const { accessToken, userId, updateCreatedAt, updateLLI, updateReputation, updateTradeCount } = useContext(AuthContext);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     const getData = async() => {
         const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
         method: "GET",
@@ -22,6 +26,7 @@ const Redirect = () => {
         updateLLI(data.lastLoggedIn);
         }
         await delay(1000);
+        navigateHome();
     }
   
 

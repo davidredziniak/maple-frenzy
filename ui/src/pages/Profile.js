@@ -7,7 +7,14 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
 
 const ProfileBox = () => {
+  
+  
   const { username, tradeCount, reputation, createdAt, lastLoggedIn } = useContext(AuthContext);
+  // const { username } = useContext(AuthContext);
+  // let tradeCount='0';
+  // let reputation='0';
+  // let createdAt='2024-04-24T00:22:47.112Z'; 
+  // let lastLoggedIn='2024-04-24T00:24:40.177Z';
   return (
     <Box pt="10vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
       <Center>
@@ -90,6 +97,7 @@ const Profile = () => {
       updateCreatedAt(data.createdAt);
       updateLLI(data.lastLoggedIn);
     }
+    await delay(1000);
   }
   
 
@@ -104,16 +112,14 @@ const Profile = () => {
       {/* Content Section */}
       <Flex h="100vh"  textColor="white">
         
-        <ProfileBox size="150px"/>
+        <ProfileBox size="250px"/>
       </Flex>
     </Box>
   );
 };
 
 export default Profile;
-{/* <Box h="20vh" pl="5vw" boxShadow="base" rounded="md">
-          <Text fontFamily="verdana">User Info</Text>
-      </Box>
-      <Box h="20vh" pl="5vw" boxShadow="base" rounded="md">
-        <Text fontFamily="verdana">Change Password</Text>
-      </Box>       */}
+  // let tradeCount='0';
+  // let reputation='0';
+  // let createdAt='2024-04-24T00:22:47.112Z'; 
+  // let lastLoggedIn='2024-04-24T00:24:40.177Z';

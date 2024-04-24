@@ -43,17 +43,19 @@ exports.create = (req, res) => {
     });
 
   // Check if channels list is valid
+  /*
   if (req.body.channels.some((i) => !Number.isInteger(i)))
     return res
       .status(400)
       .send({ error: "The list of channels requested are invalid." });
+  */
 
   return Trade.create({
     sellerId: req.userId,
     timeStart: req.body.timeStart,
     timeEnd: req.body.timeEnd,
     price: req.body.price,
-    channels: [req.body.channels],
+    channels: req.body.channels,
     buyerLimit: req.body.buyerLimit,
     buyerAvailable: req.body.buyerLimit,
     inProgress: false,

@@ -1,6 +1,7 @@
 import React, { useContext,useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { withDelay } from '@chakra-ui/react';
 
 
 const Redirect = () => {
@@ -21,7 +22,7 @@ const Redirect = () => {
         updateCreatedAt(data.createdAt);
         updateLLI(data.lastLoggedIn);
         }
-        await delay(1000);
+        await withDelay(1000);
     }
   
 

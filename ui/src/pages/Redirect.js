@@ -2,49 +2,35 @@ import React, { useContext,useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const dummyResponse = {
-    ok: true,
-    status: 200,
-    json: {
-        id: 3,
-        username: "maplefrenzy_admin",
-        tradeCount: 0,
-        reputation: 0,
-        createdAt: "2024-03-21T16:17:21.768Z",
-        lastLoggedIn: "2024-03-21T16:17:21.768Z"
-    }
-  };
 
 const Redirect = () => {
-    const { isLoggedIn, toggleLogin, changeUser,username } = useContext(AuthContext);
-    // useEffect(() => {
-    //     //todo: create api call for user
-    //     const response = Promise.resolve(dummyResponse);
-    //     response.then(data => {
-    //       const { json } = data;
-    //       const { username } = json;
-    //       changeUser(username);
-    //       //console.log(username);
-    //     });
-    //   }, []);
-    const navigate = useNavigate();
-    const navigateHome = () => {
-        navigate('/');
-    };
 
-    
-      // Call toggleLogin on component mount
-    useEffect(() => {
-        toggleLogin();
-    }, [toggleLogin]);
+    const { accessToken, userId, updateCreatedAt, updateLLI, updateReputation, updateTradeCount } = useContext(AuthContext);
+    const getData = async() => {
+        const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "x-access-token": `${accessToken}`
+        },
+        });
+        const data = await response.json();
+        if (response.status === 200) {
+        updateTradeCount(data.tradeCount);
+        updateReputation(data.reputation);
+        updateCreatedAt(data.createdAt);
+        updateLLI(data.lastLoggedIn);
+        }
+        await delay(1000);
+    }
+  
 
-    
-    useEffect(() => {
-        
-        navigateHome();
-    }, [isLoggedIn,username]); 
-
-    return (<div>Redirect page</div>);
+  useEffect(() => {
+    getData();
+  }, []); 
+    return (
+        <div>Redirecting..</div>
+    );
 };
 
 export default Redirect;

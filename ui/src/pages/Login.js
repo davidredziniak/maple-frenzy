@@ -49,8 +49,8 @@ const RegistrationForm = () => {
   const sucNotification = (message) => toast.success(message);
 
   const navigate = useNavigate();
-  const navigateHome = () => {
-    navigate("/");
+  const navigateRedirect = () => {
+    navigate("/Redirect");
   };
 
   const {
@@ -85,7 +85,7 @@ const RegistrationForm = () => {
       updateAccessToken(data.accessToken);
       updateRefreshToken(data.refreshToken);
       await delay(1000);
-      navigateHome();
+      navigateRedirect();
     } else {
       errNotification(data.message);
     }

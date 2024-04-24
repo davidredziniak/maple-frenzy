@@ -83,6 +83,7 @@ import {
     const handleSubmit = async (e) => {
       e.preventDefault();
       setChannels(channelsInput.split(',').map(str => parseInt(str)));
+      console.log(`${channels} \n${price} \n${startTime} \n${endTime} \n${buyerLimit}`)
       const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
         method: "POST",
         headers: {

@@ -94,8 +94,8 @@ const Profile = () => {
     if (response.status === 200) {
     updateTradeCount(data.tradeCount);
     updateReputation(data.reputation);
-    updateCreatedAt(data.createdAt);
-    updateLLI(data.lastLoggedIn);
+    updateCreatedAt(new Date(data.createdAt).toUTCString());
+    updateLLI(new Date(data.lastLoggedIn).toUTCString());
     }
   }
   useEffect(() => {

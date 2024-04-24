@@ -24,7 +24,9 @@ const Landing = () => {
 
       {/* About Us Section */}
       <Flex id="about" bg="#9999cc" justify="flex-end" pt={20} pb={100} borderBottom="4px solid #353935" borderTop="4px solid #353935">
-        <img src={Leaves} alt="Leaves!" />
+        <Box>
+          <img src={Leaves} alt="Leaves!" />
+        </Box>
         <Box ml={8} mr={8} mt={8} p={8} bg="#353935" borderRadius="20" w="50%" border="1px solid">
           <Text bg="#353935" fontSize={32} textShadow="1px 2px #000000" color="white" pt={4} pl={4} textAlign="center">About Us</Text>
           <Text bg="#353935" fontSize={18} color="white" pt={2} pl={4} textAlign="center">

@@ -79,17 +79,10 @@ import {
         }
     };
     
-    const handleChannelschange = (event) =>{
-        const string = event.target.value;
-        setChannelsInput(string);
-
-        const channelsArray = string.split(',').map(str => parseInt(str));
-        setChannels(channelsArray);
-    }
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
+      setChannels(channelsInput.split(',').map(str => parseInt(str)));
       const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
         method: "POST",
         headers: {
@@ -176,7 +169,7 @@ import {
                   size="lg"
                   id="channelsInput"
                   value={channelsInput}
-                  onChange={handleChannelschange}
+                  onChange={e => setChannelsInput(e.target.value)}
                   required
                 />
                 <p>channels: {channels}</p>

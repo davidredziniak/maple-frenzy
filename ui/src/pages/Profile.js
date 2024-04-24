@@ -6,8 +6,8 @@ import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
 
-const ProfileBox = ({tc, r, ca, lli}) => {
-  const { username } = useContext(AuthContext);
+const ProfileBox = () => {
+  const { username, tradeCount, reputation, createdAt, lastLoggedIn } = useContext(AuthContext);
   return (
     <Box pt="10vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
       <Center>
@@ -34,7 +34,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
               <Spacer />
               <Text >
-                {tc}
+                {tradeCount}
               </Text>
             </Flex>
             <Flex>
@@ -43,7 +43,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
               <Spacer />
               <Text >
-                {r}
+                {reputation}
               </Text>
             </Flex>
             <Flex>
@@ -52,7 +52,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
               <Spacer />
               <Text >
-                {ca}
+                {createdAt}
               </Text>
             </Flex>
             <Flex>
@@ -61,7 +61,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
             </Text>
             <Spacer />
             <Text >
-              {lli}
+              {lastLoggedIn}
             </Text>
           </Flex>
           </CardBody>
@@ -74,11 +74,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
 };
 
 const Profile = () => {
-  const { accessToken, userId } = useContext(AuthContext);
-  const [tradeCount,setTradeCount] = useState('');
-  const [reputation,setReputation] = useState('');
-  const [createdAt,setCreatedAt] = useState('');
-  const [lastLoggedIn,setLastLoggedIn] = useState('');
+  const { accessToken, userId, updateCreatedAt, updateLLI, updateReputation, updateTradeCount } = useContext(AuthContext);
   const getData = async() => {
     const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
       method: "GET",
@@ -89,10 +85,10 @@ const Profile = () => {
     });
     const data = await response.json();
     if (response.status === 200) {
-      setTradeCount(data.tradeCount);
-      setReputation(data.reputation);
-      setCreatedAt(data.createdAt);
-      setLastLoggedIn(data.lastLoggedIn);
+      updateTradeCount(data.tradeCount);
+      updateReputation(data.reputation);
+      updateCreatedAt(data.createdAt);
+      updateLLI(data.lastLoggedIn);
     }
   }
   
@@ -108,7 +104,7 @@ const Profile = () => {
       {/* Content Section */}
       <Flex h="100vh"  textColor="white">
         
-        <ProfileBox size="150px" tc={tradeCount} r={reputation} ca={createdAt} lli={lastLoggedIn}/>
+        <ProfileBox size="150px"/>
       </Flex>
     </Box>
   );

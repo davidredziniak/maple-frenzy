@@ -10,6 +10,10 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
+  const [tradeCount,setTradeCount] = useState('');
+  const [reputation,setReputation] = useState('');
+  const [createdAt,setCreatedAt] = useState('');
+  const [lastLoggedIn,setLastLoggedIn] = useState('');
 
   useEffect(() => {
     // Retrieve isLoggedIn value from localStorage on component mount
@@ -57,6 +61,26 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("refreshToken", token);
   };
 
+  const updateTradeCount = (newTradeCount) => {
+    setTradeCount(newTradeCount);
+    localStorage.setItem("tradeCount", newTradeCount);
+  };
+
+  const updateReputation = (newReputation) => {
+    setReputation(newReputation);
+    localStorage.setItem("reputation", newReputation);
+  };
+
+  const updateCreatedAt = (newCreatedAt) => {
+    setCreatedAt(newCreateAt);
+    localStorage.setItem("createdAt", newTradeCount);
+  };
+
+  const updateLLI = (newLastLoggedIn) => {
+    setLastLoggedIn(newLastLoggedIn);
+    localStorage.setItem("lastLoggedIn", newLastLoggedIn);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -65,12 +89,20 @@ export const AuthProvider = ({ children }) => {
         userId,
         accessToken,
         refreshToken,
+        tradeCount,
+        reputation,
+        createdAt,
+        lastLoggedIn,
         toggleLogin,
         toggleLogout,
         updateUsername,
         updateUserId,
         updateAccessToken,
         updateRefreshToken,
+        updateTradeCount,
+        updateReputation,
+        updateCreatedAt,
+        updateLLI
       }}
     >
       {children}

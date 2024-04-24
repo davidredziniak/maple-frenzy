@@ -28,7 +28,7 @@ import {
   const CreateTradeBox = () => {
     const [price, setPrice] = useState(0);
     const [startTime, setStartTime] = useState('');
-    const [startTimeinput, setStartTimeInput] = useState('');
+    const [startTimeInput, setStartTimeInput] = useState('');
     const [endTime, setEndTime] = useState('');
     const [endTimeInput, setEndTimeInput] = useState('');
     const [channels, setChannels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
@@ -135,7 +135,7 @@ import {
                   bg="white"
                   type="datetime-local"
                   id="startTimeInput"
-                  value={startTimeinput}
+                  value={startTimeInput}
                   onChange={handleStartTimeChange}
                   required
                 />

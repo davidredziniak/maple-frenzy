@@ -78,66 +78,12 @@ const Dashboard = () => {
     <Box>
       <Navbar />
       <Box bg="#F8EEDE" p={4}>
-        <Box>
+        <Box h="80vh">
           <Box textAlign="center" mb={4}>
             <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
               Seller Dashboard
             </Box>
             <Box mt={8} p={4}>
-        <Box bg="#353935" mx="auto" mb="50px" borderWidth="1px" borderColor="#93d7bf" borderRadius="md" p={10}>
-          <Box fontSize="xl" color="white" mb={2}>
-            Create Trade
-          </Box>
-          <Flex mb={4}>
-            <Box mr={4}>
-              <Input bg="white"
-                placeholder="Price"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box mr={4}>
-              <Input bg="white"
-                placeholder="Start Time"
-                name="timeStart"
-                value={formData.timeStart}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box mr={4}>
-              <Input bg="white"
-                placeholder="End Time"
-                name="timeEnd"
-                value={formData.timeEnd}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box mr={4}>
-              <Input bg="white"
-                placeholder="Channels"
-                name="channels"
-                value={formData.channels}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box mr={4}>
-              <Input bg="white"
-                placeholder="Buyer Limit"
-                name="buyerLimit"
-                value={formData.buyerLimit}
-                onChange={handleChange}
-              />
-            </Box>
-          </Flex>
-          <Button
-            colorScheme="teal"
-            bg="#93d7bf"
-            onClick={handleSubmit}
-          >
-            Create Trade
-          </Button>
-        </Box>
       </Box>
           </Box>
           <Flex justify="center" mb={4}>
@@ -181,7 +127,7 @@ const Dashboard = () => {
                   </Td>
                   <Td color="white">Channel 1</Td>
                   <Td color="white">2 hours</Td>
-                  <Td color="white">Ready</Td>
+                  <Td color="white">Ready</Td> 
                 </Tr>
                 <Tr>
                   <Td>

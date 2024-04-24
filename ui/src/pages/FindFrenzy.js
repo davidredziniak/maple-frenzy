@@ -1,10 +1,4 @@
-import {
-  stackLeft,
-  stackRight,
-  loginBox,
-  loginText,
-  signInButton,
-} from "../config";
+import { signInButton } from "../config";
 import React, { useState, useContext } from "react";
 import {
   Text,
@@ -17,49 +11,89 @@ import {
   Input,
   FormLabel,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import toast, { Toaster } from "react-hot-toast";
-
 import { AuthContext } from "./AuthContext";
-
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 const FrenzyBox = () => {
   const [inGameUsername, setInGameUsername] = useState("");
   const [channel, setChannel] = useState("");
   const [duration, setDuration] = useState("");
 
-  const { accessToken, userId } = useContext(AuthContext);
+  const { accessToken, userId, updateInGameName } = useContext(AuthContext);
 
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const setDurationValue = (e) => {
     const value = e.target.value.replace(/\D/g, "");
-    setDuration(e.target.value);
+    setDuration(value);
   };
 
   const setChannelValue = (e) => {
     const value = e.target.value.replace(/\D/g, "");
     setChannel(value);
   };
-  
+
+  const navigate = useNavigate();
+  const navigateRedirect = (sellerName, tradeId, price, start, end) => {
+    navigate("/JoinFrenzy", {
+      state: {
+        seller: sellerName,
+        id: tradeId,
+        price: price,
+        start: start,
+        end: end,
+        buyerGameName: inGameUsername,
+        duration,
+        channel,
+      },
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/searchmarket", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": accessToken,
-      },
-      body: JSON.stringify({ channel, duration }),
-    });
+    if(inGameUsername == ""){
+      errNotification("You must enter your in game username.");
+      return;
+    }
+
+    if(channel == ""){
+      errNotification("You must enter a channel number.");
+      return;
+    }
+
+    if(duration == ""){
+      errNotification("You must enter a time of duration in hours.");
+      return;
+    }
+    const response = await fetch(
+      "https://maple-frenzy.onrender.com/api/trade/searchmarket",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": accessToken,
+        },
+        body: JSON.stringify({ channel, duration }),
+      }
+    );
     const data = await response.json();
     if (response.status === 200) {
       sucNotification(data.message);
-      // Reset form fields
+      await delay(1000);
+      updateInGameName(inGameUsername);
+      navigateRedirect(
+        data.seller.username,
+        data.trade.id,
+        data.trade.price,
+        data.trade.timeStart,
+        data.trade.timeEnd
+      );
     } else {
       errNotification(data.message);
     }
@@ -112,7 +146,7 @@ const FrenzyBox = () => {
               </FormLabel>
               <Input
                 bg="white"
-                type="text" 
+                type="text"
                 id="duration"
                 value={duration}
                 onChange={setDurationValue}
@@ -137,7 +171,7 @@ const FrenzyBox = () => {
 };
 
 const FindFrenzy = () => {
-  const {isLoggedIn} = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <Box>
       <Navbar />

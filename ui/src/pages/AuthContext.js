@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [reputation,setReputation] = useState('');
   const [createdAt,setCreatedAt] = useState('');
   const [lastLoggedIn,setLastLoggedIn] = useState('');
+  const [inGameName, setInGameName] = useState('');
 
   useEffect(() => {
     // Retrieve isLoggedIn value from localStorage on component mount
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }) => {
     const storedReputation = localStorage.getItem("reputation");
     const storedCreatedAt = localStorage.getItem("createdAt");
     const storedLastLoggedIn = localStorage.getItem("lastLoggedIn");
+    const inGameName = localStorage.getItem("inGameName");
 
     if (storedIsLoggedIn !== null) {
       setIsLoggedIn(JSON.parse(storedIsLoggedIn));
@@ -104,6 +106,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("lastLoggedIn", newLastLoggedIn);
   };
 
+  const updateInGameName = (newInGameName) => {
+    setInGameName(newInGameName);
+    localStorage.setItem("inGameName", newInGameName)
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -116,6 +123,7 @@ export const AuthProvider = ({ children }) => {
         reputation,
         createdAt,
         lastLoggedIn,
+        inGameName,
         toggleLogin,
         toggleLogout,
         updateUsername,
@@ -125,6 +133,7 @@ export const AuthProvider = ({ children }) => {
         updateTradeCount,
         updateReputation,
         updateCreatedAt,
+        updateInGameName,
         updateLLI
       }}
     >

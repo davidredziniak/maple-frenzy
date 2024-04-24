@@ -38,6 +38,7 @@ exports.addUserToQueue = (req, res) => {
   TradeSlot.create({
     tradeId: req.trade.id,
     userId: req.userId,
+    gameName: req.body.gameName,
     channel: req.body.channel,
     duration: req.body.duration,
     queuePos: pos,
@@ -48,7 +49,7 @@ exports.addUserToQueue = (req, res) => {
         .then(() => {
           return res
             .status(200)
-            .send({ message: "Successfully joined the trade." });
+            .send({ message: "Successfully joined the trade.", queuePos: pos });
         })
         .catch((error) => res.status(400).send(error));
     })

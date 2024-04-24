@@ -324,7 +324,7 @@ exports.searchMarket = (req, res) => {
 
   db.sequelize
     .query(
-      "SELECT * FROM trades WHERE abs(extract(epoch from time_end - time_start)/3600) >= :duration AND (:channel = ANY(channels)) AND buyer_avail > 0 ORDER BY price ASC LIMIT 1",
+      "SELECT * FROM trades WHERE abs(extract(epoch from time_end - time_start)/3600) >= :duration AND (:channel = ANY(channels)) AND buyer_avail > 0 AND in_progress is false ORDER BY price ASC LIMIT 1",
       {
         model: Trade,
         mapToModel: true,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   Button,
@@ -16,8 +16,10 @@ import Navbar from "./Navbar";
 import { CopyIcon } from '@chakra-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Footer from './Footer';
+import { AuthContext } from "./AuthContext";
 
 const Dashboard = () => {
+  const { accessToken } = useContext(AuthContext);
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
   const [formData, setFormData] = useState({
@@ -44,7 +46,7 @@ const Dashboard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-access-token': 'YOUR_ACCESS_TOKEN', // Replace with actual access token
+          'x-access-token': accessToken, // Replace with actual access token
         },
         body: JSON.stringify(requestBody),
       });

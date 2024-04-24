@@ -11,6 +11,7 @@ import {
   Flex,
   Spinner,
 } from '@chakra-ui/react';
+import Navbar from "./Navbar";
 import { CopyIcon } from '@chakra-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 

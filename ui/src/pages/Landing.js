@@ -1,7 +1,7 @@
 import { Text, Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../img/hero.png';
-import Laves from '../img/landing-leaves.png';
+import Leaves from '../img/landing-leaves.png';
 import Navbar from './Navbar';
 import Footer from './Footer';
 

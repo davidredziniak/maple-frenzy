@@ -16,7 +16,7 @@ const ProfileBox = () => {
   // let createdAt='2024-04-24T00:22:47.112Z'; 
   // let lastLoggedIn='2024-04-24T00:24:40.177Z';
   return (
-    <Box pt="10vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
+    <Box pt="12vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
       <Center>
       <Stack>
         <Center>
@@ -55,7 +55,7 @@ const ProfileBox = () => {
             </Flex>
             <Flex>
               <Text>
-                Created At:  
+                Created At: 
               </Text>
               <Spacer />
               <Text >
@@ -64,7 +64,7 @@ const ProfileBox = () => {
             </Flex>
             <Flex>
             <Text>
-              Last Log In:  
+              Last Log In: 
             </Text>
             <Spacer />
             <Text >

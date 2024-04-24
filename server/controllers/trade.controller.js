@@ -230,7 +230,9 @@ exports.findById = (req, res) => {
               result.forEach((record) => {
                 slots.push({
                   userId: record.userId,
+                  inGameName: record.gameName,
                   duration: record.duration,
+                  channel: record.channel,
                   pos: record.queuePos,
                 });
               });

@@ -43,14 +43,17 @@ const WaitingBox = () => {
   const handleLeave = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/leave", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": accessToken,
-      },
-      body: JSON.stringify({ tradeId: location.state.id}),
-    });
+    const response = await fetch(
+      "https://maple-frenzy.onrender.com/api/trade/leave",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": accessToken,
+        },
+        body: JSON.stringify({ tradeId: location.state.id }),
+      }
+    );
     const data = await response.json();
     if (response.status === 200) {
       sucNotification(data.message);
@@ -60,12 +63,7 @@ const WaitingBox = () => {
     } else {
       errNotification(data.error);
     }
-  };  
-
-  const handleGoBack = async (e) => {
-    navigate('/Frenzy');
   };
-
 
   return (
     <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
@@ -81,19 +79,19 @@ const WaitingBox = () => {
           bg="#353935"
           rounded="md"
         >
-          <Text pl=".5vw" color='white' fontFamily="verdana" fontSize="15px">
-          Seller: {location.state.seller}
-        </Text>
-        <Text pl=".5vw" color='white'fontFamily="verdana" fontSize="15px">
-          Price:  {location.state.price}
-        </Text>
-        <Text pl=".5vw" color='white' fontFamily="verdana" fontSize="15px">
-          Start Time:  {getLocalStartTime(location.state.start)}
-        </Text>
-        <Text pl=".5vw" color='white' fontFamily="verdana" fontSize="15px">
-          You are {location.state.position} in queue.
-        </Text>
-        <Button
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
+            Seller: {location.state.seller}
+          </Text>
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
+            Price: {location.state.price}
+          </Text>
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
+            Start Time: {getLocalStartTime(location.state.start)}
+          </Text>
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
+            You are {location.state.position} in queue.
+          </Text>
+          <Button
             mt="30px"
             bg="#93d7bf"
             color="#353935"
@@ -102,7 +100,7 @@ const WaitingBox = () => {
             onClick={handleLeave}
           >
             Leave Frenzy
-          </Button>  
+          </Button>
         </Box>
       </Stack>
     </Box>
@@ -110,7 +108,7 @@ const WaitingBox = () => {
 };
 
 const WaitingPage = () => {
-  const {isLoggedIn} = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <Box>
       <Navbar />

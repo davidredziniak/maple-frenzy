@@ -24,8 +24,8 @@ const Dashboard = () => {
   const [showReloadIcon, setShowReloadIcon] = useState(false);
   const [formData, setFormData] = useState({
     price: '',
-    startTime: '',
-    endTime: '',
+    timeStart: '',
+    timeEnd: '',
     channels: '',
     buyerLimit: '',
   });
@@ -97,16 +97,16 @@ const Dashboard = () => {
             <Box mr={4}>
               <Input bg="white"
                 placeholder="Start Time"
-                name="startTime"
-                value={formData.startTime}
+                name="timeStart"
+                value={formData.timeStart}
                 onChange={handleChange}
               />
             </Box>
             <Box mr={4}>
               <Input bg="white"
                 placeholder="End Time"
-                name="endTime"
-                value={formData.endTime}
+                name="timeEnd"
+                value={formData.timeEnd}
                 onChange={handleChange}
               />
             </Box>

@@ -45,12 +45,13 @@ import {
 
         const currentDate = new Date();
         const newDate = new Date(time);
+
         if(currentDate >= newDate){
             errNotification('You cannot choose dates earlier than the date it currently is');
-            const currentDateTimeString = currentDate.toISOString().slice(0, 16);
-            event.target.value = currentDateTimeString;
-            setStartTime(currentDateTimeString);
-            setIsoStartTime(currentDate.toISOString());
+            // const currentDateTimeString = currentDate.toISOString().slice(0, 16);
+            // event.target.value = currentDateTimeString;
+            // setStartTime(currentDateTimeString);
+            //setStartTime(currentDate.toISOString());
         }
         else{
             const isoDateTimeString = new Date(time).toISOString();
@@ -60,21 +61,19 @@ import {
 
     const handleEndTimeChange = (event) => {
         const time = event.target.value;
-        setEndTime(time)
 
         const selectedStartDate = new Date(startTime);
         const selectedEndDate = new Date(time)
 
         if(selectedStartDate >= selectedEndDate){
             errNotification('You cannot choose dates earlier than the start date');
-            selectedStartDate.setMinutes(selectedStartDate.getMinutes()+10);
-            const dateString = selectedStartDate.toISOString().slice(0,16);
-            event.target.value = dateString;
-            setEndTime(time);
+            // selectedStartDate.setMinutes(selectedStartDate.getMinutes()+10);
+            // const dateString = selectedStartDate.toISOString().slice(0,16);
+            // event.target.value = dateString;
         }
         else{
             const isoDateString = new Date(time).toISOString();
-            setIsoEndTime(isoDateString);
+            setEndTime(isoDateString);
         }
       };
     
@@ -170,6 +169,7 @@ import {
                   onChange={(e) => setChannels(e.target.value)}
                   required
                 />
+                <p>channels: {channels}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="buyerLimit">
@@ -183,6 +183,7 @@ import {
                   onChange={(e) => setBuyerLimit(parseInt(e.target.value) || 0)}
                   required
                 />
+                <p>buyerlimit: {buyerLimit}</p>
               </div>
               <Button
                 mt="30px"

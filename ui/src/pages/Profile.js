@@ -55,7 +55,7 @@ const ProfileBox = () => {
             </Flex>
             <Flex>
               <Text>
-                Created At: 
+                Created At:  
               </Text>
               <Spacer />
               <Text >

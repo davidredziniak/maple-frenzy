@@ -28,9 +28,9 @@ import {
   const CreateTradeBox = () => {
     const [price, setPrice] = useState(0);
     const [startTime, setStartTime] = useState('');
-    const [isoStartTime, setIsoStartTime] = useState('');
+    const [startTimeinput, setStartTimeInput] = useState('');
     const [endTime, setEndTime] = useState('');
-    const [isoEndTime, setIsoEndTime] = useState('');
+    const [endTimeInput, setEndTimeInput] = useState('');
     const [channels, setChannels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
     const [buyerLimit, setBuyerLimit] = useState(0);
   
@@ -41,8 +41,8 @@ import {
   
     const handleStartTimeChange = (event) => {
         const time = event.target.value;
-        setStartTime(time);
-
+        setStartTimeInput(time);
+        
         const currentDate = new Date();
         const newDate = new Date(time);
 
@@ -61,6 +61,7 @@ import {
 
     const handleEndTimeChange = (event) => {
         const time = event.target.value;
+        setEndTimeInput(time);
 
         const selectedStartDate = new Date(startTime);
         const selectedEndDate = new Date(time)
@@ -127,34 +128,34 @@ import {
                 <p>price: {price}</p>
               </div>
               <div>
-                <FormLabel mt="20px" color="white" htmlFor="startTime">
+                <FormLabel mt="20px" color="white" htmlFor="startTimeInput">
                   Start Time:
                 </FormLabel>
                 <Input
                   bg="white"
                   type="datetime-local"
-                  id="startTime"
-                  value={startTime}
+                  id="startTimeInput"
+                  value={startTimeinput}
                   onChange={handleStartTimeChange}
                   required
                 />
-                <p>Selected date and time: {startTime}</p>
-                <p>Selected date and time in iso: {isoStartTime}</p>
+                <p>starttimeinput: {startTimeInput}</p>
+                <p>starttime: {startTime}</p>
               </div>
               <div>
-                <FormLabel mt="20px" color="white" htmlFor="endTime">
+                <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
                   End Time:
                 </FormLabel>
                 <Input
                   bg="white"
                   type="datetime-local" 
-                  id="endTime"
-                  value={endTime}
+                  id="endTimeInput"
+                  value={endTimeInput}
                   onChange={handleEndTimeChange}
                   required
                 />
-                <p>Selected date and time: {endTime}</p>
-                <p>Selected date and time in iso: {isoEndTime}</p>
+                <p>entimeinput: {endTimeInput}</p>
+                <p>endtime: {endTime}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="channels">

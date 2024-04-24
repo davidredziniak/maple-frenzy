@@ -17,7 +17,7 @@ import {
     Input,
     FormLabel,
   } from "@chakra-ui/react";
-  import { Link as RouterLink } from "react-router-dom";
+  import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
   import Navbar from "./Navbar";
   import toast, { Toaster } from "react-hot-toast";
   
@@ -31,15 +31,25 @@ import {
     const [startTimeInput, setStartTimeInput] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
     const [endTimeInput, setEndTimeInput] = useState('');
+    const [channelsInput, setChannelsInput] = useState('');
     const [channels, setChannels] = useState([]);
-    const [channelsInput, setChannelsInput] = useState('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30');
     const [buyerLimit, setBuyerLimit] = useState(0);
   
     const { accessToken, userId } = useContext(AuthContext);
-  
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
     const errNotification = (message) => toast.error(message);
     const sucNotification = (message) => toast.success(message);
   
+    const navigate = useNavigate();
+    const navigateRedirect = (tradeId) => {
+      navigate("/Dashboard", {
+        state: {
+          id: tradeId
+        },
+      });
+    };
+
     const handleStartTimeChange = (event) => {
         const time = event.target.value;
         setStartTimeInput(time);
@@ -79,29 +89,25 @@ import {
         }
     };
     
-
     const handleSubmit = async (e) => {
       e.preventDefault();
-      setChannels(channelsInput.split(',').map(str => parseInt(str)));
-      console.log(channels);
-      console.log(price);
-      console.log(timeStart);
-      console.log(timeEnd);
-      console.log(buyerLimit);
+      //setChannels(channelsInput.split(',').map(str => parseInt(str)));
       const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-access-token": `${accessToken}`,
         },
-        body: JSON.stringify({ price, timeStart, timeEnd, channels, buyerLimit }),
+        body: JSON.stringify({ price, timeStart, timeEnd, channels: channelsInput.split(',').map(str => parseInt(str)), buyerLimit }),
       });
       const data = await response.json();
       if (response.status === 200) {
         sucNotification(data.message);
+        await delay(1000);
+        navigateRedirect(data.id);
         // Reset form fields
       } else {
-        errNotification(data.message);
+        errNotification(data.error);
       }
     };
   
@@ -132,7 +138,6 @@ import {
                   onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
                   required
                 />
-                <p>price: {price}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="startTimeInput">
@@ -146,8 +151,6 @@ import {
                   onChange={handleStartTimeChange}
                   required
                 />
-                <p>starttimeinput: {startTimeInput}</p>
-                <p>starttime: {timeStart}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
@@ -161,8 +164,6 @@ import {
                   onChange={handleEndTimeChange}
                   required
                 />
-                <p>entimeinput: {endTimeInput}</p>
-                <p>endtime: {timeEnd}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="channelsInput">
@@ -174,10 +175,9 @@ import {
                   size="lg"
                   id="channelsInput"
                   value={channelsInput}
-                  onChange={e => setChannelsInput(e.target.value)}
+                  onChange={(e) => setChannelsInput(e.target.value)}
                   required
                 />
-                <p>channels: {channels}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="buyerLimit">
@@ -191,7 +191,6 @@ import {
                   onChange={(e) => setBuyerLimit(parseInt(e.target.value) || 0)}
                   required
                 />
-                <p>buyerlimit: {buyerLimit}</p>
               </div>
               <Button
                 mt="30px"

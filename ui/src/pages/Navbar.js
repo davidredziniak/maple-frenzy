@@ -25,7 +25,7 @@ const Navbar = () => {
     navigate("/Frenzy");
   };
   const navigateSell = () => {
-    navigate("/Dashboard");
+    navigate("/CreateFrenzy");
   };
 
   const { isLoggedIn, toggleLogout, username, userId, accessToken, refreshToken } = useContext(AuthContext);

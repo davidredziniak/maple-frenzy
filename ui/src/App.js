@@ -27,7 +27,7 @@ function App() {
             <Route path='/Frenzy' element={<FindFrenzy />}/>
             <Route path='/JoinFrenzy' element={<JoinFrenzy />}/>
             <Route path='/Waiting' element={<FrenzyWaiting />}/>
-            <Route path='/CreateTrade' element={<CreateTrade />}/>
+            <Route path='/CreateFrenzy' element={<CreateTrade />}/>
           </Routes>
         </Router>
       </AuthProvider>

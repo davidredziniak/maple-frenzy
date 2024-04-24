@@ -17,6 +17,7 @@ import { CopyIcon } from '@chakra-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Footer from './Footer';
 import { AuthContext } from "./AuthContext";
+import { useLocation } from "react-router-dom";
 
 const Dashboard = () => {
   const { accessToken } = useContext(AuthContext);
@@ -29,6 +30,8 @@ const Dashboard = () => {
     channels: '',
     buyerLimit: '',
   });
+
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

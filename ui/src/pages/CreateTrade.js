@@ -28,9 +28,9 @@ import {
   const CreateTradeBox = () => {
     const [price, setPrice] = useState(0);
     const [startTime, setStartTime] = useState('');
-    const [isoStartTime, setIsoStartTime] = useState('');
+    const [startTimeInput, setStartTimeInput] = useState('');
     const [endTime, setEndTime] = useState('');
-    const [isoEndTime, setIsoEndTime] = useState('');
+    const [endTimeInput, setEndTimeInput] = useState('');
     const [channels, setChannels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
     const [buyerLimit, setBuyerLimit] = useState(0);
   
@@ -41,40 +41,40 @@ import {
   
     const handleStartTimeChange = (event) => {
         const time = event.target.value;
-        setStartTime(time);
-
+        setStartTimeInput(time);
+        
         const currentDate = new Date();
         const newDate = new Date(time);
+
         if(currentDate >= newDate){
             errNotification('You cannot choose dates earlier than the date it currently is');
-            const currentDateTimeString = currentDate.toISOString().slice(0, 16);
-            event.target.value = currentDateTimeString;
-            setStartTime(currentDateTimeString);
-            setIsoStartTime(currentDate.toISOString());
+            // const currentDateTimeString = currentDate.toISOString().slice(0, 16);
+            // event.target.value = currentDateTimeString;
+            // setStartTime(currentDateTimeString);
+            //setStartTime(currentDate.toISOString());
         }
         else{
             const isoDateTimeString = new Date(time).toISOString();
-            setIsoStartTime(isoDateTimeString);
+            setStartTime(isoDateTimeString);
         }
     };
 
     const handleEndTimeChange = (event) => {
         const time = event.target.value;
-        setEndTime(time)
+        setEndTimeInput(time);
 
         const selectedStartDate = new Date(startTime);
         const selectedEndDate = new Date(time)
 
         if(selectedStartDate >= selectedEndDate){
             errNotification('You cannot choose dates earlier than the start date');
-            selectedStartDate.setMinutes(selectedStartDate.getMinutes()+10);
-            const dateString = selectedStartDate.toISOString().slice(0,16);
-            event.target.value = dateString;
-            setEndTime(time);
+            // selectedStartDate.setMinutes(selectedStartDate.getMinutes()+10);
+            // const dateString = selectedStartDate.toISOString().slice(0,16);
+            // event.target.value = dateString;
         }
         else{
             const isoDateString = new Date(time).toISOString();
-            setIsoEndTime(isoDateString);
+            setEndTime(isoDateString);
         }
       };
     
@@ -87,7 +87,7 @@ import {
           "Content-Type": "application/json",
           "x-access-token": `${accessToken}`,
         },
-        body: JSON.stringify({ price, isoStartTime, isoEndTime, channels, buyerLimit }),
+        body: JSON.stringify({ price, startTime, endTime, channels, buyerLimit }),
       });
       const data = await response.json();
       if (response.status === 200) {
@@ -128,34 +128,34 @@ import {
                 <p>price: {price}</p>
               </div>
               <div>
-                <FormLabel mt="20px" color="white" htmlFor="startTime">
+                <FormLabel mt="20px" color="white" htmlFor="startTimeInput">
                   Start Time:
                 </FormLabel>
                 <Input
                   bg="white"
                   type="datetime-local"
-                  id="startTime"
-                  value={startTime}
+                  id="startTimeInput"
+                  value={startTimeInput}
                   onChange={handleStartTimeChange}
                   required
                 />
-                <p>Selected date and time: {startTime}</p>
-                <p>Selected date and time in iso: {isoStartTime}</p>
+                <p>starttimeinput: {startTimeInput}</p>
+                <p>starttime: {startTime}</p>
               </div>
               <div>
-                <FormLabel mt="20px" color="white" htmlFor="endTime">
+                <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
                   End Time:
                 </FormLabel>
                 <Input
                   bg="white"
                   type="datetime-local" 
-                  id="endTime"
-                  value={endTime}
+                  id="endTimeInput"
+                  value={endTimeInput}
                   onChange={handleEndTimeChange}
                   required
                 />
-                <p>Selected date and time: {endTime}</p>
-                <p>Selected date and time in iso: {isoEndTime}</p>
+                <p>entimeinput: {endTimeInput}</p>
+                <p>endtime: {endTime}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="channels">
@@ -170,6 +170,7 @@ import {
                   onChange={(e) => setChannels(e.target.value)}
                   required
                 />
+                <p>channels: {channels}</p>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="buyerLimit">
@@ -183,6 +184,7 @@ import {
                   onChange={(e) => setBuyerLimit(parseInt(e.target.value) || 0)}
                   required
                 />
+                <p>buyerlimit: {buyerLimit}</p>
               </div>
               <Button
                 mt="30px"

@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
+import bgImg from "../img/find_frenzy_bimg.png";
+import bgImg1 from "../img/landing-leaves.png";
 
 const FrenzyBox = () => {
   const [inGameUsername, setInGameUsername] = useState("");
@@ -100,9 +102,9 @@ const FrenzyBox = () => {
   };
 
   return (
-    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md" >
       <Stack>
-        <Text pl=".5vw" fontFamily="verdana" fontSize="30px">
+        <Text as={"b"}  pl=".5vw" fontFamily="verdana" fontSize="35px" color={"white"} textShadow= '0 0 15px black'> 
           Find Frenzy
         </Text>
         <Box
@@ -112,6 +114,7 @@ const FrenzyBox = () => {
           boxShadow="base"
           bg="#353935"
           rounded="md"
+          bgImage={bgImg1} bgRepeat="repeat" bgPosition="center" 
         >
           <FormControl>
             <div>
@@ -177,11 +180,12 @@ const FindFrenzy = () => {
       <Navbar />
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
-        {isLoggedIn && (
-          <Flex h="100vh">
-            <FrenzyBox />
+         {isLoggedIn && (
+          <Flex h="100vh" bgImage={bgImg} bgRepeat="no-repeat" bgPosition="center" backgroundSize="100%">
+            <FrenzyBox />{/*move back in between flex*/ }
           </Flex>
-        )}
+        )} 
+          
       </Box>
     </Box>
   );

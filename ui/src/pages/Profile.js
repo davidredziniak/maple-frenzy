@@ -20,7 +20,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
         <Card>
         <Center>
             <Flex pt="5vh">
-              <Text>
+              <Text fontSize="20px">
                 User Information
               </Text>
               <Spacer pl=".5vw"/>
@@ -38,7 +38,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
             </Flex>
             <Flex>
-              <Text pt="5vh">
+              <Text>
                 Reputation:
               </Text>
               <Spacer />
@@ -47,7 +47,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
             </Flex>
             <Flex>
-              <Text pt="5vh">
+              <Text>
                 Created At:
               </Text>
               <Spacer />
@@ -56,7 +56,7 @@ const ProfileBox = ({tc, r, ca, lli}) => {
               </Text>
             </Flex>
             <Flex>
-            <Text pt="5vh">
+            <Text>
               Last Log In:
             </Text>
             <Spacer />

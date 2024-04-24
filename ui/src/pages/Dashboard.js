@@ -10,14 +10,56 @@ import {
   Tr,
   Flex,
   Spinner,
+  Input,
 } from '@chakra-ui/react';
 import Navbar from "./Navbar";
 import { CopyIcon } from '@chakra-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Footer from './Footer';
 
 const Dashboard = () => {
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
+  const [formData, setFormData] = useState({
+    price: '',
+    startTime: '',
+    endTime: '',
+    channels: '',
+    buyerLimit: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async () => {
+    // Prepare the request body
+    const requestBody = {
+      ...formData,
+    };
+
+    try {
+      const response = await fetch('https://maple-frenzy.onrender.com/api/trade/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': 'YOUR_ACCESS_TOKEN', // Replace with actual access token
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        // Handle success
+        console.log('Trade created successfully!');
+      } else {
+        // Handle error
+        console.error('Failed to create trade');
+      }
+    } catch (error) {
+      console.error('Error creating trade:', error);
+    }
+  };
 
   const handleCastedButtonClick = () => {
     setIsCasting(!isCasting);
@@ -36,6 +78,62 @@ const Dashboard = () => {
             <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
               Seller Dashboard
             </Box>
+            <Box mt={8} p={4}>
+        <Box bg="#353935" mx="auto" mb="50px" borderWidth="1px" borderColor="#93d7bf" borderRadius="md" p={10}>
+          <Box fontSize="xl" color="white" mb={2}>
+            Create Trade
+          </Box>
+          <Flex mb={4}>
+            <Box mr={4}>
+              <Input bg="white"
+                placeholder="Price"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box mr={4}>
+              <Input bg="white"
+                placeholder="Start Time"
+                name="startTime"
+                value={formData.startTime}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box mr={4}>
+              <Input bg="white"
+                placeholder="End Time"
+                name="endTime"
+                value={formData.endTime}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box mr={4}>
+              <Input bg="white"
+                placeholder="Channels"
+                name="channels"
+                value={formData.channels}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box mr={4}>
+              <Input bg="white"
+                placeholder="Buyer Limit"
+                name="buyerLimit"
+                value={formData.buyerLimit}
+                onChange={handleChange}
+              />
+            </Box>
+          </Flex>
+          <Button
+            colorScheme="teal"
+            bg="#93d7bf"
+            onClick={handleSubmit}
+          >
+            Create Trade
+          </Button>
+        </Box>
+      </Box>
           </Box>
           <Flex justify="center" mb={4}>
             <Button mr={2} colorScheme="teal" bg="#93d7bf">
@@ -113,6 +211,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };

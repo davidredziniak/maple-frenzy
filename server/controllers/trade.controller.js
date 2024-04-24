@@ -53,7 +53,7 @@ exports.create = (req, res) => {
     timeStart: req.body.timeStart,
     timeEnd: req.body.timeEnd,
     price: req.body.price,
-    channels: req.body.channels,
+    channels: [req.body.channels],
     buyerLimit: req.body.buyerLimit,
     buyerAvailable: req.body.buyerLimit,
     inProgress: false,

@@ -86,7 +86,7 @@ import {
           "Content-Type": "application/json",
           "x-access-token": `${accessToken}`,
         },
-        body: JSON.stringify({ price, isoStartTime, isoEndTime, channels, buyerLimit }),
+        body: JSON.stringify({ price, startTime, endTime, channels, buyerLimit }),
       });
       const data = await response.json();
       if (response.status === 200) {

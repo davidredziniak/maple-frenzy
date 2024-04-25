@@ -121,7 +121,7 @@ function Dashboard(props) {
               <Table variant="simple">
                 <Thead bg="#353935">
                   <Tr>
-                    <Th color="white">Name (IGN)</Th>
+                    <Th color="white">In Game Name</Th>
                     <Th color="white">Channel</Th>
                     <Th color="white">Duration (hours)</Th>
                     <Th color="white">Recast Timer</Th>

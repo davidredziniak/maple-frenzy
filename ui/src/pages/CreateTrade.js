@@ -35,7 +35,12 @@ import {
     const [buyerLimit, setBuyerLimit] = useState(0);
     const [minuteFlag,setMinuteFlag] = useState(false);
   
-    const { accessToken, userId } = useContext(AuthContext);
+    const {
+      accessToken,
+      refreshToken,
+      updateAccessToken,
+      updateRefreshToken,
+    } = useContext(AuthContext);
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     const errNotification = (message) => toast.error(message);
@@ -45,6 +50,7 @@ import {
     const navigateRedirect = (tradeId) => {
       navigate("/Dashboard", {
         state: {
+          accessToken: accessToken,
           id: tradeId
         },
       });

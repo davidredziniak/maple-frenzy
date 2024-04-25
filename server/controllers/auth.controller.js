@@ -12,14 +12,14 @@ const bcrypt = require("bcryptjs");
 // Generate an access JWT that is short lived using a user's id and bcrypt secret
 const createAccessJwt = (userId) => {
   return jwt.sign({ id: userId }, config.salt, {
-    expiresIn: 3600, // 60 minutes access
+    expiresIn: 86400, // 1 day access
   });
 };
 
 // Generate a refresh JWT that will be able to refresh an access token using a user's id and bcrypt secret
 const createRefreshJwt = (userId) => {
   return jwt.sign({ id: userId }, config.salt, {
-    expiresIn: 86400, // 1 day access
+    expiresIn: 2592000, // 30 day access
   });
 };
 

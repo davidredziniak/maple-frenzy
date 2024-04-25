@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -11,59 +11,64 @@ import {
   Flex,
   Spinner,
   Input,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import Navbar from "./Navbar";
-import { CopyIcon } from '@chakra-ui/icons';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Footer from './Footer';
+import { CopyIcon } from "@chakra-ui/icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import Footer from "./Footer";
 import { AuthContext } from "./AuthContext";
 import { useLocation } from "react-router-dom";
 
-const Dashboard = () => {
-  const { accessToken } = useContext(AuthContext);
+function Dashboard(props) {
+  const location = useLocation();
+
+  const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
+    useContext(AuthContext);
+
+  const [tradeId, setTradeId] = useState("");
+  const [buyers, setBuyers] = useState([]);
+  const [timeStart, setTimeStart] = useState("");
+  const [timeEnd, setTimeEnd] = useState("");
+  const [price, setPrice] = useState("");
+
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
+
   const [formData, setFormData] = useState({
-    price: '',
-    timeStart: '',
-    timeEnd: '',
-    channels: '',
-    buyerLimit: '',
+    price: "",
+    timeStart: "",
+    timeEnd: "",
+    channels: "",
+    buyerLimit: "",
   });
 
-  const location = useLocation();
+  function configureState(data) {
+    setTradeId(data.id);
+    setTimeStart(data.timeStart);
+    setTimeEnd(data.timeEnd);
+    setBuyers(data.slots);
+    setPrice(data.price);
+    console.log(buyers);
+  }
+
+  useEffect(() => {
+    if (accessToken !== null && accessToken.length !== 0)
+      getTradeSlots(location.state.id).then((data) => configureState(data));
+  }, [accessToken, price]);
+
+  const getTradeSlots = (tradeId) => {
+    return fetch("https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots", {
+      method: "GET",
+      headers: {
+        "x-access-token": accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async () => {
-    // Prepare the request body
-    const requestBody = {
-      ...formData,
-    };
-
-    try {
-      const response = await fetch('https://maple-frenzy.onrender.com/api/trade/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': accessToken, // Replace with actual access token
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (response.ok) {
-        // Handle success
-        console.log('Trade created successfully!');
-      } else {
-        // Handle error
-        console.error('Failed to create trade');
-      }
-    } catch (error) {
-      console.error('Error creating trade:', error);
-    }
   };
 
   const handleCastedButtonClick = () => {
@@ -77,96 +82,90 @@ const Dashboard = () => {
   return (
     <Box>
       <Navbar />
-      <Box bg="#F8EEDE" p={4}>
-        <Box h="80vh">
-          <Box textAlign="center" mb={4}>
-            <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
-              Seller Dashboard
+      {accessToken ? (
+        <Box bg="#F8EEDE" p={4}>
+          <Box h="80vh">
+            <Box textAlign="center" mb={4}>
+              <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
+                Seller Dashboard
+              </Box>
+              <Box mt={8} p={4}></Box>
             </Box>
-            <Box mt={8} p={4}>
-      </Box>
-          </Box>
-          <Flex justify="center" mb={4}>
-            <Button mr={2} colorScheme="teal" bg="#93d7bf">
-              Start Service
-            </Button>
-            <Button
-              mr={2}
-              variant="outline"
-              colorScheme="teal"
+            <Flex justify="center" mb={4}>
+              <Button mr={2} colorScheme="teal" bg="#93d7bf">
+                Start Service
+              </Button>
+              <Button
+                mr={2}
+                variant="outline"
+                colorScheme="teal"
+                borderColor="#93d7bf"
+                color="#93d7bf"
+                onClick={handleCastedButtonClick}
+              >
+                Casted
+              </Button>
+              <Button colorScheme="teal" bg="#353935">
+                Stop Service
+              </Button>
+            </Flex>
+            <Box
+              maxW="50%"
+              mx="auto"
+              mb="50px"
+              borderWidth="1px"
               borderColor="#93d7bf"
-              color="#93d7bf"
-              onClick={handleCastedButtonClick}
+              borderRadius="md"
+              overflow="hidden"
             >
-              Casted
-            </Button>
-            <Button colorScheme="teal" bg="#353935">
-              Stop Service
-            </Button>
-          </Flex>
-          <Box maxW="50%" mx="auto" mb="50px" borderWidth="1px" borderColor="#93d7bf" borderRadius="md" overflow="hidden">
-            <Table variant="simple">
-              <Thead bg="#353935">
-                <Tr>
-                  <Th color="white">Name (IGN)</Th>
-                  <Th color="white">Channel</Th>
-                  <Th color="white">Duration (hours)</Th>
-                  <Th color="white">Recast Timer</Th>
-                  <Th color="white">Recast</Th>
-                </Tr>
-              </Thead>
-              <Tbody bg="#353935">
-                <Tr>
-                  <Td>
-                    <Flex alignItems="center">
-                      {showReloadIcon && <Spinner color="teal" mr="10px" size="sm" />}
-                      <CopyToClipboard text="Player 1">
-                        <Button colorScheme="teal" size="sm" leftIcon={<CopyIcon />} aria-label="Copy to clipboard" />
-                      </CopyToClipboard>
-                      <span style={{ marginLeft: '10px', color: 'white' }}>Player 1</span>
-                    </Flex>
-                  </Td>
-                  <Td color="white">Channel 1</Td>
-                  <Td color="white">2 hours</Td>
-                  <Td color="white">Ready</Td> 
-                  <Td color="white"><Button></Button></Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Flex alignItems="center">
-                      {showReloadIcon && <Spinner color="teal" mr="10px" size="sm" />}
-                      <CopyToClipboard text="Player 2">
-                        <Button colorScheme="teal" size="sm" leftIcon={<CopyIcon />} aria-label="Copy to clipboard" />
-                      </CopyToClipboard>
-                      <span style={{ marginLeft: '10px', color: 'white' }}>Player 2</span>
-                    </Flex>
-                  </Td>
-                  <Td color="white">Channel 2</Td>
-                  <Td color="white">1.5 hours</Td>
-                  <Td color="white">Ready</Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Flex alignItems="center">
-                      {showReloadIcon && <Spinner color="teal" mr="10px" size="sm" />}
-                      <CopyToClipboard text="Player 3">
-                        <Button colorScheme="teal" size="sm" leftIcon={<CopyIcon />} aria-label="Copy to clipboard" />
-                      </CopyToClipboard>
-                      <span style={{ marginLeft: '10px', color: 'white' }}>Player 3</span>
-                    </Flex>
-                  </Td>
-                  <Td color="white">Channel 3</Td>
-                  <Td color="white">3 hours</Td>
-                  <Td color="white">Ready</Td>
-                </Tr>
-              </Tbody>
-            </Table>
+              <Table variant="simple">
+                <Thead bg="#353935">
+                  <Tr>
+                    <Th color="white">Name (IGN)</Th>
+                    <Th color="white">Channel</Th>
+                    <Th color="white">Duration (hours)</Th>
+                    <Th color="white">Recast Timer</Th>
+                    <Th color="white">Recast</Th>
+                  </Tr>
+                </Thead>
+                <Tbody bg="#353935">
+                  {buyers.map((buyer) => (
+                    <Tr>
+                      <Td>
+                        <Flex alignItems="center">
+                          {showReloadIcon && (
+                            <Spinner color="teal" mr="10px" size="sm" />
+                          )}
+                          <CopyToClipboard text="Player 1">
+                            <Button
+                              colorScheme="teal"
+                              size="sm"
+                              leftIcon={<CopyIcon />}
+                              aria-label="Copy to clipboard"
+                            />
+                          </CopyToClipboard>
+                          <span style={{ marginLeft: "10px", color: "white" }}>
+                            {buyer.inGameName}
+                          </span>
+                        </Flex>
+                      </Td>
+                      <Td color="white">Channel {buyer.channel}</Td>
+                      <Td color="white">{buyer.duration} hours</Td>
+                      <Td color="white">Ready</Td>
+                      <Td color="white">
+                        <Button></Button>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      ) : null}
       <Footer />
     </Box>
   );
-};
+}
 
 export default Dashboard;

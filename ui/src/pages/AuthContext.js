@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       setLastLoggedIn(storedLastLoggedIn);
     }
     // If theefresh token, try to get access token
-  }, []);
+  },[accessToken, refreshToken, userId, username, isLoggedIn]);
 
   const handleLogout = () => {
     toggleLogout();

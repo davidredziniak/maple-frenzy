@@ -17,13 +17,6 @@ exports.getTimeDifference = (timeStart, timeEnd) => {
 
 // Create trade
 exports.create = (req, res) => {
-  // Retrieve user id from JWT
-  let token = req.headers["x-access-token"];
-  jwt.verify(token, config.salt, (error, decoded) => {
-    if (error) return res.status(401).send({ error: "Access was denied." });
-    req.userId = decoded.id;
-  });
-
   // Check if trade start and end time are valid
   let tradeTimeDifference = this.getTimeDifference(
     req.body.timeStart,
@@ -68,14 +61,6 @@ exports.create = (req, res) => {
 
 // Delete Trade
 exports.delete = (req, res, next) => {
-  // Retrieve user id from JWT
-  let token = req.headers["x-access-token"];
-  jwt.verify(token, config.salt, (error, decoded) => {
-    if (error)
-      return response.status(401).send({ error: "Access was denied." });
-    req.userId = decoded.id;
-  });
-
   // Get trade by Id
   Trade.findOne({ where: { id: req.body.tradeId } })
     .then((trade) => {
@@ -103,13 +88,6 @@ exports.delete = (req, res, next) => {
 
 // Join Trade
 exports.join = (req, res, next) => {
-  // Retrieve user id from JWT
-  let token = req.headers["x-access-token"];
-  jwt.verify(token, config.salt, (error, decoded) => {
-    if (error) return res.status(401).send({ error: "Access was denied." });
-    req.userId = decoded.id;
-  });
-
   // Get trade by Id
   Trade.findOne({ where: { id: req.body.tradeId } })
     .then((trade) => {
@@ -163,13 +141,6 @@ exports.join = (req, res, next) => {
 
 // Leave Trade
 exports.leave = (req, res, next) => {
-  // Retrieve user id from JWT
-  let token = req.headers["x-access-token"];
-  jwt.verify(token, config.salt, (error, decoded) => {
-    if (error) return res.status(401).send({ error: "Access was denied." });
-    req.userId = decoded.id;
-  });
-
   // Get trade by Id
   Trade.findOne({ where: { id: req.body.tradeId } })
     .then((trade) => {

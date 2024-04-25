@@ -23,7 +23,15 @@ const FrenzyBox = () => {
   const [channel, setChannel] = useState("");
   const [duration, setDuration] = useState("");
 
-  const { accessToken, userId, updateInGameName } = useContext(AuthContext);
+  const {
+    accessToken,
+    refreshToken,
+    updateAccessToken,
+    updateRefreshToken,
+    userId,
+    handleLogout,
+    updateInGameName,
+  } = useContext(AuthContext);
 
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
@@ -56,23 +64,7 @@ const FrenzyBox = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if(inGameUsername == ""){
-      errNotification("You must enter your in game username.");
-      return;
-    }
-
-    if(channel == ""){
-      errNotification("You must enter a channel number.");
-      return;
-    }
-
-    if(duration == ""){
-      errNotification("You must enter a time of duration in hours.");
-      return;
-    }
+  async function trySearch() {
     const response = await fetch(
       "https://maple-frenzy.onrender.com/api/trade/searchmarket",
       {
@@ -85,26 +77,120 @@ const FrenzyBox = () => {
       }
     );
     const data = await response.json();
-    if (response.status === 200) {
-      sucNotification(data.message);
-      await delay(1000);
-      updateInGameName(inGameUsername);
-      navigateRedirect(
-        data.seller.username,
-        data.trade.id,
-        data.trade.price,
-        data.trade.timeStart,
-        data.trade.timeEnd
-      );
-    } else {
-      errNotification(data.message);
-    }
+    return { data, response };
   };
 
+  async function tryRefreshToken(){
+    const response = await fetch("https://maple-frenzy.onrender.com/api/refresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": refreshToken,
+      },
+      body: JSON.stringify({ userId, refreshToken }),
+    });
+    const data = await response.json();
+    return { data, response };
+  };
+
+  const handleSuccess = async (data) => {
+    sucNotification(data.message);
+    await delay(1000);
+    updateInGameName(inGameUsername);
+    navigateRedirect(
+      data.seller.username,
+      data.trade.id,
+      data.trade.price,
+      data.trade.timeStart,
+      data.trade.timeEnd
+    );
+  };
+
+  const handleFailure = async () => {
+    errNotification("You have been signed out... Please sign in again.");
+    await delay(1000);
+    handleLogout();
+    navigate("/Login");
+  };
+
+  async function handleSubmit(e){
+    e.preventDefault();
+
+    if (inGameUsername == "") {
+      errNotification("You must enter your in game username.");
+      return;
+    }
+
+    if (channel == "") {
+      errNotification("You must enter a channel number.");
+      return;
+    }
+
+    if (duration == "") {
+      errNotification("You must enter a time of duration in hours.");
+      return;
+    }
+
+    const fetchData = await trySearch();
+      // Successful fetch
+      if (fetchData.data) {
+        if (!fetchData.response.status) {
+          errNotification("Server had an unexpected response.");
+        } else {
+          const responseStatus = fetchData.response.status;
+          const data = fetchData.data;
+
+          // Successful
+          if (responseStatus === 200) {
+            handleSuccess(data);
+          } else if (responseStatus === 403) {
+            if (data.error == "Access token was denied.") {
+              // Try API refresh if token exists
+              if (refreshToken != "" && userId != "") {
+                const refreshData = await tryRefreshToken();
+                if (refreshData.data) {
+                  const refreshResponseStatus = refreshData.response.status;
+                  const refreshResponse = refreshData.data;
+                  if (refreshResponseStatus === 200) {
+                    // Update access and refresh tokens
+                    updateAccessToken(refreshResponse.accessToken);
+                    updateRefreshToken(refreshResponse.refreshToken);
+                    await delay(1000);
+                    errNotification("Please try again. Refreshed Tokens.");
+                    // Try fetch again
+                  } else {
+                    // Refresh token is invalid so logout
+                    handleFailure();
+                  }
+                }
+              } else {
+                handleFailure();
+              }
+            } else {
+              handleFailure();
+            }
+          }
+        }
+      } else {
+        errNotification("An error occured connecting to the server.");
+      }
+  };
+
+  function handleAcc() {
+    updateAccessToken("lol");
+  }
+
   return (
-    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md" >
+    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>
-        <Text as={"b"}  pl=".5vw" fontFamily="verdana" fontSize="35px" color={"white"} textShadow= '0 0 15px black'> 
+        <Text
+          as={"b"}
+          pl=".5vw"
+          fontFamily="verdana"
+          fontSize="35px"
+          color={"white"}
+          textShadow="0 0 15px black"
+        >
           Find Frenzy
         </Text>
         <Box
@@ -114,7 +200,9 @@ const FrenzyBox = () => {
           boxShadow="base"
           bg="#353935"
           rounded="md"
-          bgImage={bgImg1} bgRepeat="repeat" bgPosition="center" 
+          bgImage={bgImg1}
+          bgRepeat="repeat"
+          bgPosition="center"
         >
           <FormControl>
             <div>
@@ -162,9 +250,34 @@ const FrenzyBox = () => {
               color="#353935"
               {...signInButton}
               type="submit"
-              onClick={handleSubmit}
+              onClick={(e) => {handleSubmit(e);}}
             >
               Search
+            </Button>
+
+            <Button
+              mt="30px"
+              bg="#93d7bf"
+              color="#353935"
+              {...signInButton}
+              type="submit"
+              onClick={() => {
+                handleAcc();
+              }}
+            >
+              AccessTokee
+            </Button>
+            <Button
+              mt="30px"
+              bg="#93d7bf"
+              color="#353935"
+              {...signInButton}
+              type="submit"
+              onClick={() => {
+                console.log(accessToken);
+              }}
+            >
+              ddd
             </Button>
           </FormControl>
         </Box>
@@ -180,12 +293,18 @@ const FindFrenzy = () => {
       <Navbar />
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
-         {isLoggedIn && (
-          <Flex h="100vh" bg="#F8EEDE" bgRepeat="no-repeat" bgPosition="center" backgroundSize="100%">
-            <FrenzyBox />{/*move back in between flex*/ }
+        {isLoggedIn && (
+          <Flex
+            h="100vh"
+            bg="#F8EEDE"
+            bgRepeat="no-repeat"
+            bgPosition="center"
+            backgroundSize="100%"
+          >
+            <FrenzyBox />
+            {/*move back in between flex*/}
           </Flex>
-        )} 
-          
+        )}
       </Box>
     </Box>
   );

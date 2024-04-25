@@ -44,7 +44,7 @@ const Backdrop = () => {
 const RegistrationForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 

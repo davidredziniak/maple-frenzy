@@ -9,7 +9,7 @@ function verifyToken(req, res, next) {
       .status(403)
       .send({ error: "No token was found in the headers." });
   jwt.verify(token, config.salt, (error, decoded) => {
-    if (error) return res.status(401).send({ error: "Access was denied." });
+    if (error) return res.status(403).send({ error: "Access token was denied." });
     req.userId = decoded.id;
     next();
   });

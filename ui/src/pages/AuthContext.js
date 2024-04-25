@@ -10,11 +10,11 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
-  const [tradeCount,setTradeCount] = useState('');
-  const [reputation,setReputation] = useState('');
-  const [createdAt,setCreatedAt] = useState('');
-  const [lastLoggedIn,setLastLoggedIn] = useState('');
-  const [inGameName, setInGameName] = useState('');
+  const [tradeCount, setTradeCount] = useState("");
+  const [reputation, setReputation] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  const [lastLoggedIn, setLastLoggedIn] = useState("");
+  const [inGameName, setInGameName] = useState("");
 
   useEffect(() => {
     // Retrieve isLoggedIn value from localStorage on component mount
@@ -50,8 +50,21 @@ export const AuthProvider = ({ children }) => {
     if (storedLastLoggedIn !== null) {
       setLastLoggedIn(storedLastLoggedIn);
     }
-      // If theefresh token, try to get access token
-    }, []);
+    // If theefresh token, try to get access token
+  }, []);
+
+  const handleLogout = () => {
+    toggleLogout();
+    updateUsername("");
+    updateUserId("");
+    updateAccessToken("");
+    updateRefreshToken("");
+    updateTradeCount("");
+    updateReputation("");
+    updateCreatedAt("");
+    updateLLI("");
+    updateInGameName("");
+  };
 
   const toggleLogin = () => {
     const newIsLoggedIn = !isLoggedIn;
@@ -108,8 +121,8 @@ export const AuthProvider = ({ children }) => {
 
   const updateInGameName = (newInGameName) => {
     setInGameName(newInGameName);
-    localStorage.setItem("inGameName", newInGameName)
-  }
+    localStorage.setItem("inGameName", newInGameName);
+  };
 
   return (
     <AuthContext.Provider
@@ -134,11 +147,11 @@ export const AuthProvider = ({ children }) => {
         updateReputation,
         updateCreatedAt,
         updateInGameName,
-        updateLLI
+        updateLLI,
+        handleLogout,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-
 };

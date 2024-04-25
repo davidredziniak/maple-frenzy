@@ -108,7 +108,7 @@ const Dashboard = () => {
             <Table variant="simple">
               <Thead bg="#353935">
                 <Tr>
-                  <Th color="white">Name (IGN)</Th>
+                  <Th color="white">In-game Name</Th>
                   <Th color="white">Channel</Th>
                   <Th color="white">Duration (hours)</Th>
                   <Th color="white">Recast Timer</Th>

@@ -84,10 +84,9 @@ const FrenzyBox = () => {
     const response = await fetch("https://maple-frenzy.onrender.com/api/refresh", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "x-access-token": refreshToken,
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userId, refreshToken }),
+      body: JSON.stringify({ userId: parseInt(userId), refreshToken }),
     });
     const data = await response.json();
     return { data, response };
@@ -155,7 +154,6 @@ const FrenzyBox = () => {
                     // Update access and refresh tokens
                     updateAccessToken(refreshResponse.accessToken);
                     updateRefreshToken(refreshResponse.refreshToken);
-                    await delay(1000);
                     errNotification("Please try again. Refreshed Tokens.");
                     // Try fetch again
                   } else {
@@ -169,6 +167,9 @@ const FrenzyBox = () => {
             } else {
               handleFailure();
             }
+          }
+          else{
+            errNotification(data.message);
           }
         }
       } else {
@@ -253,31 +254,6 @@ const FrenzyBox = () => {
               onClick={(e) => {handleSubmit(e);}}
             >
               Search
-            </Button>
-
-            <Button
-              mt="30px"
-              bg="#93d7bf"
-              color="#353935"
-              {...signInButton}
-              type="submit"
-              onClick={() => {
-                handleAcc();
-              }}
-            >
-              AccessTokee
-            </Button>
-            <Button
-              mt="30px"
-              bg="#93d7bf"
-              color="#353935"
-              {...signInButton}
-              type="submit"
-              onClick={() => {
-                console.log(accessToken);
-              }}
-            >
-              ddd
             </Button>
           </FormControl>
         </Box>

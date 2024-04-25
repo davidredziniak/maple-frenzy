@@ -25,6 +25,9 @@ export const AuthProvider = ({ children }) => {
     const storedCreatedAt = localStorage.getItem("createdAt");
     const storedLastLoggedIn = localStorage.getItem("lastLoggedIn");
     const inGameName = localStorage.getItem("inGameName");
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const userId = localStorage.getItem("userId");
 
     if (storedIsLoggedIn !== null) {
       setIsLoggedIn(JSON.parse(storedIsLoggedIn));
@@ -32,6 +35,18 @@ export const AuthProvider = ({ children }) => {
 
     if (storedUsername !== null) {
       setUsername(storedUsername);
+    }
+    
+    if (accessToken !== ""){
+      setAccessToken(accessToken);
+    }
+
+    if (refreshToken !== ""){
+      setRefreshToken(refreshToken);
+    }
+
+    if (userId !== ""){
+      setUserId(userId);
     }
 
     // Set other values if they exist in localStorage

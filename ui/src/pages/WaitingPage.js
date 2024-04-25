@@ -26,14 +26,16 @@ import { AuthContext } from "./AuthContext";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 const WaitingBox = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [state] = useState(location.state || {});
+
   const { accessToken, userId, updateInGameName } = useContext(AuthContext);
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const getLocalStartTime = (startTime) => {
     var date = new Date(startTime);

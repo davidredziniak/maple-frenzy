@@ -19,13 +19,18 @@ import { CopyIcon } from "@chakra-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "./Footer";
 import { AuthContext } from "./AuthContext";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import DurationCountdown from "./DurationCountdown";
+import toast, { Toaster } from "react-hot-toast";
 
 function Dashboard(props) {
   let { tradeId } = useParams();
 
   const location = useLocation();
+  const navigate = useNavigate();
+  const errNotification = (message) => toast.error(message);
+  const sucNotification = (message) => toast.success(message);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
     useContext(AuthContext);
@@ -37,19 +42,6 @@ function Dashboard(props) {
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
-
-  const [formData, setFormData] = useState({
-    price: "",
-    timeStart: "",
-    timeEnd: "",
-    channels: "",
-    buyerLimit: "",
-  });
-
-  const getLocalTime = (time) => {
-    var date = new Date(time);
-    return date.toString();
-  };
 
   const getHoursFromNow = (time) => {
     var now = new Date();
@@ -70,12 +62,31 @@ function Dashboard(props) {
   }
 
   const checkIfTimePassed = (minutes) => {
-    if (minutes < 0){
+    if (minutes < 0)
       return true;
-    }
     return false;
   }
 
+  const handleDeleteTrade = async () => {
+    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+      body: JSON.stringify({
+        tradeId: tradeId,
+      }),
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+      sucNotification(data.message);
+      await delay(1000);
+      navigate("/trades");
+    } else {
+      errNotification(data.error);
+    }
+  };
 
   function configureState(data) {
     if (!data.error) {
@@ -106,22 +117,10 @@ function Dashboard(props) {
     ).then((response) => response.json());
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleCastedButtonClick = () => {
-    setIsCasting(!isCasting);
-    setShowReloadIcon(true);
-    setTimeout(() => {
-      setShowReloadIcon(false);
-    }, 1000);
-  };
-
   return (
     <Box>
       <Navbar />
+      <Toaster position="top-center" reverseOrder={false} />
       {accessToken && isAuth ? (
         <Box bg="#F8EEDE" p={4}>
           <Box h="80vh">
@@ -134,7 +133,7 @@ function Dashboard(props) {
               <Box p={4}>Price: {price}</Box>
             </Box>
             <Flex justify="center" mb={4}>
-              <Button colorScheme="teal" bg="#353935">
+              <Button onClick={() => handleDeleteTrade()} colorScheme="teal" bg="#353935">
                 Delete Frenzy
               </Button>
             </Flex>

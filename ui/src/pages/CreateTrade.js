@@ -230,7 +230,7 @@ const CreateTradeBox = () => {
 const CreateTrade = () => {
   const { isLoggedIn } = useContext(AuthContext);
   return (
-    <Box>
+    <Box bg="#F8EEDE">
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       <CreateTradeBox />

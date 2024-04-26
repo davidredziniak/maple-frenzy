@@ -31,9 +31,11 @@ exports.create = (req, res) => {
 
   // Check if the time difference are intervals of an hour
   if (tradeTimeDifference % 1 != 0)
-    return res.status(400).send({
-      error: "The requested trade times have to be in intervals of an hour.",
-    });
+    return res
+      .status(400)
+      .send({
+        error: "The requested trade times have to be in intervals of an hour.",
+      });
 
   // Check if channels list is valid
   if (req.body.channels.some((i) => !Number.isInteger(i) 

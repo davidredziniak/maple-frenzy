@@ -44,7 +44,7 @@ exports.create = (req, res) => {
       .send({ error: "The list of channels requested are invalid." });
 
   // Check if user ID is selling anything currently.
-  // One seller/user is assumed to be obligated to serve buyers over one trade.
+  // One seller/user is assumed to be just serving one set of buyers at a time.
   Trade.findOne({ where: { sellerId: req.userId } })
     .then((trade) => {
       if (trade) {

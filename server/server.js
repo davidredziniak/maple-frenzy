@@ -44,5 +44,5 @@ app.listen(PORT, () => {
 });
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
-//const pollingTime = 2000; // 2s
-//scheduler.start(pollingTime);
+const pollingTime = 2000; // 2s
+scheduler.start(pollingTime);

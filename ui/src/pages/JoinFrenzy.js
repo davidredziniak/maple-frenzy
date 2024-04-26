@@ -32,6 +32,29 @@ const JoinFrenzyBox = () => {
   const sucNotification = (message) => toast.success(message);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
+  const getLocalTime = (time) => {
+    var date = new Date(time).toLocaleString();
+    return date.toString();
+  };
+
+  const getHoursFromNow = (time) => {
+    var now = new Date();
+    var tradeTime = new Date(time);
+    var diffMs = (tradeTime - now);
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    var diffHours = Math.floor(diffMins/60);
+    return diffHours;
+  }
+
+  const getMinutesFromNow = (time) => {
+    var now = new Date();
+    var tradeTime = new Date(time);
+    var diffMs = (tradeTime - now);
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    diffMins = diffMins - Math.floor(diffMins/60)*60;
+    return diffMins;
+  }
+
   const handleJoin = async (e) => {
     e.preventDefault();
 
@@ -52,7 +75,7 @@ const JoinFrenzyBox = () => {
     if (response.status === 200) {
       sucNotification(data.message);
       await delay(1000);
-      navigate("/view/" + location.state.id, { state: {...location.state, position: data.queuePos}});
+      navigate("/view/" + location.state.id);
       // Reset form fields
     } else {
       errNotification(data.error);
@@ -81,10 +104,10 @@ const JoinFrenzyBox = () => {
             Seller {location.state.seller} is available to join!
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Start Time: {new Date(location.state.start).toUTCString()}
+            Start Time: {getLocalTime(location.state.start)} ({getHoursFromNow(location.state.start)} hour(s) {getMinutesFromNow(location.state.start)} min(s) from now)
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            End Time: {new Date(location.state.end).toUTCString()}
+            End Time: {getLocalTime(location.state.end)} ({getHoursFromNow(location.state.end)} hour(s) {getMinutesFromNow(location.state.end)} min(s) from now)
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
             Price: {location.state.price}

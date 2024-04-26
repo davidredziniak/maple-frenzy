@@ -31,11 +31,9 @@ exports.create = (req, res) => {
 
   // Check if the time difference are intervals of an hour
   if (tradeTimeDifference % 1 != 0)
-    return res
-      .status(400)
-      .send({
-        error: "The requested trade times have to be in intervals of an hour.",
-      });
+    return res.status(400).send({
+      error: "The requested trade times have to be in intervals of an hour.",
+    });
 
   // Check if channels list is valid
   if (req.body.channels.some((i) => !Number.isInteger(i) || !(i > 0 && i < 31)))
@@ -45,38 +43,37 @@ exports.create = (req, res) => {
 
   // Check if user ID is selling anything currently.
   // One seller/user is assumed to be just serving one set of buyers at a time.
-  Trade.findOne({ where: { sellerId: req.userId } })
-    .then((trade) => {
-      if (trade) {
-        return res
+  Trade.findOne({ where: { sellerId: req.userId } }).then((trade) => {
+    if (trade) {
+      return res
         .status(404)
-        .send({ message: "You already have an active trade." });
-      }
-    })
-    .catch((error) => res.status(400).send(error));
-
-  return Trade.create({
-    sellerId: req.userId,
-    inGameName: req.body.inGameName,
-    timeStart: req.body.timeStart,
-    timeEnd: req.body.timeEnd,
-    price: req.body.price,
-    channels: req.body.channels,
-    buyerLimit: req.body.buyerLimit,
-    buyerAvailable: req.body.buyerLimit,
-    inProgress: false,
-  })
-    .then((newTrade) => {
-      if(newTrade){
-        res
-        .status(200)
-        .send({ id: newTrade.id, message: "Successfully created trade." });
-      }
-      else{
-        res.status(400).send({ error: "Unable to create trade"});
-      }
-    })
-    .catch((error) => res.status(400).send(error));
+        .send({ error: "You already have an active trade." });
+    } else {
+      Trade.create({
+        sellerId: req.userId,
+        inGameName: req.body.inGameName,
+        timeStart: req.body.timeStart,
+        timeEnd: req.body.timeEnd,
+        price: req.body.price,
+        channels: req.body.channels,
+        buyerLimit: req.body.buyerLimit,
+        buyerAvailable: req.body.buyerLimit,
+        inProgress: false,
+      })
+        .then((newTrade) => {
+          if (newTrade) {
+            return res
+              .status(200)
+              .send({
+                id: newTrade.id,
+                message: "Successfully created trade.",
+              });
+          } else
+            return res.status(400).send({ error: "Unable to create trade" });
+        })
+        .catch((error) => res.status(400).send(error));
+    }
+  });
 };
 
 // Delete Trade
@@ -171,12 +168,6 @@ exports.leave = (req, res, next) => {
         return res
           .status(400)
           .send({ error: "You can't leave a trade that you created." });
-
-      // Check if trade is ongoing or ended
-      if (trade.inProgress)
-        return res.status(400).send({
-          error: "You can't leave a trade that is ongoing/completed.",
-        });
 
       // Check if user is already in the trade
       TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
@@ -338,28 +329,28 @@ exports.searchMarket = (req, res) => {
         // Username
         // Reputation
         // Trade Count
-        User.findOne({ where: { id: foundTrade.sellerId }}).then((user) => {
-            const username = user.username;
+        User.findOne({ where: { id: foundTrade.sellerId } }).then((user) => {
+          const username = user.username;
 
-            UserProfile.findOne({ where: { userId: foundTrade.sellerId } }).then(
-              (profile) => {
-                return res.status(200).send({
-                  message: "Matching trade(s) found.",
-                  seller: {
-                    id: foundTrade.sellerId,
-                    username: username,
-                    reputation: profile.reputation,
-                    tradeCount: profile.tradeCount,
-                  },
-                  trade: {
-                    id: foundTrade.id,
-                    price: foundTrade.price,
-                    timeStart: foundTrade.timeStart,
-                    timeEnd: foundTrade.timeEnd,
-                  },
-                });
-              }
-            );
+          UserProfile.findOne({ where: { userId: foundTrade.sellerId } }).then(
+            (profile) => {
+              return res.status(200).send({
+                message: "Matching trade(s) found.",
+                seller: {
+                  id: foundTrade.sellerId,
+                  username: username,
+                  reputation: profile.reputation,
+                  tradeCount: profile.tradeCount,
+                },
+                trade: {
+                  id: foundTrade.id,
+                  price: foundTrade.price,
+                  timeStart: foundTrade.timeStart,
+                  timeEnd: foundTrade.timeEnd,
+                },
+              });
+            }
+          );
         });
       }
     })

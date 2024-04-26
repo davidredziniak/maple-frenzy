@@ -39,8 +39,6 @@ function Dashboard(props) {
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
-  const [isCasting, setIsCasting] = useState(false);
-  const [showReloadIcon, setShowReloadIcon] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
 
   const getHoursFromNow = (time) => {
@@ -160,9 +158,6 @@ function Dashboard(props) {
                     <Tr>
                       <Td>
                         <Flex alignItems="center">
-                          {showReloadIcon && (
-                            <Spinner color="teal" mr="10px" size="sm" />
-                          )}
                           <CopyToClipboard text="Player 1">
                             <Button
                               colorScheme="teal"

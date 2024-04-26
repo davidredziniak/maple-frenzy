@@ -131,7 +131,9 @@ const TradeBox = (props) => {
                     <Th color="white">ID</Th>
                     <Th color="white">In Game Name</Th>
                     <Th color="white">Channel</Th>
+                    <Th color="white">Start Time</Th>
                     <Th color="white">Duration</Th>
+                    <Th color="white">In Progress</Th>
                     <Th color="white"></Th>
                   </Tr>
                 </Thead>
@@ -147,7 +149,9 @@ const TradeBox = (props) => {
                       </Td>
                       <Td color="white">{trade.gameName}</Td>
                       <Td color="white">{trade.channel}</Td>
+                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
                       <Td color="white">{trade.duration} hour(s)</Td>
+                      <Td color="white">{trade.inProgress ? 'Yes' : 'No'}</Td>
 
                       <Td color="white"><Button onClick={() => props.navBuyer(trade.id)}>View</Button></Td>
                     </Tr>

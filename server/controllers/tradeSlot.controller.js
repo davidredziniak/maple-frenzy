@@ -47,7 +47,9 @@ exports.findSlotOfUser = (req, res) => {
               timeStart: trade.timeStart,
               timeEnd: trade.timeEnd,
               inGameName: slot.gameName,
+              channel: slot.channel,
               pos: slot.queuePos,
+              inProgress: trade.inProgress,
             });
         }
       });

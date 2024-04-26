@@ -48,12 +48,16 @@ exports.findTradesUserIsIn = (req, res) => {
     .then((slotResult) => {
       var joinedTrades = [];
       slotResult.forEach((record) => {
-        joinedTrades.push({
-          id: record.tradeId,
-          gameName: record.gameName,
-          channel: record.channel,
-          duration: record.duration
-        });
+        Trade.findOne( {where: { id: record.tradeId }}).then((foundTrade) => {
+          joinedTrades.push({
+            id: record.tradeId,
+            gameName: record.gameName,
+            channel: record.channel,
+            duration: record.duration,
+            timeStart: foundTrade.timeStart,
+            inProgress: foundTrade.inProgress
+          });
+        }).catch((error) => {});
       });
 
       Trade.findAll({ where: { sellerId: req.userId }}).then((tradeResult) => {

@@ -106,7 +106,7 @@ const TradeBox = (props) => {
     <Box
       pt="14vh"
       flex="1"
-      bg="white"
+      bg="#F8EEDE"
       rounded="md"
       boxShadow="base"
       color={"black"}
@@ -116,7 +116,7 @@ const TradeBox = (props) => {
           <Center>
             <Text fontSize="40px">{props.username}</Text>
           </Center>
-          <Card>
+          <Card bg="#353935" color={"white"}>
             <Center>
               <Flex pt="5vh">
                 <Text fontSize="20px">Trade Navigator</Text>

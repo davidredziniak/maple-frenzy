@@ -103,7 +103,9 @@ const CreateTradeBox = () => {
       const startTimeIso = startDate.toISOString();
       setTimeStart(startTimeIso);
   
-      const endDate = new Date(startDate.getTime() + endTimeInput * 60 * 60 * 1000);
+      const endDate = new Date(
+        startDate.getTime() + endTimeInput * 60 * 60 * 1000
+      );
       const endTimeIso = endDate.toISOString();
       setTimeEnd(endTimeIso);
     }

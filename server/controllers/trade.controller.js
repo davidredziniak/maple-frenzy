@@ -36,7 +36,8 @@ exports.create = (req, res) => {
     });
 
   // Check if channels list is valid
-  if (req.body.channels.some((i) => !Number.isInteger(i)))
+  if (req.body.channels.some((i) => !Number.isInteger(i) 
+    || !(i > 0 && i < 31) ))
     return res
       .status(400)
       .send({ error: "The list of channels requested are invalid." });

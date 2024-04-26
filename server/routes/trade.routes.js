@@ -45,11 +45,13 @@ module.exports = (app) => {
     [authorizeJwt.verifyToken],
     tradesController.findById
   );
+  /*
   app.get(
     "/api/trade/data/queue/:tradeId",
     [authorizeJwt.verifyToken],
     tradesController.getBuyerQueue
   );
+  */
   app.get(
     "/api/trade/viewslot/:tradeId",
     [authorizeJwt.verifyToken],

@@ -16,6 +16,12 @@ import {
     FormControl,
     Input,
     FormLabel,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+    
   } from "@chakra-ui/react";
   import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
   import Navbar from "./Navbar";
@@ -30,11 +36,9 @@ import {
     const [timeStart, setTimeStart] = useState('');
     const [startTimeInput, setStartTimeInput] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
-    const [endTimeInput, setEndTimeInput] = useState('');
+    const [endTimeInput, setEndTimeInput] = useState(1);
     const [channelsInput, setChannelsInput] = useState('');
     const [buyerLimit, setBuyerLimit] = useState(0);
-    const [minuteFlag,setMinuteFlag] = useState(false);
-  
     const {
       accessToken,
       refreshToken,
@@ -54,49 +58,31 @@ import {
         },
       });
     };
-
-    const handleStartTimeChange = (event) => {
-      const time = event.target.value;
-      console.log(time);
-      setStartTimeInput(time);
-      if(time.length>=16) setMinuteFlag(true);
-      if(minuteFlag){
-          setMinuteFlag(false)
-          const currentDate = new Date();
-          const newDate = new Date(time);
-
-          if(currentDate >= newDate){
-              errNotification('You cannot choose dates earlier than the date it currently is');
-          }
-          else{
-              const isoDateTimeString = new Date(time).toISOString();
-              setTimeStart(isoDateTimeString);
-          }
-      }
-    };
-
-    const handleEndTimeChange = (event) => {
-        const time = event.target.value;
-        console.log(time);
-        setEndTimeInput(time);
-        if(time.length>=16) setMinuteFlag(true);
-        if(minuteFlag) {
-        setMinuteFlag(false);
-        const selectedStartDate = new Date(startTimeInput);
-        const selectedEndDate = new Date(time)
-
-        if(selectedStartDate >= selectedEndDate){
-            errNotification('You cannot choose dates earlier than the start date');
-        }
-        else{
-            const isoDateString = new Date(time).toISOString();
-            setTimeEnd(isoDateString);
-        }}
-    };
     
     const handleSubmit = async (e) => {
       e.preventDefault();
-      //setChannels(channelsInput.split(',').map(str => parseInt(str)));
+
+      const startDate = new Date(startTimeInput);
+      const currentDate = new Date();
+    
+      if (currentDate >= startDate) {
+        errNotification('You cannot choose dates earlier than the date it currently is');
+      }
+    
+      const startTimeIso = startDate.toISOString();
+      setTimeStart(startTimeIso);
+    
+      const endDate = new Date(startDate.getTime() + endTimeInput * 60 * 60 * 1000);
+      const endTimeIso = endDate.toISOString();
+      setTimeEnd(endTimeIso);
+    
+      // console.log(price);
+      // console.log(new Date(startTimeInput));
+      // console.log(startTimeIso);
+      // console.log(endTimeIso);
+      // console.log(channelsInput.split(',').map(str => parseInt(str)));
+      // console.log(buyerLimit);
+      
       const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
         method: "POST",
         headers: {
@@ -153,22 +139,28 @@ import {
                   type="datetime-local"
                   id="startTimeInput"
                   value={startTimeInput}
-                  onChange={handleStartTimeChange}
+                  onChange={(e) => setStartTimeInput(e.target.value)}
                   required
                 />
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
-                  End Time:
-                </FormLabel>
-                <Input
+                  Desired Duration In Hours:
+                </FormLabel>                  
+                  <NumberInput
+                  isDisabled={!startTimeInput}
+                  min={1}
                   bg="white"
-                  type="datetime-local" 
                   id="endTimeInput"
                   value={endTimeInput}
-                  onChange={handleEndTimeChange}
-                  required
-                />
+                  onChange={(e) => setEndTimeInput(e)}
+                  required>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </div>
               <div>
                 <FormLabel mt="20px" color="white" htmlFor="channelsInput">

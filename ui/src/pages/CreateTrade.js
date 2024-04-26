@@ -78,6 +78,7 @@ import {
 
     const handleEndTimeChange = (event) => {
         const time = event.target.value;
+        console.log(time);
         setEndTimeInput(time);
         if(time.length>=16) setMinuteFlag(true);
         if(minuteFlag) {

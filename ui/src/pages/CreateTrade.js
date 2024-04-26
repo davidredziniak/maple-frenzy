@@ -5,7 +5,7 @@ import {
   loginText,
   signInButton,
 } from "../config";
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   Box,

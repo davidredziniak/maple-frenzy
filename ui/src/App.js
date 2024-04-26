@@ -20,14 +20,14 @@ function App() {
       <AuthProvider>
           <Routes>
             <Route exact path='/' element={<Landing />} />
-            <Route exact path='/Register' element={<Register/>} />
-            <Route exact path='/Login' element={<Login/>} />
-            <Route exact path='/Profile' element={<Profile/>} />
-            <Route path='/Dashboard/:tradeId' element={<Dashboard/>} />
-            <Route exact path='/Frenzy' element={<FindFrenzy />}/>
-            <Route exact path='/JoinFrenzy' element={<JoinFrenzy />}/>
-            <Route exact path='/Waiting' element={<FrenzyWaiting />}/>
-            <Route exact path='/CreateFrenzy' element={<CreateTrade />}/>
+            <Route exact path='/register' element={<Register/>} />
+            <Route exact path='/login' element={<Login/>} />
+            <Route exact path='/profile' element={<Profile/>} />
+            <Route path='/dashboard/:tradeId' element={<Dashboard/>} />
+            <Route exact path='/find' element={<FindFrenzy />}/>
+            <Route exact path='/join' element={<JoinFrenzy />}/>
+            <Route path='/view/:tradeId' element={<FrenzyWaiting />}/>
+            <Route exact path='/create' element={<CreateTrade />}/>
           </Routes>
       </AuthProvider>
     </ChakraProvider>

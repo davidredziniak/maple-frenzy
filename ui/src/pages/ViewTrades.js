@@ -6,9 +6,7 @@ import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
 
-const ProfileBox = () => {
-  const { username, tradeCount, reputation, createdAt, lastLoggedIn } = useContext(AuthContext);
-
+const TradeBox = (props) => {
   return (
     <Box pt="14vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
       <Center>

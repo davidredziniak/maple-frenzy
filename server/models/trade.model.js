@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "seller_id",
       },
+      inGameName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: "in_game_name",
+      },
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,

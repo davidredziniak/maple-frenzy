@@ -144,7 +144,7 @@ const RegisterForm = () => {
         <Text>Dont have an Account? </Text>
       </Box>
       <Box pr="329px" color="blue">
-        <Link to="/Register">
+        <Link to="/register">
           <Text color="#93d7bf">Register Here!</Text>
         </Link>
       </Box>

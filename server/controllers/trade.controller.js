@@ -43,6 +43,7 @@ exports.create = (req, res) => {
 
   return Trade.create({
     sellerId: req.userId,
+    inGameName: req.body.inGameName,
     timeStart: req.body.timeStart,
     timeEnd: req.body.timeEnd,
     price: req.body.price,

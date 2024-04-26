@@ -81,10 +81,10 @@ const JoinFrenzyBox = () => {
             Seller {location.state.seller} is available to join!
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Start Time: {location.state.start}
+            Start Time: {new Date(location.state.start).toUTCString()}
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            End Time: {location.state.end}
+            End Time: {new Date(location.state.end).toUTCString()}
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
             Price: {location.state.price}

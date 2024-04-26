@@ -177,10 +177,6 @@ const FrenzyBox = () => {
       }
   };
 
-  function handleAcc() {
-    updateAccessToken("lol");
-  }
-
   return (
     <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>

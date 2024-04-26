@@ -38,8 +38,13 @@ import {
     const [timeEnd, setTimeEnd] = useState('');
     const [endTimeInput, setEndTimeInput] = useState(1);
     const [channelsInput, setChannelsInput] = useState('');
-    const [buyerLimit, setBuyerLimit] = useState(0);  
-    const { accessToken, userId } = useContext(AuthContext);
+    const [buyerLimit, setBuyerLimit] = useState(0);
+    const {
+      accessToken,
+      refreshToken,
+      updateAccessToken,
+      updateRefreshToken,
+    } = useContext(AuthContext);
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     const errNotification = (message) => toast.error(message);
@@ -49,6 +54,7 @@ import {
     const navigateRedirect = (tradeId) => {
       navigate("/Dashboard", {
         state: {
+          accessToken: accessToken,
           id: tradeId
         },
       });

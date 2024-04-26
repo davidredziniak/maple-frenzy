@@ -8,10 +8,10 @@ import Dashboard from './pages/Dashboard.js';
 import CreateTrade from './pages/CreateTrade.js';
 import JoinFrenzy from './pages/JoinFrenzy.js';
 import FrenzyWaiting from './pages/WaitingPage.js';
-import {useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import FindFrenzy from './pages/FindFrenzy.js';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import { AuthProvider } from './pages/AuthContext.js';
+import { AuthProvider, AuthContext } from './pages/AuthContext.js';
 
 function App() {
   return (

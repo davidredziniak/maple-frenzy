@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -13,11 +13,13 @@ import {
   Input,
 } from "@chakra-ui/react";
 import Navbar from "./Navbar";
+import CastCountdown from "./CastCountdown";
 import { CopyIcon } from "@chakra-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "./Footer";
 import { AuthContext } from "./AuthContext";
 import { useLocation } from "react-router-dom";
+import DurationCountdown from "./DurationCountdown";
 
 function Dashboard(props) {
   const location = useLocation();
@@ -30,7 +32,6 @@ function Dashboard(props) {
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
-
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
 
@@ -50,6 +51,7 @@ function Dashboard(props) {
     setPrice(data.price);
     console.log(buyers);
   }
+
 
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0)
@@ -125,7 +127,6 @@ function Dashboard(props) {
                     <Th color="white">Channel</Th>
                     <Th color="white">Duration (hours)</Th>
                     <Th color="white">Recast Timer</Th>
-                    <Th color="white">Recast</Th>
                   </Tr>
                 </Thead>
                 <Tbody bg="#353935">
@@ -149,12 +150,9 @@ function Dashboard(props) {
                           </span>
                         </Flex>
                       </Td>
-                      <Td color="white">Channel {buyer.channel}</Td>
-                      <Td color="white">{buyer.duration} hours</Td>
-                      <Td color="white">Ready</Td>
-                      <Td color="white">
-                        <Button></Button>
-                      </Td>
+                      <Td color="white">{buyer.channel}</Td>
+                      <DurationCountdown duration={buyer.duration*3600} />
+                      <CastCountdown />
                     </Tr>
                   ))}
                 </Tbody>

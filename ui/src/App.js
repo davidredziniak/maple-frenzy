@@ -12,6 +12,7 @@ import {useContext, useEffect, useState} from 'react'
 import FindFrenzy from './pages/FindFrenzy.js';
 import { BrowserRouter as Router, HashRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider, AuthContext } from './pages/AuthContext.js';
+import ViewTrades from './pages/ViewTrades.js';
 
 function App() {
   return (
@@ -23,11 +24,12 @@ function App() {
             <Route exact path='/register' element={<Register/>} />
             <Route exact path='/login' element={<Login/>} />
             <Route exact path='/profile' element={<Profile/>} />
+            <Route exact path='/create' element={<CreateTrade />}/>
             <Route path='/dashboard/:tradeId' element={<Dashboard/>} />
             <Route exact path='/find' element={<FindFrenzy />}/>
             <Route exact path='/join' element={<JoinFrenzy />}/>
             <Route path='/view/:tradeId' element={<FrenzyWaiting />}/>
-            <Route exact path='/create' element={<CreateTrade />}/>
+            <Route exact path='/trades' element={<ViewTrades />}/>
           </Routes>
       </AuthProvider>
     </ChakraProvider>

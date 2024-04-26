@@ -46,8 +46,13 @@ function Dashboard(props) {
     buyerLimit: "",
   });
 
+  const getLocalTime = (time) => {
+    var date = new Date(time);
+    return date.toString();
+  };
+
   function configureState(data) {
-    if(!data.error){
+    if (!data.error) {
       setIsAuth(true);
       setTimeStart(data.timeStart);
       setTimeEnd(data.timeEnd);
@@ -56,21 +61,23 @@ function Dashboard(props) {
     }
   }
 
-
   useEffect(() => {
-    if (accessToken !== null && accessToken.length !== 0){
+    if (accessToken !== null && accessToken.length !== 0) {
       getTradeSlots(tradeId).then((data) => configureState(data));
     }
   }, [accessToken, price]);
 
   const getTradeSlots = (tradeId) => {
-    return fetch("https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots", {
-      method: "GET",
-      headers: {
-        "x-access-token": accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
+    return fetch(
+      "https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots",
+      {
+        method: "GET",
+        headers: {
+          "x-access-token": accessToken,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => response.json());
   };
 
   const handleChange = (e) => {
@@ -96,7 +103,7 @@ function Dashboard(props) {
               <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
                 Seller Dashboard
               </Box>
-              <Box mt={8} p={4}></Box>
+              <Box mt={8} p={4}>Start Time {getLocalTime(timeStart)}</Box>
             </Box>
             <Flex justify="center" mb={4}>
               <Button mr={2} colorScheme="teal" bg="#93d7bf">
@@ -156,7 +163,7 @@ function Dashboard(props) {
                         </Flex>
                       </Td>
                       <Td color="white">{buyer.channel}</Td>
-                      <DurationCountdown duration={buyer.duration*3600} />
+                      <DurationCountdown duration={buyer.duration * 3600} />
                       <CastCountdown />
                     </Tr>
                   ))}
@@ -165,7 +172,9 @@ function Dashboard(props) {
             </Box>
           </Box>
         </Box>
-      ) : <Text>You are not authorized</Text>}
+      ) : (
+        <Text>You are not authorized to view this trade.</Text>
+      )}
       <Footer />
     </Box>
   );

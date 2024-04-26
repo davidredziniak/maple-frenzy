@@ -1,6 +1,8 @@
 const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
+const Trade = db.trades;
+const TradeSlot = db.tradeSlots;
 const validatePass = db.validatePass;
 const config = require("../config/auth.config.js");
 const bcrypt = require("bcryptjs");
@@ -30,6 +32,52 @@ exports.findById = (req, res) => {
     })
     .catch((error) => res.status(400).send(error));
 };
+
+// Get time difference between timeStart and timeEnd in hours
+exports.getTimeDifference = (timeStart, timeEnd) => {
+  const start = new Date(timeStart);
+  const end = new Date(timeEnd);
+  let hours = (end - start) / (1000 * 60 * 60);
+  return hours;
+};
+
+exports.findTradesUserIsIn = (req, res) => {
+  TradeSlot.findAll({
+    where: { userId: req.userId }
+    })
+    .then((slotResult) => {
+      var joinedTrades = [];
+      slotResult.forEach((record) => {
+        joinedTrades.push({
+          id: record.tradeId,
+          gameName: record.gameName,
+          channel: record.channel,
+          duration: record.duration
+        });
+      });
+
+      Trade.findAll({ where: { sellerId: req.userId }}).then((tradeResult) => {
+        var createdTrades = [];
+        tradeResult.forEach((tradeRecord) => {
+          createdTrades.push({
+            id: tradeRecord.id,
+            timeStart: tradeRecord.timeStart,
+            duration: this.getTimeDifference(tradeRecord.timeStart, tradeRecord.timeEnd),
+            current: tradeRecord.buyerLimit-tradeRecord.buyerAvailable,
+            limit: tradeRecord.buyerLimit,
+            inProgress: tradeRecord.inProgress
+          });
+        })
+
+        return res.status(200).send({
+        joined: joinedTrades,
+        created: createdTrades
+      });
+      })
+    })
+    .catch((error) => res.status(400).send(error));
+};
+
 
 // Change user password
 exports.changePass = (req, res) => {

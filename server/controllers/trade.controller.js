@@ -65,9 +65,14 @@ exports.create = (req, res) => {
     inProgress: false,
   })
     .then((newTrade) => {
-      res
+      if(newTrade){
+        res
         .status(200)
         .send({ id: newTrade.id, message: "Successfully created trade." });
+      }
+      else{
+        res.status(400).send({ error: "Unable to create trade"});
+      }
     })
     .catch((error) => res.status(400).send(error));
 };
@@ -334,7 +339,7 @@ exports.searchMarket = (req, res) => {
         User.findOne({ where: { id: foundTrade.sellerId }}).then((user) => {
             const username = user.username;
 
-            UserProfile.findOne({ where: { id: foundTrade.sellerId } }).then(
+            UserProfile.findOne({ where: { userId: foundTrade.sellerId } }).then(
               (profile) => {
                 return res.status(200).send({
                   message: "Matching trade(s) found.",

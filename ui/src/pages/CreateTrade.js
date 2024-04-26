@@ -5,7 +5,7 @@ import {
   loginText,
   signInButton,
 } from "../config";
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   Box,
@@ -55,57 +55,57 @@ const CreateTradeBox = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": `${accessToken}`,
+        },
+        body: JSON.stringify({
+          inGameName,
+          price,
+          timeStart,
+          timeEnd,
+          channels: channelsInput.split(",").map((str) => parseInt(str)),
+          buyerLimit,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 200) {
+        sucNotification(data.message);
+        await delay(1000);
+        navigateRedirect(data.id);
+        // Reset form fields
+      } else {
+        errNotification(data.error);
+      }
+    };
+  
+    if (timeStart && timeEnd) {
+      fetchData();
+    }
+  }, [timeStart, timeEnd]);
+  
+  const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const startDate = new Date(startTimeInput);
     const currentDate = new Date();
-
+  
     if (currentDate >= startDate) {
-      errNotification(
-        "You cannot choose dates earlier than the date it currently is"
-      );
-    }
-
-    const startTimeIso = startDate.toISOString();
-    setTimeStart(startTimeIso);
-
-    const endDate = new Date(
-      startDate.getTime() + endTimeInput * 60 * 60 * 1000
-    );
-    const endTimeIso = endDate.toISOString();
-    setTimeEnd(endTimeIso);
-    
-    // console.log(price);
-    // console.log(new Date(startTimeInput));
-    // console.log(startTimeIso);
-    // console.log(endTimeIso);
-    // console.log(channelsInput.split(',').map(str => parseInt(str)));
-    // console.log(buyerLimit);
-
-    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": `${accessToken}`,
-      },
-      body: JSON.stringify({
-        inGameName,
-        price,
-        timeStart,
-        timeEnd,
-        channels: channelsInput.split(",").map((str) => parseInt(str)),
-        buyerLimit,
-      }),
-    });
-    const data = await response.json();
-    if (response.status === 200) {
-      sucNotification(data.message);
-      await delay(1000);
-      navigateRedirect(data.id);
-      // Reset form fields
+      errNotification("You cannot choose dates earlier than the date it currently is");
+      return;
     } else {
-      errNotification(data.error);
+      const startTimeIso = startDate.toISOString();
+      setTimeStart(startTimeIso);
+  
+      const endDate = new Date(startDate.getTime() + endTimeInput * 60 * 60 * 1000);
+      const endTimeIso = endDate.toISOString();
+      setTimeEnd(endTimeIso);
     }
   };
 
@@ -230,7 +230,7 @@ const CreateTradeBox = () => {
 const CreateTrade = () => {
   const { isLoggedIn } = useContext(AuthContext);
   return (
-    <Box>
+    <Box bg="#F8EEDE">
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       <CreateTradeBox />

@@ -31,7 +31,7 @@ import { AuthContext } from "./AuthContext";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 function WaitingPage(props) {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   let { tradeId } = useParams();
@@ -128,7 +128,7 @@ const WaitingBox = (props) => {
     <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>
         <Text pl=".5vw" fontFamily="verdana" fontSize="30px">
-          Waiting Room
+          Hey {props.buyerName}! - {props.seller} will be with you shortly..
         </Text>
         <Box
           pl=".5vw"
@@ -143,7 +143,7 @@ const WaitingBox = (props) => {
           </Text>
           <br/>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Seller's in game name: {props.seller}
+            Seller's username: {props.seller}
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
             Price: {props.price}

@@ -33,6 +33,14 @@ exports.findById = (req, res) => {
     .catch((error) => res.status(400).send(error));
 };
 
+// Get time difference between timeStart and timeEnd in hours
+exports.getTimeDifference = (timeStart, timeEnd) => {
+  const start = new Date(timeStart);
+  const end = new Date(timeEnd);
+  let hours = (end - start) / (1000 * 60 * 60);
+  return hours;
+};
+
 exports.findTradesUserIsIn = (req, res) => {
   TradeSlot.findAll({
     where: { userId: req.userId }
@@ -40,13 +48,25 @@ exports.findTradesUserIsIn = (req, res) => {
     .then((slotResult) => {
       var joinedTrades = [];
       slotResult.forEach((record) => {
-        joinedTrades.push(record.tradeId);
+        joinedTrades.push({
+          id: record.tradeId,
+          gameName: record.gameName,
+          channel: record.channel,
+          duration: record.duration
+        });
       });
 
       Trade.findAll({ where: { sellerId: req.userId }}).then((tradeResult) => {
         var createdTrades = [];
         tradeResult.forEach((tradeRecord) => {
-          createdTrades.push(tradeRecord.id);
+          createdTrades.push({
+            id: tradeRecord.id,
+            timeStart: tradeRecord.timeStart,
+            duration: this.getTimeDifference(tradeRecord.timeStart, tradeRecord.timeEnd),
+            current: tradeRecord.buyerLimit-tradeRecord.buyerAvailable,
+            limit: tradeRecord.buyerLimit,
+            inProgress: tradeRecord.inProgress
+          });
         })
 
         return res.status(200).send({

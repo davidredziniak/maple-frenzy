@@ -76,6 +76,21 @@ function ViewTrades(props) {
 }
 
 const TradeBox = (props) => {
+
+  const getMinutesFromNow = (startTime) => {
+    var now = new Date();
+    var tradeStartTime = new Date(startTime);
+    var diffMs = (tradeStartTime - now);
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    return diffMins;
+  }
+
+  const checkIfStarted = (minutes) => {
+    if (minutes < 0){
+      return true;
+    }
+    return false;
+  }
   return (
     <Box
       pt="14vh"
@@ -102,7 +117,10 @@ const TradeBox = (props) => {
             <Text>Joined Trades</Text>{ props.joined.length >= 1 ? <Table variant="simple">
                 <Thead bg="#353935">
                   <Tr>
-                    <Th color="white">Trade ID</Th>
+                    <Th color="white">ID</Th>
+                    <Th color="white">In Game Name</Th>
+                    <Th color="white">Channel</Th>
+                    <Th color="white">Duration</Th>
                     <Th color="white"></Th>
                   </Tr>
                 </Thead>
@@ -112,20 +130,30 @@ const TradeBox = (props) => {
                       <Td>
                         <Flex alignItems="center">
                           <span style={{ marginLeft: "10px", color: "white" }}>
-                            {trade}
+                            {trade.id}
                           </span>
                         </Flex>
                       </Td>
-                      <Td color="white"><Button onClick={() => props.navBuyer(trade)}>Go</Button></Td>
+                      <Td color="white">{trade.gameName}</Td>
+                      <Td color="white">{trade.channel}</Td>
+                      <Td color="white">{trade.duration}</Td>
+
+                      <Td color="white"><Button onClick={() => props.navBuyer(trade.id)}>View</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table> : '------'}
+              <br />
               <Text>Created Trades</Text>
                   { props.created.length >= 1 ? <Table variant="simple">
                 <Thead bg="#353935">
                   <Tr>
-                    <Th color="white">Trade ID</Th>
+                    <Th color="white">ID</Th>
+                    <Th color="white">Start Time</Th>
+                    <Th color="white">Duration</Th>
+                    <Th color="white">Queue</Th>
+                    <Th color="white">Limit</Th>
+                    <Th color="white">In Progress</Th>
                     <Th color="white"></Th>
                   </Tr>
                 </Thead>
@@ -135,11 +163,16 @@ const TradeBox = (props) => {
                       <Td>
                         <Flex alignItems="center">
                           <span style={{ marginLeft: "10px", color: "white" }}>
-                            {trade}
+                            {trade.id}
                           </span>
                         </Flex>
                       </Td>
-                      <Td color="white"><Button onClick={() => props.navSeller(trade)}>Go</Button></Td>
+                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getMinutesFromNow(trade.timeStart)} minutes</Td>}
+                      <Td color="white">{trade.duration} hour(s)</Td>
+                      <Td color="white">{trade.current}</Td>
+                      <Td color="white">{trade.limit}</Td>
+                      <Td color="white">{trade.inProgress ? 'Yes' : 'No'}</Td>
+                      <Td color="white"><Button onClick={() => props.navSeller(trade.id)}>Go</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>

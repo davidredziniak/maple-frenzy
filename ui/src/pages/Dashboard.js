@@ -35,35 +35,40 @@ function Dashboard(props) {
   const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
     useContext(AuthContext);
 
+  const [inProgress, setInProgress] = useState(false);
   const [buyers, setBuyers] = useState([]);
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
   const [isAuth, setIsAuth] = useState(false);
 
+  const getLocalTime = (time) => {
+    var date = new Date(time).toLocaleString();
+    return date.toString();
+  };
+
   const getHoursFromNow = (time) => {
     var now = new Date();
     var tradeTime = new Date(time);
-    var diffMs = (tradeTime - now);
-    var diffMins = Math.round((diffMs) / 60000); // minutes
-    var diffHours = Math.floor(diffMins/60);
+    var diffMs = tradeTime - now;
+    var diffMins = Math.round(diffMs / 60000); // minutes
+    var diffHours = Math.floor(diffMins / 60);
     return diffHours;
-  }
+  };
 
   const getMinutesFromNow = (time) => {
     var now = new Date();
     var tradeTime = new Date(time);
-    var diffMs = (tradeTime - now);
-    var diffMins = Math.round((diffMs) / 60000); // minutes
-    diffMins = diffMins - Math.floor(diffMins/60)*60;
+    var diffMs = tradeTime - now;
+    var diffMins = Math.round(diffMs / 60000); // minutes
+    diffMins = diffMins - Math.floor(diffMins / 60) * 60;
     return diffMins;
-  }
+  };
 
   const checkIfTimePassed = (minutes) => {
-    if (minutes < 0)
-      return true;
+    if (minutes < 0) return true;
     return false;
-  }
+  };
 
   const handleDeleteTrade = async () => {
     const response = await fetch("https://maple-frenzy.onrender.com/api/trade/delete", {
@@ -93,6 +98,7 @@ function Dashboard(props) {
       setTimeEnd(data.timeEnd);
       setBuyers(data.slots);
       setPrice(data.price);
+      setInProgress(data.inProgress);
     }
   }
 
@@ -103,16 +109,13 @@ function Dashboard(props) {
   }, [accessToken, price]);
 
   const getTradeSlots = (tradeId) => {
-    return fetch(
-      "https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots",
-      {
-        method: "GET",
-        headers: {
-          "x-access-token": accessToken,
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => response.json());
+    return fetch("https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots", {
+      method: "GET",
+      headers: {
+        "x-access-token": accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
   };
 
   return (
@@ -126,14 +129,45 @@ function Dashboard(props) {
               <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
                 Seller Dashboard
               </Box>
-              <Box p={4}>Start Time: {checkIfTimePassed(getMinutesFromNow(timeStart)) ? <Text>NOW</Text> : <Text>{getHoursFromNow(timeStart)} hour(s) {getMinutesFromNow(timeStart)} min</Text>}</Box>
-              <Box p={4}>End Time: {checkIfTimePassed(getMinutesFromNow(timeEnd)) ? <Text>FINISHED</Text> : <Text>{getHoursFromNow(timeEnd)} hour(s) {getMinutesFromNow(timeEnd)} min</Text>}</Box>
+              <Box p={4}>
+                {inProgress ? (
+                  <Text>Trade is in progress.</Text>
+                ) : (
+                  <div>
+                    <Text>
+                      Start Time: {getLocalTime(timeStart)} (
+                      {getHoursFromNow(timeStart)} hour(s){" "}
+                      {getMinutesFromNow(timeStart)} min)
+                    </Text>
+                  </div>
+                )}
+              </Box>
+              <Box p={4}>
+                {checkIfTimePassed(getMinutesFromNow(timeEnd)) ||
+                checkIfTimePassed(getHoursFromNow(timeEnd)) ? (
+                  <Text>FINISHED</Text>
+                ) : (
+                  <Text>
+                    End Time: {getLocalTime(timeEnd)} (
+                    {getHoursFromNow(timeEnd)} hour(s){" "}
+                    {getMinutesFromNow(timeEnd)} min)
+                  </Text>
+                )}
+              </Box>
               <Box p={4}>Price: {price}</Box>
             </Box>
             <Flex justify="center" mb={4}>
-              <Button onClick={() => handleDeleteTrade()} colorScheme="teal" bg="#353935">
-                Delete Frenzy
-              </Button>
+              {!inProgress ? (
+                <Button
+                  onClick={() => handleDeleteTrade()}
+                  colorScheme="teal"
+                  bg="#353935"
+                >
+                  Delete Frenzy
+                </Button>
+              ) : (
+                ""
+              )}
             </Flex>
             <Box
               maxW="50%"
@@ -164,7 +198,9 @@ function Dashboard(props) {
                               size="sm"
                               leftIcon={<CopyIcon />}
                               aria-label="Copy to clipboard"
-                              onClick={() => navigator.clipboard.writeText(buyer.inGameName)}
+                              onClick={() =>
+                                navigator.clipboard.writeText(buyer.inGameName)
+                              }
                             />
                           </CopyToClipboard>
                           <span style={{ marginLeft: "10px", color: "white" }}>

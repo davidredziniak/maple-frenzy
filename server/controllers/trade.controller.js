@@ -244,6 +244,7 @@ exports.findById = (req, res) => {
                 channels: trade.channels,
                 buyerLimit: trade.buyerLimit,
                 buyerAvailable: trade.buyerAvailable,
+                inProgress: trade.inProgress,
                 slots: slots,
               });
             })

@@ -17,6 +17,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
 import bgImg from "../img/find_frenzy_bimg.png";
 import bgImg1 from "../img/landing-leaves.png";
+import Footer from './Footer';
 
 const FrenzyBox = () => {
   const [inGameUsername, setInGameUsername] = useState("");
@@ -265,9 +266,9 @@ const FindFrenzy = () => {
       <Navbar />
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
-        {isLoggedIn && (
+        
           <Flex
-            h="100vh"
+            h="72vh"
             bg="#F8EEDE"
             bgRepeat="no-repeat"
             bgPosition="center"
@@ -276,8 +277,9 @@ const FindFrenzy = () => {
             <FrenzyBox />
             {/*move back in between flex*/}
           </Flex>
-        )}
+        
       </Box>
+      <Footer/>
     </Box>
   );
 };

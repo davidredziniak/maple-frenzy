@@ -24,6 +24,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
+import Footer from './Footer';
 
 function ViewTrades(props) {
   const { isLoggedIn, accessToken, username } = useContext(AuthContext);
@@ -191,7 +192,9 @@ const TradeBox = (props) => {
             </CardBody>
           </Card>
         </Stack>
-      </Center>
+      </Center>      
+      <Spacer pt="46vh" />
+      <Footer />
     </Box>
   );
 };

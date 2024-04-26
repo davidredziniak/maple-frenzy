@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
+import Footer from './Footer';
 
 const ProfileBox = () => {
   
@@ -111,6 +112,7 @@ const Profile = () => {
         
         <ProfileBox size="250px"/>
       </Flex>
+      <Footer/>
     </Box>
   );
 };

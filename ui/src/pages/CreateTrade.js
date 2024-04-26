@@ -29,6 +29,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
 
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import Footer from './Footer';
 
 const CreateTradeBox = () => {
   const [inGameName, setInGameName] = useState("");
@@ -236,6 +237,7 @@ const CreateTrade = () => {
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       <CreateTradeBox />
+      <Footer/>
     </Box>
   );
 };

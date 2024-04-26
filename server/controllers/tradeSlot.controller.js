@@ -27,7 +27,7 @@ exports.incrementAvail = (trade) => {
 
 exports.findSlotOfUser = (req, res) => {
   Trade.findOne({
-    where: { id: tradeId },
+    where: { id: req.params.tradeId },
   }).then((trade) => {
     if (!trade) return res.status(404).send({ error: "Trade does not exist." });
     else {

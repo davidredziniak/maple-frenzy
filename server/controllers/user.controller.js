@@ -1,6 +1,8 @@
 const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
+const Trade = db.trades;
+const TradeSlot = db.tradeSlots;
 const validatePass = db.validatePass;
 const config = require("../config/auth.config.js");
 const bcrypt = require("bcryptjs");
@@ -30,6 +32,32 @@ exports.findById = (req, res) => {
     })
     .catch((error) => res.status(400).send(error));
 };
+
+exports.findTradesUserIsIn = (req, res) => {
+  TradeSlot.findAll({
+    where: { userId: req.userId }
+    })
+    .then((slotResult) => {
+      var joinedTrades = [];
+      slotResult.forEach((record) => {
+        joinedTrades.push(record.tradeId);
+      });
+
+      Trade.findAll({ where: { sellerId: req.userId }}).then((tradeResult) => {
+        var createdTrades = [];
+        tradeResult.forEach((tradeRecord) => {
+          createdTrades.push(tradeRecord.id);
+        })
+
+        return res.status(200).send({
+        joined: joinedTrades,
+        created: createdTrades
+      });
+      })
+    })
+    .catch((error) => res.status(400).send(error));
+};
+
 
 // Change user password
 exports.changePass = (req, res) => {

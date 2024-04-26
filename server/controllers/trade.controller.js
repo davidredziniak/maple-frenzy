@@ -325,7 +325,7 @@ exports.searchMarket = (req, res) => {
         User.findOne({ where: { id: foundTrade.sellerId }}).then((user) => {
             const username = user.username;
 
-            UserProfile.findOne({ where: { id: foundTrade.sellerId } }).then(
+            UserProfile.findOne({ where: { userId: foundTrade.sellerId } }).then(
               (profile) => {
                 return res.status(200).send({
                   message: "Matching trade(s) found.",

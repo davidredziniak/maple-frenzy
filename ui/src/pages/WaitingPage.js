@@ -41,6 +41,7 @@ function WaitingPage(props) {
   const [position, setPosition] = useState("");
   const [sellerName, setSellerName] = useState("");
   const [inGameName, setInGameName] = useState("");
+  const [price, setPrice] = useState("");
   
   const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
     useContext(AuthContext);
@@ -50,8 +51,8 @@ function WaitingPage(props) {
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  const getLocalStartTime = (startTime) => {
-    var date = new Date(startTime);
+  const getLocalTime = (time) => {
+    var date = new Date(time);
     return date.toString();
   };
 
@@ -59,8 +60,12 @@ function WaitingPage(props) {
     console.log(data);
     if(!data.error){
       setIsAuth(true);
+      setSellerName(data.seller);
+      setPrice(data.price);
       setTimeStart(data.timeStart);
       setTimeEnd(data.timeEnd);
+      setPosition(data.pos);
+      setInGameName(data.inGameName);
     }
   }
 
@@ -108,11 +113,11 @@ function WaitingPage(props) {
       <Navbar />
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
-        {isLoggedIn && (
+        {isLoggedIn && isAuth ? (
           <Flex h="100vh">
-            <WaitingBox handleLeave={handleLeave} seller={location.state.seller} price={location.state.price} startTime={getLocalStartTime(location.state.start)} pos={location.state.position} />
+            <WaitingBox handleLeave={handleLeave} buyerName={inGameName} seller={sellerName} price={price} startTime={getLocalTime(timeStart)} endTime={getLocalTime(timeEnd)} pos={position} />
           </Flex>
-        )}
+        ) : <Text>You are not authorized to view this trade.</Text>}
       </Box>
     </Box>
   );
@@ -133,8 +138,12 @@ const WaitingBox = (props) => {
           bg="#353935"
           rounded="md"
         >
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="20px">
+            You are position <b>{props.pos}</b> in queue.
+          </Text>
+          <br/>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Seller: {props.seller}
+            Seller's in game name: {props.seller}
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
             Price: {props.price}
@@ -143,7 +152,10 @@ const WaitingBox = (props) => {
             Start Time: {props.startTime}
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            You are {props.pos} in queue.
+            End Time: {props.endTime}
+          </Text>
+          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
+            Your in game name: {props.buyerName}
           </Text>
           <Button
             mt="30px"

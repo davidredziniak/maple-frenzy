@@ -48,10 +48,9 @@ import {
   
     const navigate = useNavigate();
     const navigateRedirect = (tradeId) => {
-      navigate("/Dashboard", {
+      navigate("/Dashboard/" + tradeId, {
         state: {
           accessToken: accessToken,
-          id: tradeId
         },
       });
     };

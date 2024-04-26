@@ -10,28 +10,29 @@ import JoinFrenzy from './pages/JoinFrenzy.js';
 import FrenzyWaiting from './pages/WaitingPage.js';
 import {useContext, useEffect, useState} from 'react'
 import FindFrenzy from './pages/FindFrenzy.js';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, HashRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider, AuthContext } from './pages/AuthContext.js';
 
 function App() {
   return (
+    <HashRouter>
     <ChakraProvider>
       <AuthProvider>
-        <Router>
           <Routes>
-            <Route path='/' element={<Landing />} />
-            <Route path='/Register' element={<Register/>} />
-            <Route path='/Login' element={<Login/>} />
-            <Route path='/Profile' element={<Profile/>} />
-            <Route path='/Dashboard' element={<Dashboard/>} />
-            <Route path='/Frenzy' element={<FindFrenzy />}/>
-            <Route path='/JoinFrenzy' element={<JoinFrenzy />}/>
-            <Route path='/Waiting' element={<FrenzyWaiting />}/>
-            <Route path='/CreateFrenzy' element={<CreateTrade />}/>
+            <Route exact path='/' element={<Landing />} />
+            <Route exact path='/Register' element={<Register/>} />
+            <Route exact path='/Login' element={<Login/>} />
+            <Route exact path='/Profile' element={<Profile/>} />
+            <Route path='/Dashboard/:tradeId' element={<Dashboard/>} />
+            <Route exact path='/Frenzy' element={<FindFrenzy />}/>
+            <Route exact path='/JoinFrenzy' element={<JoinFrenzy />}/>
+            <Route exact path='/Waiting' element={<FrenzyWaiting />}/>
+            <Route exact path='/CreateFrenzy' element={<CreateTrade />}/>
           </Routes>
-        </Router>
       </AuthProvider>
     </ChakraProvider>
+    </HashRouter>
+
   );
 }
 

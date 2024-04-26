@@ -11,6 +11,7 @@ import {
   Flex,
   Spinner,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 import CastCountdown from "./CastCountdown";
@@ -18,22 +19,24 @@ import { CopyIcon } from "@chakra-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "./Footer";
 import { AuthContext } from "./AuthContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import DurationCountdown from "./DurationCountdown";
 
 function Dashboard(props) {
+  let { tradeId } = useParams();
+
   const location = useLocation();
 
   const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
     useContext(AuthContext);
 
-  const [tradeId, setTradeId] = useState("");
   const [buyers, setBuyers] = useState([]);
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
   const [isCasting, setIsCasting] = useState(false);
   const [showReloadIcon, setShowReloadIcon] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const [formData, setFormData] = useState({
     price: "",
@@ -44,18 +47,20 @@ function Dashboard(props) {
   });
 
   function configureState(data) {
-    setTradeId(data.id);
-    setTimeStart(data.timeStart);
-    setTimeEnd(data.timeEnd);
-    setBuyers(data.slots);
-    setPrice(data.price);
-    console.log(buyers);
+    if(!data.error){
+      setIsAuth(true);
+      setTimeStart(data.timeStart);
+      setTimeEnd(data.timeEnd);
+      setBuyers(data.slots);
+      setPrice(data.price);
+    }
   }
 
 
   useEffect(() => {
-    if (accessToken !== null && accessToken.length !== 0)
-      getTradeSlots(location.state.id).then((data) => configureState(data));
+    if (accessToken !== null && accessToken.length !== 0){
+      getTradeSlots(tradeId).then((data) => configureState(data));
+    }
   }, [accessToken, price]);
 
   const getTradeSlots = (tradeId) => {
@@ -84,7 +89,7 @@ function Dashboard(props) {
   return (
     <Box>
       <Navbar />
-      {accessToken ? (
+      {accessToken && isAuth ? (
         <Box bg="#F8EEDE" p={4}>
           <Box h="80vh">
             <Box textAlign="center" mb={4}>
@@ -160,7 +165,7 @@ function Dashboard(props) {
             </Box>
           </Box>
         </Box>
-      ) : null}
+      ) : <Text>You are not authorized</Text>}
       <Footer />
     </Box>
   );

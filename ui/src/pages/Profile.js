@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import logo from "../maplefrenzylogo.svg";
+import Footer from './Footer';
 
 const ProfileBox = () => {
   
@@ -16,7 +17,7 @@ const ProfileBox = () => {
   // let createdAt='2024-04-24T00:22:47.112Z'; 
   // let lastLoggedIn='2024-04-24T00:24:40.177Z';
   return (
-    <Box pt="14vh" flex="1" bg="white" rounded="md" boxShadow="base" color={"black"}>
+    <Box pt="14vh" flex="1" bg="#F8EEDE" rounded="md" boxShadow="base" color={"black"}>
       <Center>
       <Stack>
         <Center>
@@ -24,7 +25,7 @@ const ProfileBox = () => {
             {username}
           </Text>
         </Center>
-        <Card>
+        <Card bg="#353935" color={"white"}>
         <Center>
             <Flex pt="5vh">
               <Text fontSize="20px">
@@ -111,6 +112,7 @@ const Profile = () => {
         
         <ProfileBox size="250px"/>
       </Flex>
+      <Footer/>
     </Box>
   );
 };

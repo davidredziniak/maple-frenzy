@@ -29,6 +29,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
 
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import Footer from './Footer';
 
 const CreateTradeBox = () => {
   const [inGameName, setInGameName] = useState("");
@@ -103,7 +104,9 @@ const CreateTradeBox = () => {
       const startTimeIso = startDate.toISOString();
       setTimeStart(startTimeIso);
   
-      const endDate = new Date(startDate.getTime() + endTimeInput * 60 * 60 * 1000);
+      const endDate = new Date(
+        startDate.getTime() + endTimeInput * 60 * 60 * 1000
+      );
       const endTimeIso = endDate.toISOString();
       setTimeEnd(endTimeIso);
     }
@@ -234,6 +237,7 @@ const CreateTrade = () => {
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       <CreateTradeBox />
+      <Footer/>
     </Box>
   );
 };

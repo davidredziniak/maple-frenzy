@@ -69,7 +69,7 @@ function ViewTrades(props) {
 
       {/* Content Section */}
       <Flex h="100vh" textColor="white">
-        <TradeBox nav={navigateToTrade} joined={joinedTrades} created={createdTrades} username={username}/>
+        <TradeBox navBuyer={navigateToTrade} navSeller={navigateToDash} joined={joinedTrades} created={createdTrades} username={username}/>
       </Flex>
     </Box>
   );
@@ -116,7 +116,7 @@ const TradeBox = (props) => {
                           </span>
                         </Flex>
                       </Td>
-                      <Td color="white"><Button onClick={() => props.nav(trade)}>Go</Button></Td>
+                      <Td color="white"><Button onClick={() => props.navBuyer(trade)}>Go</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -139,7 +139,7 @@ const TradeBox = (props) => {
                           </span>
                         </Flex>
                       </Td>
-                      <Td color="white"><Button onClick={() => props.nav(trade)}>Go</Button></Td>
+                      <Td color="white"><Button onClick={() => props.navSeller(trade)}>Go</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>

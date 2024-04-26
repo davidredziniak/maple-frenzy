@@ -77,11 +77,21 @@ function ViewTrades(props) {
 
 const TradeBox = (props) => {
 
+  const getHoursFromNow = (startTime) => {
+    var now = new Date();
+    var tradeStartTime = new Date(startTime);
+    var diffMs = (tradeStartTime - now);
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    var diffHours = Math.floor(diffMins/60);
+    return diffHours;
+  }
+
   const getMinutesFromNow = (startTime) => {
     var now = new Date();
     var tradeStartTime = new Date(startTime);
     var diffMs = (tradeStartTime - now);
-    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    diffMins = diffMins - Math.floor(diffMins/60)*60;
     return diffMins;
   }
 
@@ -91,6 +101,7 @@ const TradeBox = (props) => {
     }
     return false;
   }
+
   return (
     <Box
       pt="14vh"
@@ -136,7 +147,7 @@ const TradeBox = (props) => {
                       </Td>
                       <Td color="white">{trade.gameName}</Td>
                       <Td color="white">{trade.channel}</Td>
-                      <Td color="white">{trade.duration}</Td>
+                      <Td color="white">{trade.duration} hour(s)</Td>
 
                       <Td color="white"><Button onClick={() => props.navBuyer(trade.id)}>View</Button></Td>
                     </Tr>
@@ -167,7 +178,7 @@ const TradeBox = (props) => {
                           </span>
                         </Flex>
                       </Td>
-                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getMinutesFromNow(trade.timeStart)} minutes</Td>}
+                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
                       <Td color="white">{trade.duration} hour(s)</Td>
                       <Td color="white">{trade.current}</Td>
                       <Td color="white">{trade.limit}</Td>

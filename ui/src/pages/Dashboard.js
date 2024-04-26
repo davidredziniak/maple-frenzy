@@ -51,6 +51,32 @@ function Dashboard(props) {
     return date.toString();
   };
 
+  const getHoursFromNow = (time) => {
+    var now = new Date();
+    var tradeTime = new Date(time);
+    var diffMs = (tradeTime - now);
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    var diffHours = Math.floor(diffMins/60);
+    return diffHours;
+  }
+
+  const getMinutesFromNow = (time) => {
+    var now = new Date();
+    var tradeTime = new Date(time);
+    var diffMs = (tradeTime - now);
+    var diffMins = Math.round((diffMs) / 60000); // minutes
+    diffMins = diffMins - Math.floor(diffMins/60)*60;
+    return diffMins;
+  }
+
+  const checkIfTimePassed = (minutes) => {
+    if (minutes < 0){
+      return true;
+    }
+    return false;
+  }
+
+
   function configureState(data) {
     if (!data.error) {
       setIsAuth(true);
@@ -103,24 +129,13 @@ function Dashboard(props) {
               <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
                 Seller Dashboard
               </Box>
-              <Box mt={8} p={4}>Start Time {getLocalTime(timeStart)}</Box>
+              <Box p={4}>Start Time: {checkIfTimePassed(getMinutesFromNow(timeStart)) ? <Text>NOW</Text> : <Text>{getHoursFromNow(timeStart)} hour(s) {getMinutesFromNow(timeStart)} min</Text>}</Box>
+              <Box p={4}>End Time: {checkIfTimePassed(getMinutesFromNow(timeEnd)) ? <Text>FINISHED</Text> : <Text>{getHoursFromNow(timeEnd)} hour(s) {getMinutesFromNow(timeEnd)} min</Text>}</Box>
+              <Box p={4}>Price: {price}</Box>
             </Box>
             <Flex justify="center" mb={4}>
-              <Button mr={2} colorScheme="teal" bg="#93d7bf">
-                Start Service
-              </Button>
-              <Button
-                mr={2}
-                variant="outline"
-                colorScheme="teal"
-                borderColor="#93d7bf"
-                color="#93d7bf"
-                onClick={handleCastedButtonClick}
-              >
-                Casted
-              </Button>
               <Button colorScheme="teal" bg="#353935">
-                Stop Service
+                Delete Frenzy
               </Button>
             </Flex>
             <Box
@@ -155,6 +170,7 @@ function Dashboard(props) {
                               size="sm"
                               leftIcon={<CopyIcon />}
                               aria-label="Copy to clipboard"
+                              onClick={() => navigator.clipboard.writeText(buyer.inGameName)}
                             />
                           </CopyToClipboard>
                           <span style={{ marginLeft: "10px", color: "white" }}>

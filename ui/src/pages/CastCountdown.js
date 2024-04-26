@@ -8,7 +8,6 @@ import {
 function CastCountdown(props) {
   const [seconds, setSeconds] = useState(600);
   const [isReady, setIsReady] = useState(true);
-  const [isRunning, setIsRunning] = useState(false);
 
   const interval = useRef(null);
   const [casts, setCasts] = useState(0);
@@ -22,6 +21,8 @@ function CastCountdown(props) {
 
   const startCounter = () => {
     setCasts((prevState) => prevState + 1);
+    setSeconds(600);
+    clearInterval(interval.current);
     setIsReady(false);
     interval.current = setInterval(() => {
       setSeconds((prevState) => prevState - 1);
@@ -35,7 +36,7 @@ function CastCountdown(props) {
   };
 
   return (
-      <Td color="white">{isReady ? <Text>Ready</Text> : <Text>{seconds}</Text>} { isReady ? <Button onClick={() => startCounter() }>Recast</Button> : '' }<Text>{casts} casts</Text></Td>
+      <Td color="white">{isReady ? <Text>Ready</Text> : <Text>{seconds}</Text>} <Button onClick={() => startCounter() }>Recast</Button> <Text>{casts} casts</Text></Td>
   );
 }
 

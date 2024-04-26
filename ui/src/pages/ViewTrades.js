@@ -150,7 +150,7 @@ const TradeBox = (props) => {
                       </Td>
                       <Td color="white">{trade.gameName}</Td>
                       <Td color="white">{trade.channel}</Td>
-                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
+                      { checkIfStarted(getHoursFromNow(trade.timeStart) || checkIfStarted(getMinutesFromNow(trade.timeStart))) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
                       <Td color="white">{trade.duration} hour(s)</Td>
                       <Td color="white">{trade.inProgress ? 'Yes' : 'No'}</Td>
 
@@ -183,7 +183,7 @@ const TradeBox = (props) => {
                           </span>
                         </Flex>
                       </Td>
-                      { checkIfStarted(getMinutesFromNow(trade.timeStart)) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
+                      { checkIfStarted(getMinutesFromNow(trade.timeStart) || checkIfStarted(getHoursFromNow(trade.timeStart))) ? <Td color="white">NOW</Td> : <Td color="white">{getHoursFromNow(trade.timeStart)} hour(s) {getMinutesFromNow(trade.timeStart)} min</Td>}
                       <Td color="white">{trade.duration} hour(s)</Td>
                       <Td color="white">{trade.current}</Td>
                       <Td color="white">{trade.limit}</Td>

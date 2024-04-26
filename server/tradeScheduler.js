@@ -24,6 +24,7 @@ const db = require("./models");
 const Trade = db.trades;
 const TradeSlot = db.tradeSlots;
 const FinishedTrade = db.finishedTrades;
+const UserProfile = db.userProfiles;
 
 // Settlement time is within 5 min. of transaction, mark as inProgress then.
 // Also evict trades to finishedTrades table when they are past their timeEnd.
@@ -62,7 +63,27 @@ async function resolveTrades(minuteOffset) {
       tradeSlotData: JSON.stringify(slotRecordsMap),
     });
 
-    // Destroy trade slot records of trade
+
+    // Update trade count of seller
+    await UserProfile.findOne({ where: { userId: trade.sellerId }}).then(async (profile) => {
+      await UserProfile.update(
+        { tradeCount: profile.tradeCount + 1 },
+        { where: { id: profile.id } }
+      );
+    });
+
+    // Increment trade count of all buyers
+    await slotRecords.forEach(async (record) => {
+      // Increment trade count of user slots
+      await UserProfile.findOne({ where: { userId: record.userId }}).then(async (profile) => {
+        await UserProfile.update(
+          { tradeCount: profile.tradeCount + 1 },
+          { where: { id: profile.id } }
+        );
+      });
+    });
+
+    // Destroy trade slots
     await slotRecords.forEach((record) => {
       record.destroy();
     });

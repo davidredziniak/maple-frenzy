@@ -62,12 +62,10 @@ exports.create = (req, res) => {
       })
         .then((newTrade) => {
           if (newTrade) {
-            return res
-              .status(200)
-              .send({
-                id: newTrade.id,
-                message: "Successfully created trade.",
-              });
+            return res.status(200).send({
+              id: newTrade.id,
+              message: "Successfully created trade.",
+            });
           } else
             return res.status(400).send({ error: "Unable to create trade" });
         })
@@ -173,6 +171,25 @@ exports.leave = (req, res, next) => {
       TradeSlot.count({ where: { tradeId: trade.id, userId: req.userId } })
         .then((count) => {
           if (count == 1) {
+            // Check if its been an hour since trade
+            let now = new Date().toISOString();
+            let tradeStart = trade.timeStart;
+            let tradeTimeDifference = this.getTimeDifference(
+              trade.timeStart,
+              now
+            );
+
+            if (tradeTimeDifference >= 1.0) {
+              // Increment trade count of user
+              UserProfile.findOne({ where: { userId: req.userId } }).then(
+                (profile) => {
+                  UserProfile.update(
+                    { tradeCount: profile.tradeCount + 1 },
+                    { where: { id: profile.id } }
+                  );
+                }
+              );
+            }
             // Remove user from the queue
             req.trade = trade;
             next();

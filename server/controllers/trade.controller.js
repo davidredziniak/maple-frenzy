@@ -41,6 +41,18 @@ exports.create = (req, res) => {
       .status(400)
       .send({ error: "The list of channels requested are invalid." });
 
+  // Check if user ID is selling anything currently.
+  // One seller/user is assumed to be obligated to serve buyers over one trade.
+  Trade.findOne({ where: { sellerId: req.userId } })
+    .then((trade) => {
+      if (trade) {
+        return res
+        .status(404)
+        .send({ message: "You already have an active trade." });
+      }
+    })
+    .catch((error) => res.status(400).send(error));
+
   return Trade.create({
     sellerId: req.userId,
     inGameName: req.body.inGameName,
@@ -228,6 +240,7 @@ exports.findById = (req, res) => {
 };
 
 // Get list of users prioritized by subscriber status and queue position.
+/* SELECT query doesn't work. This function is not a high priority.
 exports.getBuyerQueue = (req, res) => {
   Trade.findOne({ where: { id: req.params.tradeId } })
     .then((trade) => {
@@ -273,6 +286,7 @@ exports.getBuyerQueue = (req, res) => {
     })
     .catch((error) => res.status(400).send(error));
 };
+*/
 
 // Get full list of trades
 exports.getListOfTrades = (req, res) => {

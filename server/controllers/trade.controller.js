@@ -194,8 +194,21 @@ exports.findById = (req, res) => {
 
           // Return trading data including the slots in ascending position order
           TradeSlot.findAll({
+            //where: { tradeId: trade.id },
+            //order: [["pos", "ASC"]],
             where: { tradeId: trade.id },
-            order: [["pos", "ASC"]],
+            include: [
+              {
+                model: User,
+                required: true, // we want an inner join for this
+                where: { userId: db.Sequelize.col("trade_slots.user_id") },
+              },
+            ],
+            order: [
+              ["is_subscribed", "DESC"],
+              ["pos", "ASC"],
+            ],
+            limit: trade.buyerLimit,
           })
             .then((result) => {
               var slots = [];

@@ -52,7 +52,7 @@ const JoinFrenzyBox = () => {
     if (response.status === 200) {
       sucNotification(data.message);
       await delay(1000);
-      navigate("/Waiting", { state: {...location.state, position: data.queuePos}});
+      navigate("/view/" + location.state.id, { state: {...location.state, position: data.queuePos}});
       // Reset form fields
     } else {
       errNotification(data.error);
@@ -60,7 +60,7 @@ const JoinFrenzyBox = () => {
   };
 
   const handleGoBack = async (e) => {
-    navigate("/Frenzy");
+    navigate("/find");
   };
 
   return (

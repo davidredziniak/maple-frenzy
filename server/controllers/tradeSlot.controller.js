@@ -25,6 +25,36 @@ exports.incrementAvail = (trade) => {
   );
 };
 
+exports.findSlotOfUser = (req, res) => {
+  Trade.findOne({
+    where: { id: tradeId },
+  }).then((trade) => {
+    if (!trade) return res.status(404).send({ error: "Trade does not exist." });
+    else {
+      TradeSlot.findOne({
+        where: { tradeId: req.params.tradeId, userId: req.userId },
+      }).then((slot) => {
+        if (!slot)
+          return res.status(404).send({ error: "You are not in this trade." });
+        else {
+          return res
+            .status(200)
+            .send({
+              message: "Successfully found your position",
+              id: trade.id,
+              seller: trade.inGameName,
+              price: trade.price,
+              timeStart: trade.timeStart,
+              timeEnd: trade.timeEnd,
+              inGameName: slot.gameName,
+              pos: slot.queuePos,
+            });
+        }
+      });
+    }
+  }).catch((error) => res.status(400).send(error));
+};
+
 // Add a user to the queue
 exports.addUserToQueue = (req, res) => {
   // Retrieve an available position in the trade

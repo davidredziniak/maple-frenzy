@@ -50,7 +50,7 @@ const FrenzyBox = () => {
 
   const navigate = useNavigate();
   const navigateRedirect = (sellerName, tradeId, price, start, end) => {
-    navigate("/JoinFrenzy", {
+    navigate("/join", {
       state: {
         seller: sellerName,
         id: tradeId,
@@ -109,7 +109,7 @@ const FrenzyBox = () => {
     errNotification("You have been signed out... Please sign in again.");
     await delay(1000);
     handleLogout();
-    navigate("/Login");
+    navigate("/login");
   };
 
   async function handleSubmit(e){

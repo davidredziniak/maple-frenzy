@@ -50,7 +50,7 @@ const RegistrationForm = () => {
 
   const navigate = useNavigate();
   const navigateLogin = () => {
-    navigate("/Login");
+    navigate("/login");
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -168,7 +168,7 @@ const RegisterForm = () => {
         <Text>Already have an Account? </Text>
       </Box>
       <Box pr="329px" color="blue">
-        <Link to="/Login">
+        <Link to="/login">
           <Text color="#93d7bf">Login Here!</Text>
         </Link>
       </Box>

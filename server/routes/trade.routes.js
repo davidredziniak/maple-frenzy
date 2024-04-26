@@ -50,4 +50,9 @@ module.exports = (app) => {
     [authorizeJwt.verifyToken],
     tradesController.getBuyerQueue
   );
+  app.get(
+    "/api/trade/viewslot/:tradeId",
+    [authorizeJwt.verifyToken],
+    tradeSlotController.findSlotOfUser
+  );
 };

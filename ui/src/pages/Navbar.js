@@ -16,19 +16,19 @@ import { useContext } from "react";
 const Navbar = () => {
   const navigate = useNavigate();
   const navigateLogin = () => {
-    navigate("/Login");
+    navigate("/login");
   };
   const navigateProfile = () => {
-    navigate("/Profile");
+    navigate("/profile");
   };
   const navigateFrenzy = () => {
-    navigate("/Frenzy");
+    navigate("/find");
   };
   const navigateSell = () => {
-    navigate("/CreateFrenzy");
+    navigate("/create");
   };
   const navigateDashboard = () => {
-    navigate("/Dashboard");
+    navigate("/dashboard");
   };
 
   const { isLoggedIn, toggleLogout, username, userId, accessToken, refreshToken } = useContext(AuthContext);
@@ -59,8 +59,8 @@ const Navbar = () => {
             {username}
           </MenuButton>
           <MenuList color="black">
-            <MenuItem onClick={navigateFrenzy}>Find Frenzy</MenuItem>
-            <MenuItem onClick={navigateSell}>Sell Frenzy</MenuItem>
+            <MenuItem onClick={navigateFrenzy}>Find</MenuItem>
+            <MenuItem onClick={navigateSell}>Create</MenuItem>
             <MenuItem onClick={navigateDashboard}>Dashboard</MenuItem>
             <MenuItem onClick={navigateProfile}>Profile</MenuItem>
             <MenuItem onClick={toggleLogout}>Logout</MenuItem>

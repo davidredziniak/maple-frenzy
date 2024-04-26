@@ -53,9 +53,14 @@ exports.create = (req, res) => {
     inProgress: false,
   })
     .then((newTrade) => {
-      res
+      if(newTrade){
+        res
         .status(200)
         .send({ id: newTrade.id, message: "Successfully created trade." });
+      }
+      else{
+        res.status(400).send({ error: "Unable to create trade"});
+      }
     })
     .catch((error) => res.status(400).send(error));
 };

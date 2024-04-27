@@ -1,24 +1,20 @@
 import {
   Text,
   Box,
-  Button,
   Flex,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
+  VStack,
   Spacer,
   Center,
   Stack,
+  StackDivider
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
-import logo from "../maplefrenzylogo.svg";
 import Footer from "./Footer";
 
+import bgImg1 from "../img/landing-leaves.png";
 function Profile(props) {
   const { accessToken, refreshToken, userId } = useContext(AuthContext);
 
@@ -60,14 +56,13 @@ function Profile(props) {
   };
 
   return (
-    <Box>
+    <Box bg="#F8EEDE">
       {/* Navigation Bar */}
       <Navbar />
 
       {/* Content Section */}
-      <Flex h="100vh" textColor="white">
+      <Flex h="81vh" textColor="white">
         <ProfileBox
-          size="250px"
           username={username}
           reputation={reputation}
           tradeCount={tradeCount}
@@ -82,53 +77,57 @@ function Profile(props) {
 
 const ProfileBox = (props) => {
   return (
-    <Box
-      pt="14vh"
-      flex="1"
-      bg="#F8EEDE"
-      rounded="md"
-      boxShadow="base"
-      color={"black"}
-    >
-      <Center>
-        <Stack>
-          <Center>
-            <Text fontSize="40px">{props.username}</Text>
-          </Center>
-          <Card bg="#353935" color={"white"}>
+    <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
+      <Stack>
+        
+        <Box
+          w="60%"
+          p={10}
+          boxShadow="base"
+          bg="#353935"
+          rounded="md"
+          bgImage={bgImg1}
+          bgRepeat="repeat"
+          bgPosition="center"
+        >
+          <VStack bg="#353935" color={"white"} w="100%" bgImage={bgImg1} bgRepeat="repeat" bgPosition="center" align={"stretch"} spacing={10}>
             <Center>
-              <Flex pt="5vh">
-                <Text fontSize="20px">User Information</Text>
-                <Spacer pl=".5vw" />
-                <InfoOutlineIcon boxSize={5} />
-              </Flex>
+                <Flex>
+                  <Text textShadow="1px 2px #000000" color="white" fontSize="45px" as={"b"}>User Information</Text>    
+                  <InfoOutlineIcon boxSize={10}  ml="1vw" mt="1vh"/>
+                </Flex>
             </Center>
-            <CardBody>
-              <Flex>
+              <Flex  textShadow="1px 2px #000000" color="white" fontSize="18px" as={"b"}> 
+                <Text>Username:</Text>
+                <Spacer />
+                <Text>{props.username}</Text>
+              </Flex>
+              <Flex  textShadow="1px 2px #000000" color="white" fontSize="18px" as={"b"}> 
                 <Text>Trade Count:</Text>
                 <Spacer />
                 <Text>{props.tradeCount}</Text>
               </Flex>
-              <Flex>
+              <Flex  textShadow="1px 2px #000000" color="white" fontSize="18px" as={"b"}>
                 <Text>Reputation:</Text>
                 <Spacer />
                 <Text>{props.reputation}</Text>
               </Flex>
-              <Flex>
+              <Flex  textShadow="1px 2px #000000" color="white" fontSize="18px" as={"b"}>
                 <Text>Created At:</Text>
                 <Spacer />
                 <Text>{props.createdAt}</Text>
               </Flex>
-              <Flex>
+              <Flex  textShadow="1px 2px #000000" color="white" fontSize="18px" as={"b"}>
                 <Text>Last Login:</Text>
                 <Spacer />
                 <Text>{props.lastLoggedIn}</Text>
               </Flex>
-            </CardBody>
-          </Card>
-        </Stack>
-      </Center>
+          </VStack>
+      
     </Box>
+    </Stack>
+    </Box>
+  
   );
 };
 

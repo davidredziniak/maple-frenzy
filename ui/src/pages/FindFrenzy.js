@@ -5,17 +5,16 @@ import {
   Box,
   Button,
   Flex,
-  Link,
   Stack,
   FormControl,
   Input,
   FormLabel,
+  Center,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
-import bgImg from "../img/find_frenzy_bimg.png";
 import bgImg1 from "../img/landing-leaves.png";
 import Footer from './Footer';
 
@@ -179,20 +178,10 @@ const FrenzyBox = () => {
   };
 
   return (
-    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>
-        <Text
-          as={"b"}
-          pl=".5vw"
-          fontFamily="verdana"
-          fontSize="35px"
-          color={"white"}
-          textShadow="0 0 15px black"
-        >
-          Find Frenzy
-        </Text>
+        
         <Box
-          pl=".5vw"
           w="60%"
           p={10}
           boxShadow="base"
@@ -202,6 +191,11 @@ const FrenzyBox = () => {
           bgRepeat="repeat"
           bgPosition="center"
         >
+          <Center>
+            <Text as={"b"} fontSize="45px" textShadow="1px 2px #000000" color="white">
+              Find Frenzy
+            </Text>
+          </Center>
           <FormControl>
             <div>
               <FormLabel color="white" htmlFor="inGameUsername">

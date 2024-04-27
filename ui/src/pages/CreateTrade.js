@@ -1,17 +1,12 @@
 import {
-  stackLeft,
-  stackRight,
-  loginBox,
-  loginText,
   signInButton,
 } from "../config";
 import React, { useState, useEffect, useContext } from "react";
 import {
+  Center,
   Text,
   Box,
   Button,
-  Flex,
-  Link,
   Stack,
   FormControl,
   Input,
@@ -22,9 +17,10 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from "@chakra-ui/react";
-import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import toast, { Toaster } from "react-hot-toast";
+import bgImg1 from "../img/landing-leaves.png";
 
 import { AuthContext } from "./AuthContext";
 
@@ -113,19 +109,23 @@ const CreateTradeBox = () => {
   };
 
   return (
-    <Box flex="1" w="70%" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>
-        <Text pl=".5vw" fontFamily="verdana" fontSize="30px">
-          Create Trade
-        </Text>
+        
         <Box
-          pl=".5vw"
           w="60%"
           p={10}
           boxShadow="base"
           bg="#353935"
           rounded="md"
+          bgImage={bgImg1}
+          bgRepeat="repeat"
         >
+          <Center>
+            <Text textShadow="1px 2px #000000" color="white" fontSize="45px" as={"b"}>
+              Create Trade
+            </Text>  
+          </Center>
           <FormControl>
             <div>
               <FormLabel color="white" htmlFor="inGameName">

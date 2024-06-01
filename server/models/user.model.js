@@ -8,10 +8,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "username",
       },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        field: "email",
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
         field: "password",
+      },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        field: "is_verified",
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -20,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       lastLoggedIn: {
         type: DataTypes.DATE,
         field: "last_logged_in",
+      },
+      isSubscribed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        field: "is_subscribed"
       },
     },
     { tableName: "users", timestamps: false }

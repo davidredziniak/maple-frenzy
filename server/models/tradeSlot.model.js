@@ -12,10 +12,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "user_id",
       },
+      gameName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: "game_name",
+      },
       channel: {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "channel",
+      },
+      duration: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: "duration",
       },
       queuePos: {
         type: DataTypes.INTEGER,

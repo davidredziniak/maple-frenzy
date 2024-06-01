@@ -12,4 +12,9 @@ module.exports = (app) => {
     [authorizeJwt.verifyToken],
     usersController.changePass
   );
+  app.get(
+    "/api/usertrades",
+    [authorizeJwt.verifyToken],
+    usersController.findTradesUserIsIn
+  );
 };

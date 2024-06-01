@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         field: "seller_id",
       },
+      inGameName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: "in_game_name",
+      },
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -36,15 +41,15 @@ module.exports = (sequelize, DataTypes) => {
       buyerAvailable: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "buyer_avail"
+        field: "buyer_avail",
       },
       inProgress: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        field: "in_progress"
+        field: "in_progress",
       },
     },
-    { tableName: "trade", timestamps: false }
+    { tableName: "trades", timestamps: false }
   );
 
   return Trade;

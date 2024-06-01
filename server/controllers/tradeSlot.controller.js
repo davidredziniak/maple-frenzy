@@ -5,8 +5,8 @@ const Trade = db.trades;
 // Get the next queue position
 exports.getNextPos = (trade) => {
   let nextPos = trade.buyerLimit - trade.buyerAvailable + 1;
-  if (nextPos > 0 && nextPos <= trade.buyerLimit) return nextPos;
-  return null;
+  if (nextPos <= trade.buyerLimit) return nextPos;
+  return 0;
 };
 
 // Decrement the amount of available slots
@@ -25,11 +25,43 @@ exports.incrementAvail = (trade) => {
   );
 };
 
+exports.findSlotOfUser = (req, res) => {
+  Trade.findOne({
+    where: { id: req.params.tradeId },
+  }).then((trade) => {
+    if (!trade) return res.status(404).send({ error: "Trade does not exist." });
+    else {
+      TradeSlot.findOne({
+        where: { tradeId: req.params.tradeId, userId: req.userId },
+      }).then((slot) => {
+        if (!slot)
+          return res.status(404).send({ error: "You are not in this trade." });
+        else {
+          return res
+            .status(200)
+            .send({
+              message: "Successfully found your position",
+              id: trade.id,
+              seller: trade.inGameName,
+              price: trade.price,
+              timeStart: trade.timeStart,
+              timeEnd: trade.timeEnd,
+              inGameName: slot.gameName,
+              channel: slot.channel,
+              pos: slot.queuePos,
+              inProgress: trade.inProgress,
+            });
+        }
+      });
+    }
+  }).catch((error) => res.status(400).send(error));
+};
+
 // Add a user to the queue
 exports.addUserToQueue = (req, res) => {
   // Retrieve an available position in the trade
   let pos = this.getNextPos(req.trade);
-  if (pos == null)
+  if (pos == 0)
     return res
       .status(400)
       .send({ error: "Error retrieving new queue position. " });
@@ -38,7 +70,9 @@ exports.addUserToQueue = (req, res) => {
   TradeSlot.create({
     tradeId: req.trade.id,
     userId: req.userId,
+    gameName: req.body.gameName,
     channel: req.body.channel,
+    duration: req.body.duration,
     queuePos: pos,
   })
     .then(() => {
@@ -47,7 +81,7 @@ exports.addUserToQueue = (req, res) => {
         .then(() => {
           return res
             .status(200)
-            .send({ message: "Successfully joined the trade." });
+            .send({ message: "Successfully joined the trade.", queuePos: pos });
         })
         .catch((error) => res.status(400).send(error));
     })
@@ -66,10 +100,10 @@ exports.removeUserFromQueue = (req, res) => {
       // Get user position
       let userPos = tradeSlot.queuePos;
 
-      // Remove user from queue
+      // Remove record of user from queue
       tradeSlot.destroy();
 
-      // Find all user records that have a lower priority than the removed user
+      // Find all user records that have are positioned after the removed user
       TradeSlot.findAll({
         where: {
           tradeId: req.trade.id,

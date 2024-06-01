@@ -4,32 +4,37 @@ import Landing from './pages/Landing.js';
 import Register from './pages/Register.js';
 import Login from './pages/Login.js';
 import Profile from './pages/Profile.js';
-import Redirect from './pages/Redirect.js';
-import {useState} from 'react'
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import Dashboard from './pages/Dashboard.js';
+import CreateTrade from './pages/CreateTrade.js';
+import JoinFrenzy from './pages/JoinFrenzy.js';
+import FrenzyWaiting from './pages/WaitingPage.js';
+import {useContext, useEffect, useState} from 'react'
+import FindFrenzy from './pages/FindFrenzy.js';
+import { BrowserRouter as Router, HashRouter, Route, Routes } from 'react-router-dom'
+import { AuthProvider, AuthContext } from './pages/AuthContext.js';
+import ViewTrades from './pages/ViewTrades.js';
 
 function App() {
-  const [isLoggedIn,setIsLoggedIn] = useState(false);
-  const testF = () => {
-    setIsLoggedIn(true);
-  }
-  const getF = () => {
-    console.log(isLoggedIn)
-    //return isLoggedIn;
-  }
   return (
+    <HashRouter>
     <ChakraProvider>
-      <Router>
+      <AuthProvider>
           <Routes>
-            <Route path='/' element={<Landing isLoggedIn={isLoggedIn} />} />
-            <Route path='/Register' element={<Register/>} />
-            <Route path='/Login' element={<Login/>} />
-            <Route path='/Profile' element={<Profile/>} />
-            <Route path='/Redirect' element={<Redirect  isLoggedIn={isLoggedIn} testF={testF} getF={getF}/>}/>
+            <Route exact path='/' element={<Landing />} />
+            <Route exact path='/register' element={<Register/>} />
+            <Route exact path='/login' element={<Login/>} />
+            <Route exact path='/profile' element={<Profile/>} />
+            <Route exact path='/create' element={<CreateTrade />}/>
+            <Route path='/dashboard/:tradeId' element={<Dashboard/>} />
+            <Route exact path='/find' element={<FindFrenzy />}/>
+            <Route exact path='/join' element={<JoinFrenzy />}/>
+            <Route path='/view/:tradeId' element={<FrenzyWaiting />}/>
+            <Route exact path='/trades' element={<ViewTrades />}/>
           </Routes>
-      </Router>
-
+      </AuthProvider>
     </ChakraProvider>
+    </HashRouter>
+
   );
 }
 

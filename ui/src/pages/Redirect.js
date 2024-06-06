@@ -11,7 +11,7 @@
 //     const { accessToken, userId, updateCreatedAt, updateLLI, updateReputation, updateTradeCount } = useContext(AuthContext);
 //     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 //     const getData = async() => {
-//         const response = await fetch(`https://maple-frenzy.onrender.com/api/user/${userId}`, {
+//         const response = await fetch(`http://localhost:3001/api/user/${userId}`, {
 //         method: "GET",
 //         headers: {
 //             "Content-Type": "application/json",

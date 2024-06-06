@@ -50,7 +50,7 @@ function ViewTrades(props) {
   }
 
   const getUserTrades = () => {
-    return fetch("https://maple-frenzy.onrender.com/api/usertrades", {
+    return fetch("http://localhost:3001/api/usertrades", {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

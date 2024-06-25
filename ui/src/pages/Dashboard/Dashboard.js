@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -9,31 +9,27 @@ import {
   Thead,
   Tr,
   Flex,
-  Spinner,
-  Input,
   Text,
 } from "@chakra-ui/react";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import CastCountdown from "./CastCountdown";
 import { CopyIcon } from "@chakra-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import Footer from "./Footer";
-import { AuthContext } from "./AuthContext";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import Footer from "../Footer";
+import { AuthContext } from "../Auth/AuthContext";
+import { useNavigate, useParams } from "react-router-dom";
 import DurationCountdown from "./DurationCountdown";
 import toast, { Toaster } from "react-hot-toast";
 
-function Dashboard(props) {
+function Dashboard() {
   let { tradeId } = useParams();
 
-  const location = useLocation();
   const navigate = useNavigate();
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
-    useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   const [inProgress, setInProgress] = useState(false);
   const [buyers, setBuyers] = useState([]);
@@ -123,8 +119,8 @@ function Dashboard(props) {
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       {accessToken && isAuth ? (
-        <Box bg="#F8EEDE" p={4}>
-          <Box h="80vh">
+        <Flex h="100vh" bg="#F8EEDE">
+          <Box flex="1" py="5vh" w="80vh" h="80vh">
             <Box textAlign="center" mb={4}>
               <Box fontSize="3xl" fontWeight="bold" color="#353935" mb={2}>
                 Seller Dashboard
@@ -217,9 +213,13 @@ function Dashboard(props) {
               </Table>
             </Box>
           </Box>
-        </Box>
+        </Flex>
       ) : (
-        <Text>You are not authorized to view this trade.</Text>
+        <Flex h="100vh" bg="#F8EEDE">
+          <Box flex="1" py="5vh" w="80vh" h="80vh">
+            <Text>You are not authorized to view this trade.</Text>
+          </Box>
+        </Flex>
       )}
       <Footer />
     </Box>

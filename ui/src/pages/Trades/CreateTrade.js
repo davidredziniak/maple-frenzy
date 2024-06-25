@@ -1,6 +1,4 @@
-import {
-  signInButton,
-} from "../config";
+import { signInButton } from "../../config";
 import React, { useState, useEffect, useContext } from "react";
 import {
   Center,
@@ -16,16 +14,16 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
-import bgImg1 from "../img/landing-leaves.png";
+import bgImg1 from "../../img/landing-leaves.png";
 
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Auth/AuthContext";
 
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import Footer from './Footer';
+import Footer from "../Footer";
 
 const CreateTradeBox = () => {
   const [inGameName, setInGameName] = useState("");
@@ -36,13 +34,13 @@ const CreateTradeBox = () => {
   const [endTimeInput, setEndTimeInput] = useState(1);
   const [channelsInput, setChannelsInput] = useState("");
   const [buyerLimit, setBuyerLimit] = useState(0);
-  const { accessToken, refreshToken, updateAccessToken, updateRefreshToken } =
-    useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 
+  // Redirect after a trade is successfully created
   const navigate = useNavigate();
   const navigateRedirect = (tradeId) => {
     navigate("/dashboard/" + tradeId, {
@@ -69,37 +67,38 @@ const CreateTradeBox = () => {
           buyerLimit,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.status === 200) {
         sucNotification(data.message);
         await delay(1000);
         navigateRedirect(data.id);
-        // Reset form fields
       } else {
         errNotification(data.error);
       }
     };
-  
+
     if (timeStart && timeEnd) {
       fetchData();
     }
   }, [timeStart, timeEnd]);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const startDate = new Date(startTimeInput);
     const currentDate = new Date();
-  
+
     if (currentDate >= startDate) {
-      errNotification("You cannot choose dates earlier than the date it currently is");
+      errNotification(
+        "You cannot choose dates earlier than the date it currently is"
+      );
       return;
     } else {
       const startTimeIso = startDate.toISOString();
       setTimeStart(startTimeIso);
-  
+
       const endDate = new Date(
         startDate.getTime() + endTimeInput * 60 * 60 * 1000
       );
@@ -111,20 +110,16 @@ const CreateTradeBox = () => {
   return (
     <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
       <Stack>
-        
-        <Box
-          w="60%"
-          p={10}
-          boxShadow="base"
-          bg="#353935"
-          rounded="md"
-          bgImage={bgImg1}
-          bgRepeat="repeat"
-        >
+        <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
           <Center>
-            <Text textShadow="1px 2px #000000" color="white" fontSize="45px" as={"b"}>
+            <Text
+              textShadow="1px 2px #000000"
+              color="white"
+              fontSize="45px"
+              as={"b"}
+            >
               Create Trade
-            </Text>  
+            </Text>
           </Center>
           <FormControl>
             <div>
@@ -231,13 +226,14 @@ const CreateTradeBox = () => {
 };
 
 const CreateTrade = () => {
-  const { isLoggedIn } = useContext(AuthContext);
   return (
-    <Box bg="#F8EEDE">
+    <Box>
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
-      <CreateTradeBox />
-      <Footer/>
+      <Flex h="100vh" bg="#F8EEDE">
+        <CreateTradeBox />
+      </Flex>
+      <Footer />
     </Box>
   );
 };

@@ -4,7 +4,7 @@ import {
   loginBox,
   loginText,
   signInButton,
-} from "../config";
+} from "../../config";
 import {
   ChakraProvider,
   Stack,
@@ -17,7 +17,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
-import login from "../img/login.png";
+import login from "../../img/login.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";

@@ -1,18 +1,17 @@
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import Landing from './pages/Landing.js';
-import Register from './pages/Register.js';
-import Login from './pages/Login.js';
-import Profile from './pages/Profile.js';
-import Dashboard from './pages/Dashboard.js';
-import CreateTrade from './pages/CreateTrade.js';
-import JoinFrenzy from './pages/JoinFrenzy.js';
-import FrenzyWaiting from './pages/WaitingPage.js';
-import {useContext, useEffect, useState} from 'react'
-import FindFrenzy from './pages/FindFrenzy.js';
-import { BrowserRouter as Router, HashRouter, Route, Routes } from 'react-router-dom'
-import { AuthProvider, AuthContext } from './pages/AuthContext.js';
-import ViewTrades from './pages/ViewTrades.js';
+import Register from './pages/Auth/Register.js';
+import Login from './pages/Auth/Login.js';
+import Profile from './pages/User/Profile.js';
+import Dashboard from './pages/Dashboard/Dashboard.js';
+import CreateTrade from './pages/Trades/CreateTrade.js';
+import JoinFrenzy from './pages/Trades/JoinFrenzy.js';
+import FrenzyWaiting from './pages/Trades/WaitingPage.js';
+import FindFrenzy from './pages/Trades/FindFrenzy.js';
+import { HashRouter, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './pages/Auth/AuthContext.js';
+import ViewTrades from './pages/User/ViewTrades.js';
 
 function App() {
   return (

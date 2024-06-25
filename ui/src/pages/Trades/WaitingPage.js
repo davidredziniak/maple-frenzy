@@ -1,6 +1,6 @@
 import {
   signInButton,
-} from "../config";
+} from "../../config";
 import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
@@ -13,11 +13,11 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Auth/AuthContext";
 
-function WaitingPage(props) {
+function WaitingPage() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   let { tradeId } = useParams();
@@ -63,7 +63,6 @@ function WaitingPage(props) {
   };
 
   function configureState(data) {
-    console.log(data);
     if (!data.error) {
       setIsAuth(true);
       setSellerName(data.seller);
@@ -76,13 +75,7 @@ function WaitingPage(props) {
       setInProgress(data.inProgress);
     }
   }
-
-  useEffect(() => {
-    if (accessToken !== null && accessToken.length !== 0) {
-      getTradeSlot(tradeId).then((data) => configureState(data));
-    }
-  }, [accessToken]);
-
+  
   const getTradeSlot = (tradeId) => {
     return fetch(
       "https://maple-frenzy.onrender.com/api/trade/viewslot/" + tradeId,
@@ -96,9 +89,14 @@ function WaitingPage(props) {
     ).then((response) => response.json());
   };
 
+  useEffect(() => {
+    if (accessToken !== null && accessToken.length !== 0) {
+      getTradeSlot(tradeId).then((data) => configureState(data));
+    }
+  }, [accessToken, tradeId]);
+
   const handleLeave = async (e) => {
     e.preventDefault();
-
     const response = await fetch(
       "https://maple-frenzy.onrender.com/api/trade/leave",
       {

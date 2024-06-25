@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Td, Text, Button, Stack } from "@chakra-ui/react";
 
 function DurationCountdown(props) {
@@ -33,7 +33,8 @@ function DurationCountdown(props) {
       {isFinished ? (
         <Stack>
           <Text>
-            Finished!<br />
+            Finished!
+            <br />
             Elapsed: {parseFloat(timeElapsed / 3600).toFixed(2)} hour(s)
           </Text>
         </Stack>
@@ -46,7 +47,15 @@ function DurationCountdown(props) {
       )}{" "}
       {!isRunning ? (
         <Button onClick={() => startCounter()}>Begin</Button>
-      ) : <p>{ !isFinished ? <Button onClick={() => stopCounter()}>Stop</Button> : ''}</p>}
+      ) : (
+        <p>
+          {!isFinished ? (
+            <Button onClick={() => stopCounter()}>Stop</Button>
+          ) : (
+            ""
+          )}
+        </p>
+      )}
     </Td>
   );
 }

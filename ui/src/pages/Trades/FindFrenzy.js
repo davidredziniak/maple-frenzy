@@ -1,4 +1,4 @@
-import { signInButton } from "../config";
+import { signInButton } from "../../config";
 import React, { useState, useContext } from "react";
 import {
   Text,
@@ -12,11 +12,10 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
-import { AuthContext } from "./AuthContext";
-import bgImg1 from "../img/landing-leaves.png";
-import Footer from './Footer';
+import { AuthContext } from "../Auth/AuthContext";
+import Footer from "../Footer";
 
 const FrenzyBox = () => {
   const [inGameUsername, setInGameUsername] = useState("");
@@ -78,19 +77,19 @@ const FrenzyBox = () => {
     );
     const data = await response.json();
     return { data, response };
-  };
+  }
 
   async function tryRefreshToken(){
     const response = await fetch("http://localhost:3001/api/refresh", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ userId: parseInt(userId), refreshToken }),
     });
     const data = await response.json();
     return { data, response };
-  };
+  }
 
   const handleSuccess = async (data) => {
     sucNotification(data.message);
@@ -112,87 +111,81 @@ const FrenzyBox = () => {
     navigate("/login");
   };
 
-  async function handleSubmit(e){
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (inGameUsername == "") {
+    if (inGameUsername === "") {
       errNotification("You must enter your in game username.");
       return;
     }
 
-    if (channel == "") {
+    if (channel === "") {
       errNotification("You must enter a channel number.");
       return;
     }
 
-    if (duration == "") {
+    if (duration === "") {
       errNotification("You must enter a time of duration in hours.");
       return;
     }
 
     const fetchData = await trySearch();
-      // Successful fetch
-      if (fetchData.data) {
-        if (!fetchData.response.status) {
-          errNotification("Server had an unexpected response.");
-        } else {
-          const responseStatus = fetchData.response.status;
-          const data = fetchData.data;
+    // Successful fetch
+    if (fetchData.data) {
+      if (!fetchData.response.status) {
+        errNotification("Server had an unexpected response.");
+      } else {
+        const responseStatus = fetchData.response.status;
+        const data = fetchData.data;
 
-          // Successful
-          if (responseStatus === 200) {
-            handleSuccess(data);
-          } else if (responseStatus === 403) {
-            if (data.error == "Access token was denied.") {
-              // Try API refresh if token exists
-              if (refreshToken != "" && userId != "") {
-                const refreshData = await tryRefreshToken();
-                if (refreshData.data) {
-                  const refreshResponseStatus = refreshData.response.status;
-                  const refreshResponse = refreshData.data;
-                  if (refreshResponseStatus === 200) {
-                    // Update access and refresh tokens
-                    updateAccessToken(refreshResponse.accessToken);
-                    updateRefreshToken(refreshResponse.refreshToken);
-                    errNotification("Please try again. Refreshed Tokens.");
-                    // Try fetch again
-                  } else {
-                    // Refresh token is invalid so logout
-                    handleFailure();
-                  }
+        // Successful
+        if (responseStatus === 200) {
+          handleSuccess(data);
+        } else if (responseStatus === 403) {
+          if (data.error === "Access token was denied.") {
+            // Try API refresh if token exists
+            if (refreshToken != "" && userId != "") {
+              const refreshData = await tryRefreshToken();
+              if (refreshData.data) {
+                const refreshResponseStatus = refreshData.response.status;
+                const refreshResponse = refreshData.data;
+                if (refreshResponseStatus === 200) {
+                  // Update access and refresh tokens
+                  updateAccessToken(refreshResponse.accessToken);
+                  updateRefreshToken(refreshResponse.refreshToken);
+                  errNotification("Please try again. Refreshed Tokens.");
+                  // Try fetch again
+                } else {
+                  // Refresh token is invalid so logout
+                  handleFailure();
                 }
-              } else {
-                handleFailure();
               }
             } else {
               handleFailure();
             }
+          } else {
+            handleFailure();
           }
-          else{
-            errNotification(data.message);
-          }
+        } else {
+          errNotification(data.message);
         }
-      } else {
-        errNotification("An error occured connecting to the server.");
       }
-  };
+    } else {
+      errNotification("An error occured connecting to the server.");
+    }
+  }
 
   return (
-    <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" py="5vh" ml="50vh" rounded="md">
       <Stack>
-        
-        <Box
-          w="60%"
-          p={10}
-          boxShadow="base"
-          bg="#353935"
-          rounded="md"
-          bgImage={bgImg1}
-          bgRepeat="repeat"
-          bgPosition="center"
-        >
+        <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
           <Center>
-            <Text as={"b"} fontSize="45px" textShadow="1px 2px #000000" color="white">
+            <Text
+              as={"b"}
+              fontSize="45px"
+              textShadow="1px 2px #000000"
+              color="white"
+            >
               Find Frenzy
             </Text>
           </Center>
@@ -242,7 +235,9 @@ const FrenzyBox = () => {
               color="#353935"
               {...signInButton}
               type="submit"
-              onClick={(e) => {handleSubmit(e);}}
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
             >
               Search
             </Button>
@@ -254,26 +249,14 @@ const FrenzyBox = () => {
 };
 
 const FindFrenzy = () => {
-  const { isLoggedIn } = useContext(AuthContext);
   return (
     <Box>
       <Navbar />
-      <Box bg="#F8EEDE" pb={100}>
-        <Toaster position="top-center" reverseOrder={false} />
-        
-          <Flex
-            h="72vh"
-            bg="#F8EEDE"
-            bgRepeat="no-repeat"
-            bgPosition="center"
-            backgroundSize="100%"
-          >
-            <FrenzyBox />
-            {/*move back in between flex*/}
-          </Flex>
-        
-      </Box>
-      <Footer/>
+      <Toaster position="top-center" reverseOrder={false} />
+      <Flex h="100vh" bg="#F8EEDE">
+        <FrenzyBox />
+      </Flex>
+      <Footer />
     </Box>
   );
 };

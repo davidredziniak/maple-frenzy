@@ -4,7 +4,7 @@ import {
   loginBox,
   loginText,
   signInButton,
-} from "../config";
+} from "../../config";
 import {
   ChakraProvider,
   Stack,
@@ -17,17 +17,19 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
-import login from "../img/login.png";
+import login from "../../img/login.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import React, { useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 const Backdrop = () => {
   return (
-    <Flex color="#353935" h="100vh">
+    <Flex color="#353935" h="20vh">
       <Stack {...stackLeft}>
         <Heading pt="5vh">
-          <Link to="/">Register Now!</Link>
+          <Link to="/">Welcome Back!</Link>
         </Heading>
         <Link to="/">
           <Image src={login} />
@@ -40,50 +42,50 @@ const Backdrop = () => {
 };
 
 const RegistrationForm = () => {
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
 
   const navigate = useNavigate();
-  const navigateLogin = () => {
-    navigate("/login");
+  const navigateRedirect = () => {
+    navigate("/");
   };
+
+  const {
+    toggleLogin,
+    updateUsername,
+    updateUserId,
+    updateAccessToken,
+    updateRefreshToken,
+  } = useContext(AuthContext);
+
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      errNotification("Passwords do not match!");
-      return;
-    }
-
-    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-    const response = await fetch(
-      "http://localhost:3001/api/signup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, password }),
-      }
-    );
+    const response = await fetch("http://localhost:3001/api/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
     const data = await response.json();
     if (response.status === 200) {
-      sucNotification(
-        "Signup successful! A verification link was sent to your email."
-      );
+      sucNotification("Sign in successful. Redirecting...");
       // Reset form fields
       setUsername("");
       setPassword("");
-      setEmail("");
-      setConfirmPassword("");
+      toggleLogin();
+      updateUsername(username);
+      updateUserId(data.userId);
+      updateAccessToken(data.accessToken);
+      updateRefreshToken(data.refreshToken);
       await delay(1000);
-      navigateLogin();
+      navigateRedirect();
     } else {
       errNotification(data.message);
     }
@@ -92,20 +94,7 @@ const RegistrationForm = () => {
   return (
     <FormControl>
       <div>
-        <FormLabel color="white" htmlFor="email">
-          Email:
-        </FormLabel>
-        <Input
-          bg="white"
-          type="text"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <FormLabel mt="20px" color="white" htmlFor="username">
+        <FormLabel color="white" htmlFor="username">
           Username:
         </FormLabel>
         <Input
@@ -130,19 +119,6 @@ const RegistrationForm = () => {
           required
         />
       </div>
-      <div>
-        <FormLabel mt="20px" color="white" htmlFor="confirm-password">
-          Confirm Password:
-        </FormLabel>
-        <Input
-          bg="white"
-          type="password"
-          id="confirm-password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </div>
       <Button
         mt="30px"
         bg="#93d7bf"
@@ -151,7 +127,7 @@ const RegistrationForm = () => {
         type="submit"
         onClick={handleSubmit}
       >
-        Sign Up
+        Sign In
       </Button>
     </FormControl>
   );
@@ -161,22 +137,22 @@ const RegisterForm = () => {
   return (
     <Stack {...loginBox}>
       <Text color="white" {...loginText}>
-        User Registration
+        User Login
       </Text>
       <RegistrationForm />
       <Box mt="20px" color="white">
-        <Text>Already have an Account? </Text>
+        <Text>Dont have an Account? </Text>
       </Box>
       <Box pr="329px" color="blue">
-        <Link to="/login">
-          <Text color="#93d7bf">Login Here!</Text>
+        <Link to="/register">
+          <Text color="#93d7bf">Register Here!</Text>
         </Link>
       </Box>
     </Stack>
   );
 };
 
-const Register = () => {
+const Login = () => {
   return (
     <>
       <ChakraProvider>
@@ -189,4 +165,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Td,
   Text,
   Button,
 } from "@chakra-ui/react";
 
-function CastCountdown(props) {
+function CastCountdown() {
   const [seconds, setSeconds] = useState(600);
   const [isReady, setIsReady] = useState(true);
 

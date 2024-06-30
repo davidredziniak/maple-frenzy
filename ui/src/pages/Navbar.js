@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./Auth/AuthContext";
 import { useContext } from "react";
 
 const Navbar = () => {
@@ -31,7 +31,7 @@ const Navbar = () => {
     navigate("/trades");
   };
 
-  const { isLoggedIn, toggleLogout, username, userId, accessToken, refreshToken } = useContext(AuthContext);
+  const { isLoggedIn, toggleLogout, username } = useContext(AuthContext);
   return (
     <Flex
       position="sticky"

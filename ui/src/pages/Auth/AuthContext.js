@@ -1,6 +1,5 @@
 // AuthContext.js
-import React, { createContext, useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext({});
 
@@ -17,14 +16,12 @@ export const AuthProvider = ({ children }) => {
   const [inGameName, setInGameName] = useState("");
 
   useEffect(() => {
-    // Retrieve isLoggedIn value from localStorage on component mount
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
     const storedUsername = localStorage.getItem("username");
     const storedTradeCount = localStorage.getItem("tradeCount");
     const storedReputation = localStorage.getItem("reputation");
     const storedCreatedAt = localStorage.getItem("createdAt");
     const storedLastLoggedIn = localStorage.getItem("lastLoggedIn");
-    const inGameName = localStorage.getItem("inGameName");
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const userId = localStorage.getItem("userId");
@@ -65,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     if (storedLastLoggedIn !== null) {
       setLastLoggedIn(storedLastLoggedIn);
     }
-    // If theefresh token, try to get access token
+    // If there is a refresh token, try to get access token
   },[accessToken, refreshToken, userId, username, isLoggedIn]);
 
   const handleLogout = () => {

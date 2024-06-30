@@ -1,6 +1,6 @@
 import {
   signInButton,
-} from "../config";
+} from "../../config";
 import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
@@ -13,13 +13,13 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "./AuthContext";
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3001');
 
-function WaitingPage(props) {
+function WaitingPage() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   let { tradeId } = useParams();
@@ -103,9 +103,14 @@ function WaitingPage(props) {
     ).then((response) => response.json());
   };
 
+  useEffect(() => {
+    if (accessToken !== null && accessToken.length !== 0) {
+      getTradeSlot(tradeId).then((data) => configureState(data));
+    }
+  }, [accessToken, tradeId]);
+
   const handleLeave = async (e) => {
     e.preventDefault();
-
     const response = await fetch(
       "http://localhost:3001/api/trade/leave",
       {

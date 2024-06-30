@@ -16,13 +16,13 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Auth/AuthContext";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
-import Footer from "./Footer";
+import Footer from "../Footer";
 
-function ViewTrades(props) {
+function ViewTrades() {
   const { accessToken, username } = useContext(AuthContext);
   const navigate = useNavigate();
   const [joinedTrades, setJoinedTrades] = useState([]);
@@ -62,7 +62,7 @@ function ViewTrades(props) {
   return (
     <Box>
       <Navbar />
-      <Flex h="100vh" textColor="white">
+      <Flex h="100vh">
         <TradeBox
           navBuyer={navigateToTrade}
           navSeller={navigateToDash}
@@ -103,19 +103,18 @@ const TradeBox = (props) => {
 
   return (
     <Box
-      pt="14vh"
       flex="1"
       bg="#F8EEDE"
       rounded="md"
       boxShadow="base"
-      color={"black"}
     >
-      <Center>
+      <Box flex="1" py="5vh">
+        <Center>
         <Stack>
           <Center>
-            <Text fontSize="40px">{props.username}</Text>
+            <Text color="black" fontSize="40px">{props.username}</Text>
           </Center>
-          <Card bg="#353935" color={"white"}>
+          <Card p={5}bg="#353935" color={"white"}>
             <Center>
               <Flex pt="5vh">
                 <Text fontSize="20px">Trade Navigator</Text>
@@ -235,8 +234,8 @@ const TradeBox = (props) => {
             </CardBody>
           </Card>
         </Stack>
-      </Center>
-      <Spacer pt="46vh" />
+        </Center>
+      </Box>
       <Footer />
     </Box>
   );

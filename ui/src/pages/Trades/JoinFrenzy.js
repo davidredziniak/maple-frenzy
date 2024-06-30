@@ -1,30 +1,14 @@
-import {
-  stackLeft,
-  stackRight,
-  loginBox,
-  loginText,
-  signInButton,
-} from "../config";
-import React, { useState, useContext, useEffect } from "react";
-import {
-  Text,
-  Box,
-  Button,
-  Flex,
-  Link,
-  Stack,
-  FormControl,
-  Input,
-  FormLabel,
-} from "@chakra-ui/react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import { signInButton } from "../../config";
+import React, { useContext } from "react";
+import { Text, Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
 
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Auth/AuthContext";
 
 const JoinFrenzyBox = () => {
-  const { accessToken, userId, updateInGameName } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -40,20 +24,20 @@ const JoinFrenzyBox = () => {
   const getHoursFromNow = (time) => {
     var now = new Date();
     var tradeTime = new Date(time);
-    var diffMs = (tradeTime - now);
-    var diffMins = Math.round((diffMs) / 60000); // minutes
-    var diffHours = Math.floor(diffMins/60);
+    var diffMs = tradeTime - now;
+    var diffMins = Math.round(diffMs / 60000); // minutes
+    var diffHours = Math.floor(diffMins / 60);
     return diffHours;
-  }
+  };
 
   const getMinutesFromNow = (time) => {
     var now = new Date();
     var tradeTime = new Date(time);
-    var diffMs = (tradeTime - now);
-    var diffMins = Math.round((diffMs) / 60000); // minutes
-    diffMins = diffMins - Math.floor(diffMins/60)*60;
+    var diffMs = tradeTime - now;
+    var diffMins = Math.round(diffMs / 60000); // minutes
+    diffMins = diffMins - Math.floor(diffMins / 60) * 60;
     return diffMins;
-  }
+  };
 
   const handleJoin = async (e) => {
     e.preventDefault();
@@ -104,10 +88,14 @@ const JoinFrenzyBox = () => {
             Seller {location.state.seller} is available to join!
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Start Time: {getLocalTime(location.state.start)} ({getHoursFromNow(location.state.start)} hour(s) {getMinutesFromNow(location.state.start)} min(s) from now)
+            Start Time: {getLocalTime(location.state.start)} (
+            {getHoursFromNow(location.state.start)} hour(s){" "}
+            {getMinutesFromNow(location.state.start)} min(s) from now)
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            End Time: {getLocalTime(location.state.end)} ({getHoursFromNow(location.state.end)} hour(s) {getMinutesFromNow(location.state.end)} min(s) from now)
+            End Time: {getLocalTime(location.state.end)} (
+            {getHoursFromNow(location.state.end)} hour(s){" "}
+            {getMinutesFromNow(location.state.end)} min(s) from now)
           </Text>
           <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
             Price: {location.state.price}

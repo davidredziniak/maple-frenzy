@@ -67,7 +67,7 @@ function Dashboard() {
   };
 
   const handleDeleteTrade = async () => {
-    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/delete", {
+    const response = await fetch("http://localhost:3001/api/trade/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +105,7 @@ function Dashboard() {
   }, [accessToken, price]);
 
   const getTradeSlots = (tradeId) => {
-    return fetch("https://maple-frenzy.onrender.com/api/trade/data/" + tradeId + "?slots", {
+    return fetch("http://localhost:3001/api/trade/data/" + tradeId + "?slots", {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

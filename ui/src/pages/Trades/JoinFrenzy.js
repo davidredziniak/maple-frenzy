@@ -42,7 +42,7 @@ const JoinFrenzyBox = () => {
   const handleJoin = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://maple-frenzy.onrender.com/api/trade/join", {
+    const response = await fetch("http://localhost:3001/api/trade/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

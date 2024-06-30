@@ -44,7 +44,7 @@ function Profile() {
   }, [accessToken, userId]);
 
   const getUserInfo = async (userId) => {
-    return fetch("https://maple-frenzy.onrender.com/api/user/" + userId, {
+    return fetch("http://localhost:3001/api/user/" + userId, {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

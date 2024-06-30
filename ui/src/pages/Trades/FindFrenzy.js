@@ -65,7 +65,7 @@ const FrenzyBox = () => {
 
   async function trySearch() {
     const response = await fetch(
-      "https://maple-frenzy.onrender.com/api/trade/searchmarket",
+      "http://localhost:3001/api/trade/searchmarket",
       {
         method: "POST",
         headers: {
@@ -79,8 +79,8 @@ const FrenzyBox = () => {
     return { data, response };
   }
 
-  async function tryRefreshToken() {
-    const response = await fetch("https://maple-frenzy.onrender.com/api/refresh", {
+  async function tryRefreshToken(){
+    const response = await fetch("http://localhost:3001/api/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

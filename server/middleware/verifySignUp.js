@@ -24,36 +24,41 @@ const checkEmailTaken = (req, res, next) => {
 async function generateAndSendEmailToken(user) {
   // Check if email token already exists
   EmailToken.findOne({ where: { userId: user.id } }).then((token) => {
-    if (token){
-      EmailToken.update({ token: crypto.randomBytes(16).toString("hex"), }, { where: { userId: user.id } }).then(() => {
+    if (token) {
+      EmailToken.update(
+        { token: crypto.randomBytes(16).toString("hex") },
+        { where: { userId: user.id } }
+      ).then(() => {
         sendEmailToken(user);
       });
-    }
-    else{
+    } else {
       EmailToken.create({
         userId: user.id,
         token: crypto.randomBytes(16).toString("hex"),
       }).then(() => {
-          sendEmailToken(user);
-      })
+        sendEmailToken(user);
+      });
     }
-})}
+  });
+}
 
 // Send the current email token in the database to the user's email
 async function sendEmailToken(user) {
   EmailToken.findOne({ where: { userId: user.id } }).then((token) => {
-    if (token){
+    if (token) {
       emailTransponder.sendMail({
         to: `${user.email}`,
         subject: "Maple Frenzy - Account Verification",
-        text: `Welcome to Maple Frenzy, ${user.username}.
+        text:
+          `Welcome to Maple Frenzy, ${user.username}.
     Please verify your email by clicking this link:
-    http://` + emailConfig.EMAIL_LINK + `/api/email/verify/${user.id}/${token.token}`,
+    http://` +
+          emailConfig.EMAIL_LINK +
+          `/api/email/verify/${user.id}/${token.token}`,
       });
     }
-
-})}
-
+  });
+}
 
 // Checks if the token and userID in the request is valid
 // If it is, verify the user and allow future sign in
@@ -93,13 +98,32 @@ function verifyEmailToken(req, res) {
             .status(200)
             .send({ message: "User is already verified. Please sign in." });
         } else {
-          // Update isVerified to true, successful email verification
+          // Update User to email verified
           User.update({ isVerified: true }, { where: { id: user.id } });
-          return res.status(200).send("Your account has been successfully verified. You can now sign in.");
+
+          // Delete email token from the database
+          EmailToken.destroy({
+            where: {
+              id: token.id,
+            },
+          });
+
+          // Successful email verification
+          return res
+            .status(200)
+            .send(
+              "Your account has been successfully verified. You can now sign in."
+            );
         }
       });
     }
   );
 }
 
-module.exports = { checkUsernameTaken, checkEmailTaken, verifyEmailToken, generateAndSendEmailToken, sendEmailToken };
+module.exports = {
+  checkUsernameTaken,
+  checkEmailTaken,
+  verifyEmailToken,
+  generateAndSendEmailToken,
+  sendEmailToken,
+};

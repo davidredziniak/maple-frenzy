@@ -10,28 +10,17 @@ import { AuthContext } from "../Auth/AuthContext";
 import Footer from "../Footer";
 
 export default function UserTrades() {
-  const { accessToken, username } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { accessToken, username } = useContext(AuthContext);
   const [joinedTrades, setJoinedTrades] = useState([]);
   const [createdTrades, setCreatedTrades] = useState([]);
 
-  function configureState(data) {
-    if (!data.error) {
-      setJoinedTrades(data.joined);
-      setCreatedTrades(data.created);
-    }
-  }
-
-  useEffect(() => {
-    if (accessToken !== null && accessToken.length !== 0) {
-      getUserTrades().then((data) => configureState(data));
-    }
-  }, [accessToken]);
-
+  // Given a trade ID, navigate to the trade (buyer dashboard)
   function navigateToTrade(id) {
     navigate("/view/" + id);
   }
 
+  // Given a trade ID, navigate to the trade (seller dashboard)
   function navigateToDash(id) {
     navigate("/dashboard/" + id);
   }
@@ -45,6 +34,19 @@ export default function UserTrades() {
       },
     }).then((response) => response.json());
   };
+
+  function configureState(data) {
+    if (!data.error) {
+      setJoinedTrades(data.joined);
+      setCreatedTrades(data.created);
+    }
+  }
+
+  useEffect(() => {
+    if (accessToken !== null && accessToken.length !== 0) {
+      getUserTrades().then((data) => configureState(data));
+    }
+  }, [accessToken]);
 
   return (
     <Box>

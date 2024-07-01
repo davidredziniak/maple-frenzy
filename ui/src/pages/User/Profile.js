@@ -14,9 +14,21 @@ export default function Profile() {
   const [createdAt, setCreatedAt] = useState("");
   const [lastLoggedIn, setLastLoggedIn] = useState("");
 
+  // Get local time string
   const getLocalTime = (time) => {
     var date = new Date(time).toLocaleString();
     return date.toString();
+  };
+
+  // Fetch user info from the API
+  const getUserInfo = async (userId) => {
+    return fetch("http://localhost:3001/api/user/" + userId, {
+      method: "GET",
+      headers: {
+        "x-access-token": accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
   };
 
   function configureState(data) {
@@ -27,23 +39,13 @@ export default function Profile() {
       setCreatedAt(getLocalTime(data.createdAt));
       setLastLoggedIn(getLocalTime(data.lastLoggedIn));
     }
-  }
+  };
 
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
       getUserInfo(userId).then((data) => configureState(data));
     }
   }, [accessToken, userId]);
-
-  const getUserInfo = async (userId) => {
-    return fetch("http://localhost:3001/api/user/" + userId, {
-      method: "GET",
-      headers: {
-        "x-access-token": accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-  };
 
   return (
     <Box>
@@ -60,4 +62,4 @@ export default function Profile() {
       <Footer />
     </Box>
   );
-}
+};

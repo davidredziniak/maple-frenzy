@@ -173,4 +173,4 @@ export default function UserTradesList(props) {
       </Box>
     </Box>
   );
-}
+};

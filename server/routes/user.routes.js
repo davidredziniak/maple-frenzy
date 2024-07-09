@@ -3,17 +3,17 @@ const { authorizeJwt } = require("../middleware");
 
 module.exports = (app) => {
   app.get(
-    "/api/user/:userId",
+    "/user/:userId",
     [authorizeJwt.verifyToken],
     usersController.findById
   );
   app.post(
-    "/api/user/changepass",
+    "/user/changepass",
     [authorizeJwt.verifyToken],
     usersController.changePass
   );
   app.get(
-    "/api/usertrades",
+    "/usertrades",
     [authorizeJwt.verifyToken],
     usersController.findTradesUserIsIn
   );

@@ -12,13 +12,13 @@ module.exports = (app) => {
   });
 
   // Routes
-  app.post("/api/signin", authController.signIn);
+  app.post("/signin", authController.signIn);
   app.post(
-    "/api/signup",
+    "/signup",
     [verifySignUp.checkUsernameTaken],
     [verifySignUp.checkEmailTaken],
     authController.signUp
   );
-  app.post("/api/refresh", authController.refreshToken);
-  app.get("/api/email/verify/:id/:token", [verifySignUp.verifyEmailToken]);
+  app.post("/refresh", authController.refreshToken);
+  app.get("/email/verify/:id/:token", [verifySignUp.verifyEmailToken]);
 };

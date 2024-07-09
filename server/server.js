@@ -12,7 +12,7 @@ const app = express();
 
 // Limit requests to official maple-frenzy website
 var corsOptions = {
-  origin: "https://maple-frenzy-site.onrender.com",
+  origin: "https://maplefrenzy.com",
 };
 
 // Reinitialize Database (Development purposes, set to TRUE)

@@ -15,7 +15,7 @@ import {
 } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Auth/AuthContext";
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3001');
 

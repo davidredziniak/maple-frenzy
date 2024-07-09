@@ -50,39 +50,38 @@ const CreateTradeBox = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:3001/api/trade/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": `${accessToken}`,
-        },
-        body: JSON.stringify({
-          inGameName,
-          price,
-          timeStart,
-          timeEnd,
-          channels: channelsInput.split(",").map((str) => parseInt(str)),
-          buyerLimit,
-        }),
-      });
+  const handleChannelChange = (inputValue) => {
+    const newValue = inputValue.replace(/[^0-9 \,]/, '');
+    setChannelsInput(newValue);
+    // rest
+  };
 
-      const data = await response.json();
+  async function tryCreateTrade() {
+    const response = await fetch("http://localhost:3001/api/trade/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": `${accessToken}`,
+      },
+      body: JSON.stringify({
+        inGameName,
+        price,
+        timeStart,
+        timeEnd,
+        channels: channelsInput.split(",").map((str) => parseInt(str)),
+        buyerLimit,
+      }),
+    });
 
-      if (response.status === 200) {
-        sucNotification(data.message);
-        await delay(1000);
-        navigateRedirect(data.id);
-      } else {
-        errNotification(data.error);
-      }
-    };
-
-    if (timeStart && timeEnd) {
-      fetchData();
+    const data = await response.json();
+    if (response.status === 200) {
+      sucNotification(data.message);
+      await delay(1000);
+      navigateRedirect(data.id);
+    } else {
+      errNotification(data.error);
     }
-  }, [timeStart, timeEnd]);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -90,9 +89,10 @@ const CreateTradeBox = () => {
     const startDate = new Date(startTimeInput);
     const currentDate = new Date();
 
+    // Verify the start and end dates are valid
     if (currentDate >= startDate) {
       errNotification(
-        "You cannot choose dates earlier than the date it currently is"
+        "You cannot choose dates earlier than the date it currently is."
       );
       return;
     } else {
@@ -105,6 +105,27 @@ const CreateTradeBox = () => {
       const endTimeIso = endDate.toISOString();
       setTimeEnd(endTimeIso);
     }
+
+    // Verify buyer limit is valid
+    if (buyerLimit == 0) {
+      errNotification("Your buyer limit has to be greater than 0.");
+      return;
+    }
+
+    // Verify price is valid
+    if (price == 0) {
+      errNotification("Your price for the frenzy has to be greater than 0.");
+      return;
+    }
+
+    // Verify channels string is valid
+    if(!/^\d+(,\d+)*$/.test(channelsInput)){
+      errNotification("The channels are not valid. Ex. 3,4,10,15");
+      return;
+    }
+
+    if(timeStart && timeEnd)
+      tryCreateTrade();
   };
 
   return (
@@ -191,7 +212,7 @@ const CreateTradeBox = () => {
                 size="lg"
                 id="channelsInput"
                 value={channelsInput}
-                onChange={(e) => setChannelsInput(e.target.value)}
+                onChange={(e) => handleChannelChange(e.target.value)}
                 required
               />
             </div>

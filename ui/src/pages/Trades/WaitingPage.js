@@ -17,7 +17,7 @@ import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../Auth/AuthContext";
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:3001');
+//const socket = io.connect('http://localhost:3001');
 
 function WaitingPage() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -76,10 +76,10 @@ function WaitingPage() {
       setInGameName(data.inGameName);
       setInProgress(data.inProgress);
 
-      socket.on('connect', function() {
+      /*socket.on('connect', function() {
         // Connected, let's sign-up for to receive messages for this room
         socket.emit('joinRoom', tradeId);
-      });
+      });*/
     }
   }
 
@@ -87,12 +87,12 @@ function WaitingPage() {
     if (accessToken !== null && accessToken.length !== 0) {
       getTradeSlot(tradeId).then((data) => configureState(data));
     }
-    socket.on('message', (data) => console.log(data));
-  }, [socket, accessToken]);
+    //socket.on('message', (data) => console.log(data));
+  }, [accessToken]);
 
   const getTradeSlot = (tradeId) => {
     return fetch(
-      "http://localhost:3001/api/trade/viewslot/" + tradeId,
+      "https://api.maplefrenzy.com/trade/viewslot/" + tradeId,
       {
         method: "GET",
         headers: {
@@ -112,7 +112,7 @@ function WaitingPage() {
   const handleLeave = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      "http://localhost:3001/api/trade/leave",
+      "https://api.maplefrenzy.com/trade/leave",
       {
         method: "POST",
         headers: {
@@ -126,7 +126,7 @@ function WaitingPage() {
     if (response.status === 200) {
       sucNotification(data.message);
       await delay(1000);
-      socket.disconnect();
+      //socket.disconnect();
       navigate("/find");
       // Reset form fields
     } else {

@@ -26,7 +26,7 @@ export default function UserTrades() {
   }
 
   const getUserTrades = () => {
-    return fetch("http://localhost:3001/api/usertrades", {
+    return fetch("https://api.maplefrenzy.com/usertrades", {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

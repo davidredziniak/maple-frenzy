@@ -65,7 +65,7 @@ const FrenzyBox = () => {
 
   async function trySearch() {
     const response = await fetch(
-      "http://localhost:3001/api/trade/searchmarket",
+      "https://api.maplefrenzy.com/trade/searchmarket",
       {
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ const FrenzyBox = () => {
   }
 
   async function tryRefreshToken(){
-    const response = await fetch("http://localhost:3001/api/refresh", {
+    const response = await fetch("https://api.maplefrenzy.com/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

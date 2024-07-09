@@ -22,7 +22,7 @@ export default function Profile() {
 
   // Fetch user info from the API
   const getUserInfo = async (userId) => {
-    return fetch("http://localhost:3001/api/user/" + userId, {
+    return fetch("https://api.maplefrenzy.com/user/" + userId, {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

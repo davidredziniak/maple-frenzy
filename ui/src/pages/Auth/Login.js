@@ -66,7 +66,7 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:3001/api/signin", {
+    const response = await fetch("https://api.maplefrenzy.com/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

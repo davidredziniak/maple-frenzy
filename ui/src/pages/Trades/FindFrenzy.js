@@ -1,4 +1,4 @@
-import { signInButton } from "../../config";
+import { apiURL, signInButton } from "../../config";
 import React, { useState, useContext } from "react";
 import {
   Text,
@@ -65,7 +65,7 @@ const FrenzyBox = () => {
 
   async function trySearch() {
     const response = await fetch(
-      "https://api.maplefrenzy.com/trade/searchmarket",
+      apiURL + "/trade/searchmarket",
       {
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ const FrenzyBox = () => {
   }
 
   async function tryRefreshToken(){
-    const response = await fetch("https://api.maplefrenzy.com/refresh", {
+    const response = await fetch(apiURL + "/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

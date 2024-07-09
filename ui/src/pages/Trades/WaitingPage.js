@@ -1,4 +1,5 @@
 import {
+  apiURL,
   signInButton,
 } from "../../config";
 import React, { useState, useContext, useEffect } from "react";
@@ -92,7 +93,7 @@ function WaitingPage() {
 
   const getTradeSlot = (tradeId) => {
     return fetch(
-      "https://api.maplefrenzy.com/trade/viewslot/" + tradeId,
+      apiURL + "/trade/viewslot/" + tradeId,
       {
         method: "GET",
         headers: {
@@ -112,7 +113,7 @@ function WaitingPage() {
   const handleLeave = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      "https://api.maplefrenzy.com/trade/leave",
+      apiURL + "/trade/leave",
       {
         method: "POST",
         headers: {

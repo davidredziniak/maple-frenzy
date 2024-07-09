@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { apiURL } from "../../config";
 import {
   Box,
   Button,
@@ -67,7 +68,7 @@ function Dashboard() {
   };
 
   const handleDeleteTrade = async () => {
-    const response = await fetch("https://api.maplefrenzy.com/trade/delete", {
+    const response = await fetch(apiURL + "/trade/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +106,7 @@ function Dashboard() {
   }, [accessToken, price]);
 
   const getTradeSlots = (tradeId) => {
-    return fetch("https://api.maplefrenzy.com/trade/data/" + tradeId + "?slots", {
+    return fetch(apiURL + "/trade/data/" + tradeId + "?slots", {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

@@ -1,4 +1,4 @@
-import { signInButton } from "../../config";
+import { apiURL, signInButton } from "../../config";
 import React, { useState, useEffect, useContext } from "react";
 import {
   Center,
@@ -57,7 +57,7 @@ const CreateTradeBox = () => {
   };
 
   async function tryCreateTrade() {
-    const response = await fetch("https://api.maplefrenzy.com/trade/create", {
+    const response = await fetch(apiURL + "/trade/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -4,6 +4,7 @@ import ProfileBox from "./ProfileBox";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import Footer from "../Footer";
+import { apiURL } from "../../config";
 
 export default function Profile() {
   const { accessToken, userId } = useContext(AuthContext);
@@ -22,7 +23,7 @@ export default function Profile() {
 
   // Fetch user info from the API
   const getUserInfo = async (userId) => {
-    return fetch("https://api.maplefrenzy.com/user/" + userId, {
+    return fetch(apiURL + "/user/" + userId, {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

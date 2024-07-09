@@ -8,6 +8,7 @@ import Navbar from "../Navbar";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import Footer from "../Footer";
+import { apiURL } from "../../config";
 
 export default function UserTrades() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function UserTrades() {
   }
 
   const getUserTrades = () => {
-    return fetch("https://api.maplefrenzy.com/usertrades", {
+    return fetch(apiURL + "/usertrades", {
       method: "GET",
       headers: {
         "x-access-token": accessToken,

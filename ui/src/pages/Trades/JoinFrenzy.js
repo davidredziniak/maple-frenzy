@@ -1,4 +1,4 @@
-import { signInButton } from "../../config";
+import { apiURL, signInButton } from "../../config";
 import React, { useContext } from "react";
 import { Text, Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -42,7 +42,7 @@ const JoinFrenzyBox = () => {
   const handleJoin = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://api.maplefrenzy.com/trade/join", {
+    const response = await fetch(apiURL + "/trade/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

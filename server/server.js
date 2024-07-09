@@ -12,7 +12,7 @@ const app = express();
 
 // Limit requests to official maple-frenzy website
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://maplefrenzy.com",
 };
 
 // Reinitialize Database (Development purposes, set to TRUE)
@@ -45,7 +45,7 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Maple Frenzy app listening on port ${PORT}`);
 });
 
-// Initialize socket.io
+/* Initialize socket.io
 var users = [];
 var idsnicks = {};
 
@@ -61,7 +61,7 @@ io.on("connection", function (socket) {
     io.sockets.in(room).emit('message', 'Left room ' + room);
     socket.leave(room);
   });
-});
+});*/
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
 const pollingTime = 2000; // 2s

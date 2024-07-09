@@ -57,7 +57,7 @@ const CreateTradeBox = () => {
   };
 
   async function tryCreateTrade() {
-    const response = await fetch("http://localhost:3001/api/trade/create", {
+    const response = await fetch("https://api.maplefrenzy.com/trade/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

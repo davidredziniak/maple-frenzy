@@ -52,9 +52,9 @@ async function sendEmailToken(user) {
         text:
           `Welcome to Maple Frenzy, ${user.username}.
     Please verify your email by clicking this link:
-    http://` +
+    https://` +
           emailConfig.EMAIL_LINK +
-          `/api/email/verify/${user.id}/${token.token}`,
+          `/email/verify/${user.id}/${token.token}`,
       });
     }
   });

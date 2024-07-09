@@ -4,6 +4,7 @@ import {
   loginBox,
   loginText,
   signInButton,
+  apiURL,
 } from "../../config";
 import {
   ChakraProvider,
@@ -63,7 +64,7 @@ const RegistrationForm = () => {
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     const response = await fetch(
-      "http://localhost:3001/api/signup",
+      apiURL + "/signup",
       {
         method: "POST",
         headers: {

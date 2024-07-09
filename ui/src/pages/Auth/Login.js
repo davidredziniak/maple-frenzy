@@ -4,6 +4,7 @@ import {
   loginBox,
   loginText,
   signInButton,
+  apiURL
 } from "../../config";
 import {
   ChakraProvider,
@@ -66,7 +67,7 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://api.maplefrenzy.com/signin", {
+    const response = await fetch(apiURL + "/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

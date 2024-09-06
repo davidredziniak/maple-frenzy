@@ -20,30 +20,30 @@ export default function Profile() {
     var date = new Date(time).toLocaleString();
     return date.toString();
   };
-
-  // Fetch user info from the API
-  const getUserInfo = async (userId) => {
-    return fetch(apiURL + "/user/" + userId, {
-      method: "GET",
-      headers: {
-        "x-access-token": accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-  };
-
-  function configureState(data) {
-    if (!data.error) {
-      setUsername(data.username);
-      setReputation(data.reputation);
-      setTradeCount(data.tradeCount);
-      setCreatedAt(getLocalTime(data.createdAt));
-      setLastLoggedIn(getLocalTime(data.lastLoggedIn));
-    }
-  };
-
+  
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
+      // Fetch user info from the API
+      const getUserInfo = async (userId) => {
+        return fetch(apiURL + "/user/" + userId, {
+          method: "GET",
+          headers: {
+            "x-access-token": accessToken,
+            "Content-Type": "application/json",
+          },
+        }).then((response) => response.json());
+      };
+
+      const configureState = (data) => {
+        if (!data.error) {
+          setUsername(data.username);
+          setReputation(data.reputation);
+          setTradeCount(data.tradeCount);
+          setCreatedAt(getLocalTime(data.createdAt));
+          setLastLoggedIn(getLocalTime(data.lastLoggedIn));
+        }
+      };
+
       getUserInfo(userId).then((data) => configureState(data));
     }
   }, [accessToken, userId]);
@@ -63,4 +63,4 @@ export default function Profile() {
       <Footer />
     </Box>
   );
-};
+}

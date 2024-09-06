@@ -144,7 +144,7 @@ const FrenzyBox = () => {
         } else if (responseStatus === 403) {
           if (data.error === "Access token was denied.") {
             // Try API refresh if token exists
-            if (refreshToken != "" && userId != "") {
+            if (refreshToken !== "" && userId !== "") {
               const refreshData = await tryRefreshToken();
               if (refreshData.data) {
                 const refreshResponseStatus = refreshData.response.status;

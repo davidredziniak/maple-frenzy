@@ -26,16 +26,6 @@ export default function UserTrades() {
     navigate("/dashboard/" + id);
   }
 
-  const getUserTrades = () => {
-    return fetch(apiURL + "/usertrades", {
-      method: "GET",
-      headers: {
-        "x-access-token": accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-  };
-
   function configureState(data) {
     if (!data.error) {
       setJoinedTrades(data.joined);
@@ -45,6 +35,16 @@ export default function UserTrades() {
 
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
+      const getUserTrades = () => {
+        return fetch(apiURL + "/usertrades", {
+          method: "GET",
+          headers: {
+            "x-access-token": accessToken,
+            "Content-Type": "application/json",
+          },
+        }).then((response) => response.json());
+      };
+
       getUserTrades().then((data) => configureState(data));
     }
   }, [accessToken]);

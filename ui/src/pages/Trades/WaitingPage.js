@@ -17,7 +17,6 @@ import {
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../Auth/AuthContext";
-import io from 'socket.io-client';
 //const socket = io.connect('http://localhost:3001');
 
 function WaitingPage() {
@@ -86,26 +85,19 @@ function WaitingPage() {
 
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
-      getTradeSlot(tradeId).then((data) => configureState(data));
-    }
-    //socket.on('message', (data) => console.log(data));
-  }, [accessToken]);
+      const getTradeSlot = (tradeId) => {
+        return fetch(
+          apiURL + "/trade/viewslot/" + tradeId,
+          {
+            method: "GET",
+            headers: {
+              "x-access-token": accessToken,
+              "Content-Type": "application/json",
+            },
+          }
+        ).then((response) => response.json());
+      };
 
-  const getTradeSlot = (tradeId) => {
-    return fetch(
-      apiURL + "/trade/viewslot/" + tradeId,
-      {
-        method: "GET",
-        headers: {
-          "x-access-token": accessToken,
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => response.json());
-  };
-
-  useEffect(() => {
-    if (accessToken !== null && accessToken.length !== 0) {
       getTradeSlot(tradeId).then((data) => configureState(data));
     }
   }, [accessToken, tradeId]);

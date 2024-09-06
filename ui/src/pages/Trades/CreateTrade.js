@@ -1,5 +1,5 @@
 import { apiURL, signInButton } from "../../config";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Center,
   Text,
@@ -19,7 +19,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
-import bgImg1 from "../../img/landing-leaves.png";
 
 import { AuthContext } from "../Auth/AuthContext";
 
@@ -51,7 +50,7 @@ const CreateTradeBox = () => {
   };
 
   const handleChannelChange = (inputValue) => {
-    const newValue = inputValue.replace(/[^0-9 \,]/, '');
+    const newValue = inputValue.replace(/[^0-9,]/, '');
     setChannelsInput(newValue);
     // rest
   };
@@ -107,13 +106,13 @@ const CreateTradeBox = () => {
     }
 
     // Verify buyer limit is valid
-    if (buyerLimit == 0) {
+    if (buyerLimit === 0) {
       errNotification("Your buyer limit has to be greater than 0.");
       return;
     }
 
     // Verify price is valid
-    if (price == 0) {
+    if (price === 0) {
       errNotification("Your price for the frenzy has to be greater than 0.");
       return;
     }

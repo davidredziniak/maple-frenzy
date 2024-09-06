@@ -101,19 +101,21 @@ function Dashboard() {
 
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
+      const getTradeSlots = (tradeId) => {
+        return fetch(apiURL + "/trade/data/" + tradeId + "?slots", {
+          method: "GET",
+          headers: {
+            "x-access-token": accessToken,
+            "Content-Type": "application/json",
+          },
+        }).then((response) => response.json());
+      };
+
       getTradeSlots(tradeId).then((data) => configureState(data));
     }
-  }, [accessToken, price]);
+  }, [accessToken, tradeId, price]);
 
-  const getTradeSlots = (tradeId) => {
-    return fetch(apiURL + "/trade/data/" + tradeId + "?slots", {
-      method: "GET",
-      headers: {
-        "x-access-token": accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-  };
+
 
   return (
     <Box>

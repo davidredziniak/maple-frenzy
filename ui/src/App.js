@@ -12,6 +12,7 @@ import FindFrenzy from "./pages/Trades/FindFrenzy.js";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./pages/Auth/AuthContext.js";
 import UserTrades from "./pages/User/UserTrades.js";
+import PageNotFound from "./pages/PageNotFound.js";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route exact path="/join" element={<JoinFrenzy />} />
             <Route path="/view/:tradeId" element={<FrenzyWaiting />} />
             <Route exact path="/trades" element={<UserTrades />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </AuthProvider>
       </ChakraProvider>

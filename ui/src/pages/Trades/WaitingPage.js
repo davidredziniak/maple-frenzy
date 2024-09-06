@@ -1,19 +1,7 @@
-import {
-  apiURL,
-  signInButton,
-} from "../../config";
+import { apiURL, signInButton } from "../../config";
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Text,
-  Box,
-  Button,
-  Flex,
-  Stack,
-} from "@chakra-ui/react";
-import {
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Text, Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../Auth/AuthContext";
@@ -33,8 +21,7 @@ function WaitingPage() {
   const [inGameName, setInGameName] = useState("");
   const [price, setPrice] = useState("");
 
-  const { accessToken } =
-    useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   const errNotification = (message) => toast.error(message);
   const sucNotification = (message) => toast.success(message);
@@ -86,16 +73,13 @@ function WaitingPage() {
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
       const getTradeSlot = (tradeId) => {
-        return fetch(
-          apiURL + "/trade/viewslot/" + tradeId,
-          {
-            method: "GET",
-            headers: {
-              "x-access-token": accessToken,
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((response) => response.json());
+        return fetch(apiURL + "/trade/viewslot/" + tradeId, {
+          method: "GET",
+          headers: {
+            "x-access-token": accessToken,
+            "Content-Type": "application/json",
+          },
+        }).then((response) => response.json());
       };
 
       getTradeSlot(tradeId).then((data) => configureState(data));
@@ -104,17 +88,14 @@ function WaitingPage() {
 
   const handleLeave = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      apiURL + "/trade/leave",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": accessToken,
-        },
-        body: JSON.stringify({ tradeId: tradeId }),
-      }
-    );
+    const response = await fetch(apiURL + "/trade/leave", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+      body: JSON.stringify({ tradeId: tradeId }),
+    });
     const data = await response.json();
     if (response.status === 200) {
       sucNotification(data.message);
@@ -151,7 +132,17 @@ function WaitingPage() {
             />
           </Flex>
         ) : (
-          <Text>You are not authorized to view this trade.</Text>
+          <>
+            {isLoggedIn ? (
+              <Flex h="100vh" bg="#F8EEDE">
+                <Text>You are not authorized to view this page.</Text>
+              </Flex>
+            ) : (
+              <Flex h="100vh" bg="#F8EEDE">
+                <Text>You must be logged in to view this page.</Text>
+              </Flex>
+            )}
+          </>
         )}
       </Box>
     </Box>

@@ -64,22 +64,19 @@ const FrenzyBox = () => {
   };
 
   async function trySearch() {
-    const response = await fetch(
-      apiURL + "/trade/searchmarket",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": accessToken,
-        },
-        body: JSON.stringify({ channel, duration }),
-      }
-    );
+    const response = await fetch(apiURL + "/trade/searchmarket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+      body: JSON.stringify({ channel, duration }),
+    });
     const data = await response.json();
     return { data, response };
   }
 
-  async function tryRefreshToken(){
+  async function tryRefreshToken() {
     const response = await fetch(apiURL + "/refresh", {
       method: "POST",
       headers: {
@@ -249,13 +246,21 @@ const FrenzyBox = () => {
 };
 
 const FindFrenzy = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <Box>
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
-      <Flex h="100vh" bg="#F8EEDE">
-        <FrenzyBox />
-      </Flex>
+      {isLoggedIn ? (
+        <Flex h="100vh" bg="#F8EEDE">
+          <FrenzyBox />
+        </Flex>
+      ) : (
+        <Flex h="100vh" bg="#F8EEDE">
+          <Text>You must be logged in to view this page.</Text>
+        </Flex>
+      )}
       <Footer />
     </Box>
   );

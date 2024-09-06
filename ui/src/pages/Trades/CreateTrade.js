@@ -246,13 +246,20 @@ const CreateTradeBox = () => {
 };
 
 const CreateTrade = () => {
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <Box>
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
-      <Flex h="100vh" bg="#F8EEDE">
+      {isLoggedIn ? (
+        <Flex h="100vh" bg="#F8EEDE">
         <CreateTradeBox />
       </Flex>
+      ) : (
+        <Flex h="100vh" bg="#F8EEDE">
+          <Text>You must be logged in to view this page.</Text>
+        </Flex>
+      )}
       <Footer />
     </Box>
   );

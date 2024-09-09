@@ -195,6 +195,7 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="inGameUsername"
+                placeholder="Your username in game"
                 value={inGameUsername}
                 onChange={(e) => setInGameUsername(e.target.value)}
                 required
@@ -208,6 +209,7 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="channel"
+                placeholder="Channel number you are in"
                 value={channel}
                 onChange={setChannelValue}
                 required
@@ -221,6 +223,7 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="duration"
+                placeholder="Time in hours"
                 value={duration}
                 onChange={setDurationValue}
                 required

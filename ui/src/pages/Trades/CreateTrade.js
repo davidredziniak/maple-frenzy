@@ -128,7 +128,7 @@ const CreateTradeBox = () => {
   };
 
   return (
-    <Box flex="1" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" bg="black.100" py="5vh" ml="50vh" rounded="md">
       <Stack>
         <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
           <Center>
@@ -144,12 +144,13 @@ const CreateTradeBox = () => {
           <FormControl>
             <div>
               <FormLabel color="white" htmlFor="inGameName">
-                In Game Name:
+                In Game Username:
               </FormLabel>
               <Input
                 bg="white"
                 type="text"
                 id="inGameName"
+                placeholder="Your in game username, so buyers can find you"
                 value={inGameName}
                 onChange={(e) => setInGameName(e.target.value)}
                 required
@@ -210,6 +211,7 @@ const CreateTradeBox = () => {
                 type="text"
                 size="lg"
                 id="channelsInput"
+                placeholder="Comma seperated channel list, ex: 1,3,4,10"
                 value={channelsInput}
                 onChange={(e) => handleChannelChange(e.target.value)}
                 required

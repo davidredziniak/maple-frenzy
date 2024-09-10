@@ -17,7 +17,7 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
-import { FormControl, FormLabel } from "@chakra-ui/react";
+import { FormLabel } from "@chakra-ui/react";
 import login from "../../img/login.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -93,7 +93,7 @@ const RegistrationForm = () => {
   };
 
   return (
-    <FormControl>
+    <form onSubmit={handleSubmit}>
       <div>
         <FormLabel color="white" htmlFor="username">
           Username:
@@ -126,11 +126,10 @@ const RegistrationForm = () => {
         color="#353935"
         {...signInButton}
         type="submit"
-        onClick={handleSubmit}
       >
         Sign In
       </Button>
-    </FormControl>
+    </form>
   );
 };
 

@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Stack,
-  FormControl,
   Input,
   FormLabel,
   NumberInput,
@@ -15,6 +14,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Flex,
+  Spacer,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -50,7 +50,7 @@ const CreateTradeBox = () => {
   };
 
   const handleChannelChange = (inputValue) => {
-    const newValue = inputValue.replace(/[^0-9,]/, '');
+    const newValue = inputValue.replace(/[^0-9,]/, "");
     setChannelsInput(newValue);
     // rest
   };
@@ -85,14 +85,18 @@ const CreateTradeBox = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Check if startTime is empty
+    if (startTimeInput === "") {
+      errNotification("You must choose a start date and time.");
+      return;
+    }
+
     const startDate = new Date(startTimeInput);
     const currentDate = new Date();
 
     // Verify the start and end dates are valid
     if (currentDate >= startDate) {
-      errNotification(
-        "You cannot choose dates earlier than the date it currently is."
-      );
+      errNotification("You cannot choose dates earlier than the current date.");
       return;
     } else {
       const startTimeIso = startDate.toISOString();
@@ -118,13 +122,12 @@ const CreateTradeBox = () => {
     }
 
     // Verify channels string is valid
-    if(!/^\d+(,\d+)*$/.test(channelsInput)){
+    if (!/^\d+(,\d+)*$/.test(channelsInput)) {
       errNotification("The channels are not valid. Ex. 3,4,10,15");
       return;
     }
 
-    if(timeStart && timeEnd)
-      tryCreateTrade();
+    if (timeStart && timeEnd) tryCreateTrade();
   };
 
   return (
@@ -141,7 +144,7 @@ const CreateTradeBox = () => {
               Create Trade
             </Text>
           </Center>
-          <FormControl>
+          <form onSubmit={handleSubmit}>
             <div>
               <FormLabel color="white" htmlFor="inGameName">
                 In Game Username:
@@ -230,17 +233,20 @@ const CreateTradeBox = () => {
                 required
               />
             </div>
-            <Button
-              mt="30px"
-              bg="#93d7bf"
-              color="#353935"
-              {...signInButton}
-              type="submit"
-              onClick={handleSubmit}
-            >
-              Create Trade
-            </Button>
-          </FormControl>
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+              <Spacer />
+              <Button
+                mt="30px"
+                bg="#93d7bf"
+                w="12vh"
+                color="#353935"
+                {...signInButton}
+                type="submit"
+              >
+                Create
+              </Button>
+            </Flex>
+          </form>
         </Box>
       </Stack>
     </Box>
@@ -255,8 +261,8 @@ const CreateTrade = () => {
       <Toaster position="top-center" reverseOrder={false} />
       {isLoggedIn ? (
         <Flex h="100vh" bg="#F8EEDE">
-        <CreateTradeBox />
-      </Flex>
+          <CreateTradeBox />
+        </Flex>
       ) : (
         <Flex h="100vh" bg="#F8EEDE">
           <Text>You must be logged in to view this page.</Text>

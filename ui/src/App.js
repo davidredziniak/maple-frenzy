@@ -13,12 +13,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./pages/Auth/AuthContext.js";
 import UserTrades from "./pages/User/UserTrades.js";
 import PageNotFound from "./pages/PageNotFound.js";
+import ScrollToTop from "./ScrollToTop.js";
 
 function App() {
   return (
     <BrowserRouter>
       <ChakraProvider>
         <AuthProvider>
+          <ScrollToTop />
           <Routes>
             <Route exact path="/" element={<Landing />} />
             <Route exact path="/register" element={<Register />} />

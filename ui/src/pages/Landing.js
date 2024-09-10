@@ -4,8 +4,21 @@ import Hero from '../img/hero.png';
 import Leaves from '../img/landing-leaves.png';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Landing = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [location.hash]);
+
   return (
     <Box>
       {/* Navigation Bar */}

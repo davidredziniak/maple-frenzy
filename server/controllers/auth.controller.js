@@ -64,8 +64,9 @@ exports.signUp = (req, res) => {
     return res.status(401).send({ message: "Email provided was invalid." });
 
   if (validatePass(req.body.password)) {
+    let username = req.body.username.toLowerCase();
     return User.create({
-      username: req.body.username,
+      username: username,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
       createdAt: new Date().toISOString(),
@@ -99,7 +100,8 @@ exports.signUp = (req, res) => {
 // If successful, returns a response with a JWT used to authorize webpages
 exports.signIn = (req, res) => {
   if (validatePass(req.body.password)) {
-    return User.findOne({ where: { username: req.body.username } })
+    let username = req.body.username.toLowerCase();
+    return User.findOne({ where: { username: username } })
       .then(async (user) => {
         // Validate if username exists
         if (!user)

@@ -131,14 +131,16 @@ const JoinFrenzy = () => {
   return (
     <Box>
       <Navbar />
-      <Box bg="#F8EEDE" pb={100}>
-        <Toaster position="top-center" reverseOrder={false} />
-        {isLoggedIn && (
-          <Flex h="100vh">
-            <JoinFrenzyBox />
-          </Flex>
-        )}
-      </Box>
+      <Toaster position="top-center" reverseOrder={false} />
+      {isLoggedIn ? (
+        <Flex h="100vh">
+          <JoinFrenzyBox />
+        </Flex>
+      ) : (
+        <Flex h="100vh" bg="#F8EEDE">
+          <Text>You must be logged in to view this page.</Text>
+        </Flex>
+      )}
     </Box>
   );
 };

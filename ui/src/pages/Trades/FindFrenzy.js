@@ -6,10 +6,10 @@ import {
   Button,
   Flex,
   Stack,
-  FormControl,
   Input,
   FormLabel,
   Center,
+  Spacer,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -64,22 +64,19 @@ const FrenzyBox = () => {
   };
 
   async function trySearch() {
-    const response = await fetch(
-      apiURL + "/trade/searchmarket",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": accessToken,
-        },
-        body: JSON.stringify({ channel, duration }),
-      }
-    );
+    const response = await fetch(apiURL + "/trade/searchmarket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+      body: JSON.stringify({ channel, duration }),
+    });
     const data = await response.json();
     return { data, response };
   }
 
-  async function tryRefreshToken(){
+  async function tryRefreshToken() {
     const response = await fetch(apiURL + "/refresh", {
       method: "POST",
       headers: {
@@ -112,6 +109,7 @@ const FrenzyBox = () => {
   };
 
   async function handleSubmit(e) {
+    console.log("LOL");
     e.preventDefault();
 
     if (inGameUsername === "") {
@@ -176,9 +174,9 @@ const FrenzyBox = () => {
   }
 
   return (
-    <Box flex="1" py="5vh" ml="50vh" rounded="md">
+    <Box flex="1" py="5vh" ml="70vh" rounded="md">
       <Stack>
-        <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
+        <Box w="40%" p={10} boxShadow="base" bg="#353935" rounded="md">
           <Center>
             <Text
               as={"b"}
@@ -189,7 +187,7 @@ const FrenzyBox = () => {
               Find Frenzy
             </Text>
           </Center>
-          <FormControl>
+          <form onSubmit={handleSubmit}>
             <div>
               <FormLabel color="white" htmlFor="inGameUsername">
                 In Game Username:
@@ -198,6 +196,7 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="inGameUsername"
+                placeholder="Your username in game"
                 value={inGameUsername}
                 onChange={(e) => setInGameUsername(e.target.value)}
                 required
@@ -211,6 +210,7 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="channel"
+                placeholder="Channel number you are in"
                 value={channel}
                 onChange={setChannelValue}
                 required
@@ -224,24 +224,25 @@ const FrenzyBox = () => {
                 bg="white"
                 type="text"
                 id="duration"
+                placeholder="Time in hours"
                 value={duration}
                 onChange={setDurationValue}
                 required
               />
             </div>
-            <Button
-              mt="30px"
-              bg="#93d7bf"
-              color="#353935"
-              {...signInButton}
-              type="submit"
-              onClick={(e) => {
-                handleSubmit(e);
-              }}
-            >
-              Search
-            </Button>
-          </FormControl>
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+              <Spacer />
+              <Button
+                mt="30px"
+                bg="#93d7bf"
+                color="#353935"
+                {...signInButton}
+                type="submit"
+              >
+                Search
+              </Button>
+            </Flex>
+          </form>
         </Box>
       </Stack>
     </Box>
@@ -249,13 +250,21 @@ const FrenzyBox = () => {
 };
 
 const FindFrenzy = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <Box>
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
-      <Flex h="100vh" bg="#F8EEDE">
-        <FrenzyBox />
-      </Flex>
+      {isLoggedIn ? (
+        <Flex h="100vh" bg="#F8EEDE">
+          <FrenzyBox />
+        </Flex>
+      ) : (
+        <Flex h="100vh" bg="#F8EEDE">
+          <Text>You must be logged in to view this page.</Text>
+        </Flex>
+      )}
       <Footer />
     </Box>
   );

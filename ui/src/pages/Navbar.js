@@ -31,7 +31,7 @@ const Navbar = () => {
     navigate("/trades");
   };
 
-  const { isLoggedIn, toggleLogout, username } = useContext(AuthContext);
+  const { isLoggedIn, handleLogout, username } = useContext(AuthContext);
   return (
     <Flex
       position="sticky"
@@ -47,10 +47,10 @@ const Navbar = () => {
       <Link as={RouterLink} to="/" mr={6} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         Home
       </Link>
-      <Link as={RouterLink} to="/#about" mr={6} onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}>
+      <Link as={RouterLink} to="/#about" mr={6}>
         About Us
       </Link>
-      <Link as={RouterLink} to="/#contact" mr={6} onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
+      <Link as={RouterLink} to="/#contact" mr={6}>
         Contact
       </Link>
       {isLoggedIn ? (
@@ -63,7 +63,7 @@ const Navbar = () => {
             <MenuItem onClick={navigateSell}>Create</MenuItem>
             <MenuItem onClick={navigateTrades}>View Trades</MenuItem>
             <MenuItem onClick={navigateProfile}>Profile</MenuItem>
-            <MenuItem onClick={toggleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </MenuList>
         </Menu>
       ) : (

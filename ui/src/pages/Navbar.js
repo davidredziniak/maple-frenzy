@@ -15,23 +15,14 @@ import { useContext } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const navigateLogin = () => {
-    navigate("/login");
-  };
-  const navigateProfile = () => {
-    navigate("/profile");
-  };
-  const navigateFrenzy = () => {
-    navigate("/find");
-  };
-  const navigateSell = () => {
-    navigate("/create");
-  };
-  const navigateTrades = () => {
-    navigate("/trades");
-  };
-
   const { isLoggedIn, handleLogout, username } = useContext(AuthContext);
+  
+  // Clear auth context of any values, then navigate to login
+  function logout(){
+    handleLogout();
+    navigate("/login");
+  }
+
   return (
     <Flex
       position="sticky"
@@ -44,7 +35,12 @@ const Navbar = () => {
       color="white"
       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.7)"
     >
-      <Link as={RouterLink} to="/" mr={6} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+      <Link
+        as={RouterLink}
+        to="/"
+        mr={6}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         Home
       </Link>
       <Link as={RouterLink} to="/#about" mr={6}>
@@ -59,11 +55,11 @@ const Navbar = () => {
             {username}
           </MenuButton>
           <MenuList color="black">
-            <MenuItem onClick={navigateFrenzy}>Find</MenuItem>
-            <MenuItem onClick={navigateSell}>Create</MenuItem>
-            <MenuItem onClick={navigateTrades}>View Trades</MenuItem>
-            <MenuItem onClick={navigateProfile}>Profile</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={() => navigate("/find")}>Find</MenuItem>
+            <MenuItem onClick={() => navigate("/create")}>Create</MenuItem>
+            <MenuItem onClick={() => navigate("/trades")}>View Trades</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+            <MenuItem onClick={() => logout()}>Logout</MenuItem>
           </MenuList>
         </Menu>
       ) : (
@@ -72,7 +68,7 @@ const Navbar = () => {
             bg="#93d7bf"
             color="#353935"
             size="md"
-            onClick={navigateLogin}
+            onClick={navigate("/login")}
           >
             Login
           </Button>

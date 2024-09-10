@@ -1,6 +1,6 @@
-import { apiURL, signInButton } from "../../config";
+import { apiURL, defaultButton } from "../../config";
 import React, { useState, useContext, useEffect } from "react";
-import { Text, Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { Text, Box, Button, Flex, Stack, Spacer } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
@@ -203,16 +203,18 @@ const WaitingBox = (props) => {
             min(s) from now)
           </Text>
 
-          <Button
+          <Flex minWidth="max-content" alignItems="center" gap="2">
+            <Spacer />
+            <Button
             mt="30px"
-            bg="#93d7bf"
-            color="#353935"
-            {...signInButton}
+            {...defaultButton}
             type="submit"
             onClick={props.handleLeave}
           >
-            Leave Frenzy
+            Leave
           </Button>
+          </Flex>
+          
         </Box>
       </Stack>
     </Box>

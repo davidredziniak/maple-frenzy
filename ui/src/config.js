@@ -53,8 +53,12 @@ export const stackLeft = {
     alignItems:"center", // Center contents horizontally
   }
   
-  export const signInButton = {
-    size:"lg"
+  export const defaultButton = {
+    size: "lg",
+    bg: "#93d7bf",
+    color: "#353935",
+    _hover: {"bg": "#5e917f"}
   }
+  
   
   export const apiURL = "https://api.maplefrenzy.com"

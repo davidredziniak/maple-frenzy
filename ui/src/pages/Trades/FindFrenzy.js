@@ -1,4 +1,4 @@
-import { apiURL, signInButton } from "../../config";
+import { apiURL, defaultButton } from "../../config";
 import React, { useState, useContext } from "react";
 import {
   Text,
@@ -233,9 +233,7 @@ const FrenzyBox = () => {
               <Spacer />
               <Button
                 mt="30px"
-                bg="#93d7bf"
-                color="#353935"
-                {...signInButton}
+                {...defaultButton}
                 type="submit"
               >
                 Search

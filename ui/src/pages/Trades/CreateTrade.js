@@ -1,4 +1,4 @@
-import { apiURL, signInButton } from "../../config";
+import { apiURL, defaultButton } from "../../config";
 import React, { useState, useContext } from "react";
 import {
   Center,
@@ -237,10 +237,8 @@ const CreateTradeBox = () => {
               <Spacer />
               <Button
                 mt="30px"
-                bg="#93d7bf"
                 w="12vh"
-                color="#353935"
-                {...signInButton}
+                {...defaultButton}
                 type="submit"
               >
                 Create

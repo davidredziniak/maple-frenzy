@@ -65,9 +65,10 @@ exports.signUp = (req, res) => {
 
   if (validatePass(req.body.password)) {
     let username = req.body.username.toLowerCase();
+    let email = req.body.email.toLowerCase();
     return User.create({
       username: username,
-      email: req.body.email,
+      email: email,
       password: bcrypt.hashSync(req.body.password, 8),
       createdAt: new Date().toISOString(),
       lastLoggedIn: new Date().toISOString(),

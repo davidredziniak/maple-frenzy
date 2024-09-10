@@ -109,7 +109,6 @@ const FrenzyBox = () => {
   };
 
   async function handleSubmit(e) {
-    console.log("LOL");
     e.preventDefault();
 
     if (inGameUsername === "") {

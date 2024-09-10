@@ -6,7 +6,8 @@ const crypto = require("crypto");
 
 // Checks if the username in the given request already exists
 const checkUsernameTaken = (req, res, next) => {
-  User.findOne({ where: { username: req.body.username } }).then((user) => {
+  let username = req.body.username.toLowerCase();
+  User.findOne({ where: { username: username } }).then((user) => {
     if (user)
       return res.status(401).send({ message: "Username already taken." });
     next();
@@ -15,7 +16,8 @@ const checkUsernameTaken = (req, res, next) => {
 
 // Checks if the email in the given request already exists
 const checkEmailTaken = (req, res, next) => {
-  User.findOne({ where: { email: req.body.email } }).then((user) => {
+  let email = req.body.email.toLowerCase();
+  User.findOne({ where: { email: email } }).then((user) => {
     if (user) return res.status(401).send({ message: "Email already taken." });
     next();
   });

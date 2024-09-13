@@ -21,23 +21,28 @@ import { AuthContext } from "../Auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import DurationCountdown from "./DurationCountdown";
 import toast, { Toaster } from "react-hot-toast";
+import io from "socket.io-client";
 
 function Dashboard() {
   let { tradeId } = useParams();
-
   const navigate = useNavigate();
-  const errNotification = (message) => toast.error(message);
-  const sucNotification = (message) => toast.success(message);
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
   const { accessToken } = useContext(AuthContext);
-
   const [inProgress, setInProgress] = useState(false);
   const [buyers, setBuyers] = useState([]);
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
   const [isAuth, setIsAuth] = useState(false);
+
+  // Sockets
+  const [inputMessage, setInputMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [socket, setSocket] = useState(null);
+
+  // Notifications
+  const errNotification = (message) => toast.error(message);
+  const sucNotification = (message) => toast.success(message);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const getLocalTime = (time) => {
     var date = new Date(time).toLocaleString();
@@ -99,6 +104,16 @@ function Dashboard() {
     }
   }
 
+  const handleChange = (e) => {
+    setInputMessage(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    socket.emit("send_message", { message: inputMessage });
+    setInputMessage("");
+  };
+
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
       const getTradeSlots = (tradeId) => {
@@ -111,16 +126,56 @@ function Dashboard() {
         }).then((response) => response.json());
       };
 
+      // Connect to trade room with socket connection
+      const newSocket = io.connect('http://localhost:3001', { 
+        transports : ['websocket'],
+        auth: {
+          token: accessToken,
+          role: "seller"
+        },
+        trade: {
+          id: tradeId
+        }
+       });
+      setSocket(newSocket);
+
       getTradeSlots(tradeId).then((data) => configureState(data));
     }
-  }, [accessToken, tradeId, price]);
+  }, [accessToken, tradeId]);
 
+  useEffect(() => {
+    if(socket !== null){
+      socket.on("new_message", (data) => {
+        setMessage(data.message);
+      });
 
+      // Cleanup func, disconnect on unmount
+      return ()=>{
+        socket.disconnect();
+      }
+    }
+  }, [socket]);
 
   return (
     <Box>
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
+      <div>
+      <h1>Chat App</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="inputMessage"
+          value={inputMessage}
+          onChange={handleChange}
+          placeholder="Enter Message"
+        />
+        <button type="submit">Send Message</button>
+      </form>
+
+      {message && <h2>{message}</h2>}
+      </div>
       {accessToken && isAuth ? (
         <Flex h="100vh" bg="#F8EEDE">
           <Box flex="1" py="5vh" w="80vh" h="80vh">

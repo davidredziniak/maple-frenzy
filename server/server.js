@@ -5,6 +5,8 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const db = require("./models");
 const scheduler = require("./tradeScheduler.js");
+const jwt = require("jsonwebtoken");
+const config = require("./config/auth.config.js");
 
 // Express starts a server and points the app to it
 const PORT = process.env.PORT;
@@ -45,23 +47,33 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Maple Frenzy app listening on port ${PORT}`);
 });
 
-/* Initialize socket.io
-var users = [];
-var idsnicks = {};
-
 const io = new Server(httpServer);
 
-io.on("connection", function (socket) {
-  socket.on('joinRoom', function(room) {
-    socket.join(room); //join room as TradeId
-    io.sockets.in(room).emit('message', 'Joined room ' + room);
+io.on("connection", (socket) => {
+  // Verify auth token, trade, and role (buyer or seller)
+  const { token } = socket.handshake.auth;
+  if(!token){
+    console.log("No auth token.");
+    socket.disconnect();
+  } else {
+    jwt.verify(token, config.salt, (error, decoded) => {
+      if(error){
+        console.log("User disconnected.");
+        socket.disconnect();
+      }
+      console.log("User ID: " + decoded.id);
+    });
+  }
+  
+  socket.on("send_message", (data) => {
+    console.log(data);
+    io.emit("new_message", data);
   });
 
-  socket.on('disconnect', function(room){
-    io.sockets.in(room).emit('message', 'Left room ' + room);
-    socket.leave(room);
+  socket.on("disconnect", () => {
+    console.log("client disconnected");
   });
-});*/
+});
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
 const pollingTime = 2000; // 2s

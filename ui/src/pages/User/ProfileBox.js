@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import PasswordPopup from "./PasswordPopup";
 
 export default function ProfileBox(props) {
   return (
@@ -44,6 +45,16 @@ export default function ProfileBox(props) {
                 <Text>Username:</Text>
                 <Spacer />
                 <Text>{props.username}</Text>
+              </Flex>
+              <Flex
+                textShadow="1px 2px #000000"
+                color="white"
+                fontSize="18px"
+                as={"b"}
+              >
+                <Text>Password:</Text>
+                <Spacer />
+                <PasswordPopup />
               </Flex>
               <Flex
                 textShadow="1px 2px #000000"

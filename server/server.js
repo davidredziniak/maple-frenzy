@@ -2,9 +2,9 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const { Server } = require("socket.io");
 const db = require("./models");
 const scheduler = require("./tradeScheduler.js");
+const sockets = require("./sockets.js");
 
 // Express starts a server and points the app to it
 const PORT = process.env.PORT;
@@ -45,23 +45,8 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Maple Frenzy app listening on port ${PORT}`);
 });
 
-/* Initialize socket.io
-var users = [];
-var idsnicks = {};
-
-const io = new Server(httpServer);
-
-io.on("connection", function (socket) {
-  socket.on('joinRoom', function(room) {
-    socket.join(room); //join room as TradeId
-    io.sockets.in(room).emit('message', 'Joined room ' + room);
-  });
-
-  socket.on('disconnect', function(room){
-    io.sockets.in(room).emit('message', 'Left room ' + room);
-    socket.leave(room);
-  });
-});*/
+// Socket server
+sockets.startSocketServer(httpServer);
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
 const pollingTime = 2000; // 2s

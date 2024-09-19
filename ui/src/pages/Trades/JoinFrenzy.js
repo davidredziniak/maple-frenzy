@@ -1,6 +1,15 @@
-import { apiURL, signInButton } from "../../config";
+import { apiURL, defaultButton } from "../../config";
 import React, { useContext } from "react";
-import { Text, Box, Button, Flex, Stack } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  Button,
+  Flex,
+  Stack,
+  Center,
+  Spacer,
+  Badge,
+} from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
@@ -60,67 +69,82 @@ const JoinFrenzyBox = () => {
       sucNotification(data.message);
       await delay(1000);
       navigate("/view/" + location.state.id);
-      // Reset form fields
     } else {
       errNotification(data.error);
     }
   };
 
-  const handleGoBack = async (e) => {
-    navigate("/find");
-  };
-
   return (
-    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" py="5vh" rounded="md">
       <Stack>
-        <Text pl=".5vw" fontFamily="verdana" fontSize="30px">
-          Join Frenzy
-        </Text>
-        <Box
-          pl=".5vw"
-          w="60%"
-          p={10}
-          boxShadow="base"
-          bg="#353935"
-          rounded="md"
-        >
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Seller {location.state.seller} is available to join!
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Start Time: {getLocalTime(location.state.start)} (
-            {getHoursFromNow(location.state.start)} hour(s){" "}
-            {getMinutesFromNow(location.state.start)} min(s) from now)
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            End Time: {getLocalTime(location.state.end)} (
-            {getHoursFromNow(location.state.end)} hour(s){" "}
-            {getMinutesFromNow(location.state.end)} min(s) from now)
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Price: {location.state.price}
-          </Text>
-          <Button
-            mt="30px"
-            bg="#93d7bf"
-            color="#353935"
-            {...signInButton}
-            type="submit"
-            onClick={handleGoBack}
+        <Center>
+          <Box
+            pl=".5vw"
+            w="40%"
+            p={10}
+            boxShadow="base"
+            bg="#353935"
+            rounded="md"
           >
-            Go Back
-          </Button>
-          <Button
-            mt="30px"
-            bg="#93d7bf"
-            color="#353935"
-            {...signInButton}
-            type="submit"
-            onClick={handleJoin}
-          >
-            Join
-          </Button>
-        </Box>
+            <Center>
+              <Text
+                as={"b"}
+                fontSize="45px"
+                textShadow="1px 2px #000000"
+                color="white"
+              >
+                Join Frenzy
+              </Text>
+            </Center>
+            <Stack spacing={4}>
+              <Text color="white" mt=".5vh" fontFamily="verdana" fontSize="xl">
+                {location.state.seller} is available to join!
+              </Text>
+
+              <Box>
+                <Text fontSize="md" color="white" fontFamily="verdana">
+                  <strong>Start Time:</strong>{" "}
+                  {getLocalTime(location.state.start)} (
+                  {getHoursFromNow(location.state.start)} hour(s){" "}
+                  {getMinutesFromNow(location.state.start)} min(s) from now)
+                </Text>
+                <Text
+                  fontSize="md"
+                  mt=".5vh"
+                  color="white"
+                  fontFamily="verdana"
+                >
+                  <strong>End Time:</strong> {getLocalTime(location.state.end)}{" "}
+                  ({getHoursFromNow(location.state.end)} hour(s){" "}
+                  {getMinutesFromNow(location.state.end)} min(s) from now)
+                </Text>
+              </Box>
+
+              <Badge colorScheme="green" fontSize="lg">
+                Price: {location.state.price} Meso
+              </Badge>
+            </Stack>
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+              <Button
+                mt="30px"
+                {...defaultButton}
+                type="submit"
+                onClick={() => navigate("/find")}
+              >
+                Go Back
+              </Button>
+              <Spacer />
+              <Button
+                mt="30px"
+                {...defaultButton}
+                type="submit"
+                onClick={handleJoin}
+              >
+                Join
+              </Button>
+            </Flex>
+          </Box>
+        </Center>
       </Stack>
     </Box>
   );
@@ -133,7 +157,7 @@ const JoinFrenzy = () => {
       <Navbar />
       <Toaster position="top-center" reverseOrder={false} />
       {isLoggedIn ? (
-        <Flex h="100vh">
+        <Flex h="100vh" bg="#F8EEDE">
           <JoinFrenzyBox />
         </Flex>
       ) : (

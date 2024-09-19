@@ -21,23 +21,28 @@ import { AuthContext } from "../Auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import DurationCountdown from "./DurationCountdown";
 import toast, { Toaster } from "react-hot-toast";
+import io from "socket.io-client";
 
 function Dashboard() {
   let { tradeId } = useParams();
-
   const navigate = useNavigate();
-  const errNotification = (message) => toast.error(message);
-  const sucNotification = (message) => toast.success(message);
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
   const { accessToken } = useContext(AuthContext);
-
   const [inProgress, setInProgress] = useState(false);
   const [buyers, setBuyers] = useState([]);
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [price, setPrice] = useState("");
   const [isAuth, setIsAuth] = useState(false);
+
+  // Sockets
+  const [inputMessage, setInputMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [socket, setSocket] = useState(null);
+
+  // Notifications
+  const errNotification = (message) => toast.error(message);
+  const sucNotification = (message) => toast.success(message);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const getLocalTime = (time) => {
     var date = new Date(time).toLocaleString();
@@ -111,11 +116,33 @@ function Dashboard() {
         }).then((response) => response.json());
       };
 
+      // Connect to trade room with socket connection
+      const newSocket = io.connect(apiURL, {
+        transports: ["websocket"],
+        auth: {
+          token: accessToken,
+          role: "seller",
+          trade: tradeId,
+        },
+      });
+      setSocket(newSocket);
+
       getTradeSlots(tradeId).then((data) => configureState(data));
     }
-  }, [accessToken, tradeId, price]);
+  }, [accessToken, tradeId]);
 
+  useEffect(() => {
+    if (socket !== null) {
+      socket.on("new_message", (data) => {
+        setMessage(data.message);
+      });
 
+      // Cleanup func, disconnect on unmount
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [socket]);
 
   return (
     <Box>

@@ -3,7 +3,7 @@ import {
   stackRight,
   loginBox,
   loginText,
-  signInButton,
+  defaultButton,
   apiURL,
 } from "../../config";
 import {
@@ -146,9 +146,7 @@ const RegistrationForm = () => {
       </div>
       <Button
         mt="30px"
-        bg="#93d7bf"
-        color="#353935"
-        {...signInButton}
+        {...defaultButton}
         type="submit"
       >
         Sign Up

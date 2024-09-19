@@ -41,47 +41,55 @@ exports.getTimeDifference = (timeStart, timeEnd) => {
   return hours;
 };
 
-exports.findTradesUserIsIn = (req, res) => {
-  TradeSlot.findAll({
-    where: { userId: req.userId }
-    })
-    .then((slotResult) => {
-      var joinedTrades = [];
-      slotResult.forEach((record) => {
-        Trade.findOne( {where: { id: record.tradeId }}).then((foundTrade) => {
-          joinedTrades.push({
-            id: record.tradeId,
-            gameName: record.gameName,
-            channel: record.channel,
-            duration: record.duration,
-            timeStart: foundTrade.timeStart,
-            inProgress: foundTrade.inProgress
-          });
-        }).catch((error) => {});
-      });
+exports.findTradesUserIsIn = async function (req, res) {
+  let joined = [];
+  let created = [];
 
-      Trade.findAll({ where: { sellerId: req.userId }}).then((tradeResult) => {
-        var createdTrades = [];
-        tradeResult.forEach((tradeRecord) => {
-          createdTrades.push({
-            id: tradeRecord.id,
-            timeStart: tradeRecord.timeStart,
-            duration: this.getTimeDifference(tradeRecord.timeStart, tradeRecord.timeEnd),
-            current: tradeRecord.buyerLimit-tradeRecord.buyerAvailable,
-            limit: tradeRecord.buyerLimit,
-            inProgress: tradeRecord.inProgress
-          });
-        })
+  // Fetch joined trades
+  const joinedTrades = await TradeSlot.findAll({
+    where: { userId: req.userId },
+  });
 
-        return res.status(200).send({
-        joined: joinedTrades,
-        created: createdTrades
+  // Map joinedTrades to an array of promises to fetch each trade
+  const joinedPromises = joinedTrades.map(async (record) => {
+    const foundTrade = await Trade.findOne({ where: { id: record.tradeId } });
+    if (foundTrade) {
+      joined.push({
+        id: record.tradeId,
+        gameName: record.gameName,
+        channel: record.channel,
+        duration: record.duration,
+        timeStart: foundTrade.timeStart,
+        inProgress: foundTrade.inProgress,
       });
-      })
-    })
-    .catch((error) => res.status(400).send(error));
+    }
+  });
+
+  // Wait for all promises to complete
+  await Promise.all(joinedPromises);
+
+  // Fetch created trades
+  const createdTrades = await Trade.findAll({
+    where: { sellerId: req.userId },
+  });
+
+  // Map createdTrades to an array of data objects
+  createdTrades.forEach((record) => {
+    created.push({
+      id: record.id,
+      timeStart: record.timeStart,
+      duration: this.getTimeDifference(record.timeStart, record.timeEnd),
+      current: record.buyerLimit - record.buyerAvailable,
+      limit: record.buyerLimit,
+      inProgress: record.inProgress,
+    });
+  });
+
+  return res.status(200).send({
+    joined,
+    created,
+  });
 };
-
 
 // Change user password
 exports.changePass = (req, res) => {

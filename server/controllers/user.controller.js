@@ -3,7 +3,7 @@ const User = db.users;
 const UserProfile = db.userProfiles;
 const Trade = db.trades;
 const TradeSlot = db.tradeSlots;
-const validatePass = db.validatePass;
+const validatePass = require("./auth.controller.js").validatePass;
 const config = require("../config/auth.config.js");
 const bcrypt = require("bcryptjs");
 

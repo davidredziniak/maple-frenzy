@@ -131,10 +131,8 @@ function Dashboard() {
         transports : ['websocket'],
         auth: {
           token: accessToken,
-          role: "seller"
-        },
-        trade: {
-          id: tradeId
+          role: "seller",
+          trade: tradeId
         }
        });
       setSocket(newSocket);

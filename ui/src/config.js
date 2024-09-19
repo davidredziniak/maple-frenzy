@@ -61,4 +61,4 @@ export const stackLeft = {
   }
   
   
-  export const apiURL = "https://api.maplefrenzy.com"
+  export const apiURL = "http://localhost:3001"

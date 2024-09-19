@@ -2,11 +2,9 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const { Server } = require("socket.io");
 const db = require("./models");
 const scheduler = require("./tradeScheduler.js");
-const jwt = require("jsonwebtoken");
-const config = require("./config/auth.config.js");
+const sockets = require("./sockets.js");
 
 // Express starts a server and points the app to it
 const PORT = process.env.PORT;
@@ -14,7 +12,7 @@ const app = express();
 
 // Limit requests to official maple-frenzy website
 var corsOptions = {
-  origin: "https://maplefrenzy.com",
+  origin: "http://localhost:3000",
 };
 
 // Reinitialize Database (Development purposes, set to TRUE)
@@ -47,33 +45,8 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Maple Frenzy app listening on port ${PORT}`);
 });
 
-const io = new Server(httpServer);
-
-io.on("connection", (socket) => {
-  // Verify auth token, trade, and role (buyer or seller)
-  const { token } = socket.handshake.auth;
-  if(!token){
-    console.log("No auth token.");
-    socket.disconnect();
-  } else {
-    jwt.verify(token, config.salt, (error, decoded) => {
-      if(error){
-        console.log("User disconnected.");
-        socket.disconnect();
-      }
-      console.log("User ID: " + decoded.id);
-    });
-  }
-  
-  socket.on("send_message", (data) => {
-    console.log(data);
-    io.emit("new_message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("client disconnected");
-  });
-});
+// Socket server
+sockets.startSocketServer(httpServer);
 
 // Start checking for trades that need to be scheduled and displayed to sellers.
 const pollingTime = 2000; // 2s

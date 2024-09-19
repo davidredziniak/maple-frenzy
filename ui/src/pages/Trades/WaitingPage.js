@@ -96,10 +96,8 @@ function WaitingPage() {
         transports : ['websocket'],
         auth: {
           token: accessToken,
-          role: "buyer"
-        },
-        trade: {
-          id: tradeId
+          role: "buyer",
+          trade: tradeId
         }
       });
       setSocket(newSocket);

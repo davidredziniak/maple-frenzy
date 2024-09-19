@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import Footer from "../Footer";
 import { apiURL } from "../../config";
+import { Toaster } from "react-hot-toast";
 
 export default function Profile() {
   const { accessToken, userId } = useContext(AuthContext);
@@ -51,6 +52,7 @@ export default function Profile() {
   return (
     <Box>
       <Navbar />
+      <Toaster position="top-center" reverseOrder={false} />
       <Flex h="100vh" bg="#F8EEDE">
         <ProfileBox
           username={username}

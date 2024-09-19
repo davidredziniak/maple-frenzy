@@ -1,7 +1,6 @@
 const db = require("../models");
 const User = db.users;
 const UserProfile = db.userProfiles;
-const EmailToken = db.emailTokens;
 const { verifyRefresh } = require("../middleware").authorizeJwt;
 const { generateAndSendEmailToken } = require("../middleware").verifySignUp;
 const config = require("../config/auth.config.js");
@@ -24,7 +23,7 @@ const createRefreshJwt = (userId) => {
 };
 
 // Create a new access and refresh JWT given a userId and valid refreshToken, in order to persist user login
-exports.refreshToken = (req, res) => {
+const refreshToken = (req, res) => {
   const { userId, refreshToken } = req.body;
   const isValid = verifyRefresh(userId, refreshToken);
   if (!isValid)
@@ -59,7 +58,7 @@ const validateEmail = (email) => {
 // Signup workflow
 // Saves a user to the database with a hashed password + salt
 // If successful, returns a response with a JWT used to authorize webpages
-exports.signUp = (req, res) => {
+const signUp = (req, res) => {
   if (!validateEmail(req.body.email))
     return res.status(401).send({ message: "Email provided was invalid." });
 
@@ -99,7 +98,7 @@ exports.signUp = (req, res) => {
 // Signin workflow
 // Validates the request's credientials
 // If successful, returns a response with a JWT used to authorize webpages
-exports.signIn = (req, res) => {
+const signIn = (req, res) => {
   if (validatePass(req.body.password)) {
     let username = req.body.username.toLowerCase();
     return User.findOne({ where: { username: username } })
@@ -144,3 +143,5 @@ exports.signIn = (req, res) => {
     return res.status(401).send({ message: "Password provided was invalid." });
   }
 };
+
+module.exports = { signIn, signUp, refreshToken, validatePass }

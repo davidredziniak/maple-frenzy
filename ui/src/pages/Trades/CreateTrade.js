@@ -131,121 +131,118 @@ const CreateTradeBox = () => {
   };
 
   return (
-    <Box flex="1" bg="black.100" py="5vh" ml="50vh" rounded="md">
+    <Box flex="1" bg="black.100" py="5vh" rounded="md">
       <Stack>
-        <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
-          <Center>
-            <Text
-              textShadow="1px 2px #000000"
-              color="white"
-              fontSize="45px"
-              as={"b"}
-            >
-              Create Trade
-            </Text>
-          </Center>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <FormLabel color="white" htmlFor="inGameName">
-                In Game Username:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="inGameName"
-                placeholder="Your in game username, so buyers can find you"
-                value={inGameName}
-                onChange={(e) => setInGameName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="price">
-                Price:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="price"
-                value={price}
-                onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="startTimeInput">
-                Start Time:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="datetime-local"
-                id="startTimeInput"
-                value={startTimeInput}
-                onChange={(e) => setStartTimeInput(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
-                Desired Duration In Hours:
-              </FormLabel>
-              <NumberInput
-                isDisabled={!startTimeInput}
-                min={1}
-                bg="white"
-                id="endTimeInput"
-                value={endTimeInput}
-                onChange={(e) => setEndTimeInput(e)}
-                required
+        <Center>
+          <Box w="40%" p={10} boxShadow="base" bg="#353935" rounded="md">
+            <Center>
+              <Text
+                textShadow="1px 2px #000000"
+                color="white"
+                fontSize="45px"
+                as={"b"}
               >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="channelsInput">
-                Channels:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                size="lg"
-                id="channelsInput"
-                placeholder="Comma seperated channel list, ex: 1,3,4,10"
-                value={channelsInput}
-                onChange={(e) => handleChannelChange(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="buyerLimit">
-                Buyer Limit:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="buyerLimit"
-                value={buyerLimit}
-                onChange={(e) => setBuyerLimit(parseInt(e.target.value) || 0)}
-                required
-              />
-            </div>
-            <Flex minWidth="max-content" alignItems="center" gap="2">
-              <Spacer />
-              <Button
-                mt="30px"
-                w="12vh"
-                {...defaultButton}
-                type="submit"
-              >
-                Create
-              </Button>
-            </Flex>
-          </form>
-        </Box>
+                Create Trade
+              </Text>
+            </Center>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <FormLabel color="white" htmlFor="inGameName">
+                  In Game Username:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="inGameName"
+                  placeholder="Your in game username, so buyers can find you"
+                  value={inGameName}
+                  onChange={(e) => setInGameName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="price">
+                  Price:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="price"
+                  value={price}
+                  onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="startTimeInput">
+                  Start Time:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="datetime-local"
+                  id="startTimeInput"
+                  value={startTimeInput}
+                  onChange={(e) => setStartTimeInput(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="endTimeInput">
+                  Desired Duration In Hours:
+                </FormLabel>
+                <NumberInput
+                  isDisabled={!startTimeInput}
+                  min={1}
+                  bg="white"
+                  id="endTimeInput"
+                  value={endTimeInput}
+                  onChange={(e) => setEndTimeInput(e)}
+                  required
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="channelsInput">
+                  Channels:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  size="lg"
+                  id="channelsInput"
+                  placeholder="Comma seperated channel list, ex: 1,3,4,10"
+                  value={channelsInput}
+                  onChange={(e) => handleChannelChange(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="buyerLimit">
+                  Buyer Limit:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="buyerLimit"
+                  value={buyerLimit}
+                  onChange={(e) => setBuyerLimit(parseInt(e.target.value) || 0)}
+                  required
+                />
+              </div>
+              <Flex minWidth="max-content" alignItems="center" gap="2">
+                <Spacer />
+                <Button mt="30px" w="12vh" {...defaultButton} type="submit">
+                  Create
+                </Button>
+              </Flex>
+            </form>
+          </Box>
+        </Center>
       </Stack>
     </Box>
   );

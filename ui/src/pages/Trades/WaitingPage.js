@@ -1,6 +1,15 @@
 import { apiURL, defaultButton } from "../../config";
 import React, { useState, useContext, useEffect } from "react";
-import { Text, Box, Button, Flex, Stack, Spacer } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  Button,
+  Flex,
+  Stack,
+  Spacer,
+  Center,
+  VStack,
+} from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import toast, { Toaster } from "react-hot-toast";
@@ -69,16 +78,6 @@ function WaitingPage() {
     }
   }
 
-  const handleChange = (e) => {
-    setInputMessage(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    socket.emit("send_message", { message: inputMessage });
-    setInputMessage("");
-  };
-  
   useEffect(() => {
     if (accessToken !== null && accessToken.length !== 0) {
       const getTradeSlot = (tradeId) => {
@@ -90,15 +89,15 @@ function WaitingPage() {
           },
         }).then((response) => response.json());
       };
-      
+
       // Connect to trade room with socket connection
-      const newSocket = io('http://localhost:3001', {
-        transports : ['websocket'],
+      const newSocket = io(apiURL, {
+        transports: ["websocket"],
         auth: {
           token: accessToken,
           role: "buyer",
-          trade: tradeId
-        }
+          trade: tradeId,
+        },
       });
       setSocket(newSocket);
 
@@ -107,15 +106,15 @@ function WaitingPage() {
   }, [accessToken, tradeId]);
 
   useEffect(() => {
-    if(socket !== null){
+    if (socket !== null) {
       socket.on("new_message", (data) => {
         setMessage(data.message);
       });
 
       // Cleanup func, disconnect on unmount
-      return ()=>{
+      return () => {
         socket.disconnect();
-      }
+      };
     }
   }, [socket]);
 
@@ -144,23 +143,6 @@ function WaitingPage() {
   return (
     <Box>
       <Navbar />
-      <div>
-      <h1>Chat App</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="inputMessage"
-          value={inputMessage}
-          onChange={handleChange}
-          placeholder="Enter Message"
-        />
-        <button type="submit">Send Message</button>
-        {message && <h2>{message}</h2>}
-
-      </form>
-
-      </div>
       <Box bg="#F8EEDE" pb={100}>
         <Toaster position="top-center" reverseOrder={false} />
         {isLoggedIn && isAuth ? (
@@ -201,71 +183,102 @@ function WaitingPage() {
 
 const WaitingBox = (props) => {
   return (
-    <Box flex="1" w="30%" bg="black.100" py={30} ml={500} rounded="md">
+    <Box flex="1" w="100%" bg="black.100" py={30} rounded="md">
       <Stack>
-        <Text pl=".5vw" fontFamily="verdana" fontSize="30px">
-          Hey {props.buyerName}.{" "}
-          {props.inProgress ? (
-            <Text>{props.seller} has started!</Text>
-          ) : (
-            <Text>{props.seller} is still getting ready..</Text>
-          )}
-        </Text>
-        <Box
-          pl=".5vw"
-          w="60%"
-          p={10}
-          boxShadow="base"
-          bg="#353935"
-          rounded="md"
-        >
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="20px">
-            You are position <b>{props.pos}</b> in queue.
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            In Game Name: {props.buyerName}
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Channel: {props.channel}
-          </Text>
-          <br />
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Seller's username: {props.seller}
-          </Text>
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            Price: {props.price}
-          </Text>
-          {!props.inProgress ? (
-            <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-              Start Time: {props.startTime} ({props.startHours} hour(s){" "}
-              {props.startMin} min(s) from now)
+        <Center>
+          <VStack w="60%">
+            <Text fontFamily="verdana" fontSize="30px">
+              Hey {props.buyerName}.{" "}
+              {props.inProgress ? (
+                <Text>{props.seller} has started!</Text>
+              ) : (
+                <Text>{props.seller} is still getting ready..</Text>
+              )}
             </Text>
-          ) : (
-            <Text
-              pl=".5vw"
-              color="white"
-              fontFamily="verdana"
-              fontSize="15px"
-            ></Text>
-          )}
-          <Text pl=".5vw" color="white" fontFamily="verdana" fontSize="15px">
-            End Time: {props.endTime} ({props.endHours} hour(s) {props.endMin}{" "}
-            min(s) from now)
-          </Text>
+            <Box w="60%" p={10} boxShadow="base" bg="#353935" rounded="md">
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="20px"
+              >
+                You are position <b>{props.pos}</b> in queue.
+              </Text>
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="15px"
+              >
+                In Game Name: {props.buyerName}
+              </Text>
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="15px"
+              >
+                Channel: {props.channel}
+              </Text>
+              <br />
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="15px"
+              >
+                Seller's username: {props.seller}
+              </Text>
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="15px"
+              >
+                Price: {props.price}
+              </Text>
+              {!props.inProgress ? (
+                <Text
+                  pl=".5vw"
+                  color="white"
+                  fontFamily="verdana"
+                  fontSize="15px"
+                >
+                  Start Time: {props.startTime} ({props.startHours} hour(s){" "}
+                  {props.startMin} min(s) from now)
+                </Text>
+              ) : (
+                <Text
+                  pl=".5vw"
+                  color="white"
+                  fontFamily="verdana"
+                  fontSize="15px"
+                ></Text>
+              )}
+              <Text
+                pl=".5vw"
+                color="white"
+                fontFamily="verdana"
+                fontSize="15px"
+              >
+                End Time: {props.endTime} ({props.endHours} hour(s){" "}
+                {props.endMin} min(s) from now)
+              </Text>
 
-          <Flex minWidth="max-content" alignItems="center" gap="2">
-            <Spacer />
-            <Button
-            mt="30px"
-            {...defaultButton}
-            type="submit"
-            onClick={props.handleLeave}
-          >
-            Leave
-          </Button>
-          </Flex>
-          
-        </Box>
+              <Flex minWidth="max-content" alignItems="center" gap="2">
+                <Spacer />
+                <Button
+                  mt="30px"
+                  {...defaultButton}
+                  type="submit"
+                  onClick={props.handleLeave}
+                >
+                  Leave
+                </Button>
+              </Flex>
+            </Box>
+          </VStack>
+        </Center>
       </Stack>
     </Box>
   );

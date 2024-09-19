@@ -73,71 +73,78 @@ const JoinFrenzyBox = () => {
       errNotification(data.error);
     }
   };
-  
+
   return (
-    <Box flex="1" py="5vh" ml="70vh" rounded="md">
+    <Box flex="1" py="5vh" rounded="md">
       <Stack>
-        <Box
-          pl=".5vw"
-          w="40%"
-          p={10}
-          boxShadow="base"
-          bg="#353935"
-          rounded="md"
-        >
-          <Center>
-            <Text
-              as={"b"}
-              fontSize="45px"
-              textShadow="1px 2px #000000"
-              color="white"
-            >
-              Join Frenzy
-            </Text>
-          </Center>
-          <Stack spacing={4}>
-            <Text color="white" mt=".5vh" fontFamily="verdana" fontSize="xl">
-              {location.state.seller} is available to join!
-            </Text>
-
-            <Box>
-              <Text fontSize="md" color="white" fontFamily="verdana">
-                <strong>Start Time:</strong>{" "}
-                {getLocalTime(location.state.start)} (
-                {getHoursFromNow(location.state.start)} hour(s){" "}
-                {getMinutesFromNow(location.state.start)} min(s) from now)
+        <Center>
+          <Box
+            pl=".5vw"
+            w="40%"
+            p={10}
+            boxShadow="base"
+            bg="#353935"
+            rounded="md"
+          >
+            <Center>
+              <Text
+                as={"b"}
+                fontSize="45px"
+                textShadow="1px 2px #000000"
+                color="white"
+              >
+                Join Frenzy
               </Text>
-              <Text fontSize="md" mt=".5vh" color="white" fontFamily="verdana">
-                <strong>End Time:</strong> {getLocalTime(location.state.end)} (
-                {getHoursFromNow(location.state.end)} hour(s){" "}
-                {getMinutesFromNow(location.state.end)} min(s) from now)
+            </Center>
+            <Stack spacing={4}>
+              <Text color="white" mt=".5vh" fontFamily="verdana" fontSize="xl">
+                {location.state.seller} is available to join!
               </Text>
-            </Box>
 
-            <Badge colorScheme="green" fontSize="lg">
-              Price: {location.state.price} Meso
-            </Badge>
-          </Stack>
-          <Flex minWidth="max-content" alignItems="center" gap="2">
-            <Button
-              mt="30px"
-              {...defaultButton}
-              type="submit"
-              onClick={() => navigate("/find")}
-            >
-              Go Back
-            </Button>
-            <Spacer />
-            <Button
-              mt="30px"
-              {...defaultButton}
-              type="submit"
-              onClick={handleJoin}
-            >
-              Join
-            </Button>
-          </Flex>
-        </Box>
+              <Box>
+                <Text fontSize="md" color="white" fontFamily="verdana">
+                  <strong>Start Time:</strong>{" "}
+                  {getLocalTime(location.state.start)} (
+                  {getHoursFromNow(location.state.start)} hour(s){" "}
+                  {getMinutesFromNow(location.state.start)} min(s) from now)
+                </Text>
+                <Text
+                  fontSize="md"
+                  mt=".5vh"
+                  color="white"
+                  fontFamily="verdana"
+                >
+                  <strong>End Time:</strong> {getLocalTime(location.state.end)}{" "}
+                  ({getHoursFromNow(location.state.end)} hour(s){" "}
+                  {getMinutesFromNow(location.state.end)} min(s) from now)
+                </Text>
+              </Box>
+
+              <Badge colorScheme="green" fontSize="lg">
+                Price: {location.state.price} Meso
+              </Badge>
+            </Stack>
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+              <Button
+                mt="30px"
+                {...defaultButton}
+                type="submit"
+                onClick={() => navigate("/find")}
+              >
+                Go Back
+              </Button>
+              <Spacer />
+              <Button
+                mt="30px"
+                {...defaultButton}
+                type="submit"
+                onClick={handleJoin}
+              >
+                Join
+              </Button>
+            </Flex>
+          </Box>
+        </Center>
       </Stack>
     </Box>
   );

@@ -173,74 +173,72 @@ const FrenzyBox = () => {
   }
 
   return (
-    <Box flex="1" py="5vh" ml="70vh" rounded="md">
+    <Box flex="1" py="5vh" rounded="md">
       <Stack>
-        <Box w="40%" p={10} boxShadow="base" bg="#353935" rounded="md">
-          <Center>
-            <Text
-              as={"b"}
-              fontSize="45px"
-              textShadow="1px 2px #000000"
-              color="white"
-            >
-              Find Frenzy
-            </Text>
-          </Center>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <FormLabel color="white" htmlFor="inGameUsername">
-                In Game Username:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="inGameUsername"
-                placeholder="Your username in game"
-                value={inGameUsername}
-                onChange={(e) => setInGameUsername(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="channel">
-                Channel:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="channel"
-                placeholder="Channel number you are in"
-                value={channel}
-                onChange={setChannelValue}
-                required
-              />
-            </div>
-            <div>
-              <FormLabel mt="20px" color="white" htmlFor="duration">
-                Duration:
-              </FormLabel>
-              <Input
-                bg="white"
-                type="text"
-                id="duration"
-                placeholder="Time in hours"
-                value={duration}
-                onChange={setDurationValue}
-                required
-              />
-            </div>
-            <Flex minWidth="max-content" alignItems="center" gap="2">
-              <Spacer />
-              <Button
-                mt="30px"
-                {...defaultButton}
-                type="submit"
+        <Center>
+          <Box w="30%" p={10} boxShadow="base" bg="#353935" rounded="md">
+            <Center>
+              <Text
+                as={"b"}
+                fontSize="45px"
+                textShadow="1px 2px #000000"
+                color="white"
               >
-                Search
-              </Button>
-            </Flex>
-          </form>
-        </Box>
+                Find Frenzy
+              </Text>
+            </Center>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <FormLabel color="white" htmlFor="inGameUsername">
+                  In Game Username:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="inGameUsername"
+                  placeholder="Your username in game"
+                  value={inGameUsername}
+                  onChange={(e) => setInGameUsername(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="channel">
+                  Channel:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="channel"
+                  placeholder="Channel number you are in"
+                  value={channel}
+                  onChange={setChannelValue}
+                  required
+                />
+              </div>
+              <div>
+                <FormLabel mt="20px" color="white" htmlFor="duration">
+                  Duration:
+                </FormLabel>
+                <Input
+                  bg="white"
+                  type="text"
+                  id="duration"
+                  placeholder="Time in hours"
+                  value={duration}
+                  onChange={setDurationValue}
+                  required
+                />
+              </div>
+              <Flex minWidth="max-content" alignItems="center" gap="2">
+                <Spacer />
+                <Button mt="30px" {...defaultButton} type="submit">
+                  Search
+                </Button>
+              </Flex>
+            </form>
+          </Box>
+        </Center>
       </Stack>
     </Box>
   );

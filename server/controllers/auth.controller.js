@@ -8,21 +8,51 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// Generate an access JWT that is short lived using a user's id and bcrypt secret
+/**
+ * @description Generates a JSON Web Token (JWT) that contains a user's ID and is
+ * signed with a secret key from the `config.salt` variable, valid for one day. It
+ * returns the generated JWT.
+ *
+ * @param {number} userId - Used as identifier for user.
+ *
+ * @returns {string} A JSON Web Token (JWT) that contains the user's ID and expires
+ * in one day.
+ */
 const createAccessJwt = (userId) => {
   return jwt.sign({ id: userId }, config.salt, {
     expiresIn: 86400, // 1 day access
   });
 };
 
-// Generate a refresh JWT that will be able to refresh an access token using a user's id and bcrypt secret
+/**
+ * @description Generates a JSON Web Token (JWT) for refresh authentication, using a
+ * given user ID and a secret salt. The token is set to expire after 30 days, allowing
+ * users to obtain a new access token without re-authenticating.
+ *
+ * @param {number} userId - Required for generating a JWT token.
+ *
+ * @returns {string} A JSON Web Token (JWT) containing user identification and
+ * configured to expire after 30 days.
+ */
 const createRefreshJwt = (userId) => {
   return jwt.sign({ id: userId }, config.salt, {
     expiresIn: 2592000, // 30 day access
   });
 };
 
-// Create a new access and refresh JWT given a userId and valid refreshToken, in order to persist user login
+/**
+ * @description Validates a refresh token sent with a request, checks its validity
+ * using the `verifyRefresh` function, and if valid, generates new access and refresh
+ * tokens for the associated user.
+ *
+ * @param {Express.Request} req - Used to receive data from the client.
+ *
+ * @param {Response} res - Used for returning HTTP responses to clients.
+ *
+ * @returns {any} An object containing three properties: `accessToken`, `refreshToken`,
+ * and `message`. The `accessToken` and `refreshToken` are strings representing JWT
+ * tokens, and the `message` property is a string indicating successful token refresh.
+ */
 const refreshToken = (req, res) => {
   const { userId, refreshToken } = req.body;
   const isValid = verifyRefresh(userId, refreshToken);
@@ -39,7 +69,15 @@ const refreshToken = (req, res) => {
   }
 };
 
-// Validate password constraints
+/**
+ * @description Verifies whether a given password is valid by checking two conditions:
+ * its type and length. It checks if the input is a string and has at least 8 characters;
+ * otherwise, it returns false; else, it returns true.
+ *
+ * @param {string} pass - 8 characters or more.
+ *
+ * @returns {boolean} `true` if the input is valid and `false` otherwise.
+ */
 const validatePass = (pass) => {
   // For now, just require 8 chars as minimum length
   // Require more thorough validation through frontend
@@ -47,7 +85,16 @@ const validatePass = (pass) => {
   return true;
 };
 
-// Validate email constraints
+/**
+ * @description Checks if a given string is a valid email address. It uses a regular
+ * expression to match the email format, and also verifies that the input is a string.
+ * If either condition fails, it returns `false`. Otherwise, it returns `true`.
+ *
+ * @param {string} email - Required for validation.
+ *
+ * @returns {boolean} True if the input matches the regular expression pattern and
+ * false otherwise.
+ */
 const validateEmail = (email) => {
   // Require more thorough validation through frontend
   var regex = /\S+@\S+\.\S+/;
@@ -57,7 +104,19 @@ const validateEmail = (email) => {
 
 // Signup workflow
 // Saves a user to the database with a hashed password + salt
-// If successful, returns a response with a JWT used to authorize webpages
+/**
+ * @description Validates user input, creates a new user account with hashed password
+ * and a corresponding profile, generates an email token for verification, and sends
+ * an email to the user's registered email address. It handles errors and returns
+ * status codes accordingly.
+ *
+ * @param {Request | any} req - An object that holds HTTP request data.
+ *
+ * @param {object} res - Used for sending HTTP responses.
+ *
+ * @returns {Promise<void>} 200 (in case of successful signup) or an error object
+ * with a 401 or 500 status code.
+ */
 const signUp = (req, res) => {
   if (!validateEmail(req.body.email))
     return res.status(401).send({ message: "Email provided was invalid." });
@@ -73,12 +132,12 @@ const signUp = (req, res) => {
       lastLoggedIn: new Date().toISOString(),
     })
       .then((newUser) => {
-        // Create a profile for the new user
+        // Creates user profile.
         UserProfile.create({
           userId: newUser.id,
         })
           .then(async () => {
-            // Successful signup
+            // Handles successful user sign-up.
             // Send out an email to verify link
             await generateAndSendEmailToken(newUser);
 
@@ -97,13 +156,26 @@ const signUp = (req, res) => {
 
 // Signin workflow
 // Validates the request's credientials
-// If successful, returns a response with a JWT used to authorize webpages
+/**
+ * @description Handles user authentication, verifying a username and password against
+ * stored data. If credentials are valid, it generates tokens and updates the last
+ * logged-in timestamp, returning an authorization response with access and refresh
+ * tokens.
+ *
+ * @param {express.Request} req - Used to represent HTTP request.
+ *
+ * @param {object} res - Used to return an HTTP response.
+ *
+ * @returns {object} Either an authorization token object with user ID, access token,
+ * refresh token and a success message if validation is successful or an error response
+ * containing the status code, message and/or error details in case of failure.
+ */
 const signIn = (req, res) => {
   if (validatePass(req.body.password)) {
     let username = req.body.username.toLowerCase();
     return User.findOne({ where: { username: username } })
       .then(async (user) => {
-        // Validate if username exists
+        // Handles user authentication logic.
         if (!user)
           return res.status(401).send({ message: "Username not found." });
 

@@ -68,7 +68,7 @@ const Navbar = () => {
             bg="#93d7bf"
             color="#353935"
             size="md"
-            onClick={navigate("/login")}
+            onClick={() => navigate("/login")}
           >
             Login
           </Button>

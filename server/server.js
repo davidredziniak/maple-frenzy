@@ -31,9 +31,11 @@ app.use(express.urlencoded({ extended: true }));
 db.sequelize
   .sync({ force: development })
   .then(() => {
+    // Logs a message to the console.
     console.log("Synced db.");
   })
   .catch((err) => {
+    // Logs error messages.
     console.log("Failed to sync db: " + err.message);
   });
 
@@ -42,6 +44,7 @@ require("./routes/index.js")(app);
 
 // Start listening for requests at a designated port, return server
 const httpServer = app.listen(PORT, () => {
+  // Handles server startup completion.
   console.log(`Maple Frenzy app listening on port ${PORT}`);
 });
 
